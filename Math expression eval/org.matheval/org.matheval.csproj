@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net35;net40;net45;net46;net461;net462;net47;net471;net472;net48;netstandard2.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+	  <Title>Matheval</Title>
+    <PackageId>org.matheval</PackageId>
+    <Product>Math expression eval</Product>
+    <Company />
+    <Description>Matheval is a mathematical expressions evaluator library for .NET. Allows to evaluate mathematical, boolean, string and datetime expressions on the fly. Official document and usage examples: https://matheval.org/math-expression-eval-for-c-sharp/</Description>
+    <Copyright>Copyright © MathEval.org 2021</Copyright> 
+    <RootNamespace>org.matheval</RootNamespace>
+    <AssemblyName>org.matheval</AssemblyName>
+    <Authors>matheval.org</Authors>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl>https://matheval.org/</PackageProjectUrl>
+	  <PackageTags>Math Mathematics Mathematical Expression Fomular Eval Evaluator Calculator Solve Unary Decimal</PackageTags>
+    <PackageIconUrl></PackageIconUrl>  
+	  <RepositoryUrl>https://github.com/matheval/expression-evaluator-c-sharp/</RepositoryUrl>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>1.0.0.2</Version>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <FileVersion>1.0.0.2</FileVersion>    
+    <SignAssembly>false</SignAssembly>    
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>
