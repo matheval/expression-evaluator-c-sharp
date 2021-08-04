@@ -1,8 +1,9 @@
 # About MathEval
 [![NuGet version (org.matheval)](https://img.shields.io/nuget/v/org.matheval.svg?style=flat-square)](https://www.nuget.org/packages/org.matheval/)
+
 Matheval is a mathematical expressions evaluator library written in C#. Allows to evaluate mathematical, boolean, string and datetime expressions
 
-Code is written in pure C#, run on the fly. We don't use any third party libaries or pakages
+Code is written in pure C#, run on the fly. We don't use any third party libraries or packages
 
 # Installation
 
