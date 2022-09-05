@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         {
             //double v180 = double.Parse("180");
             //return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]) * (decimal)(Math.PI / v180), dc);
-            return Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]) * (decimal)(Math.PI / 180d);
+            return Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture) * (decimal)(Math.PI / 180d);
         }
     }
 }

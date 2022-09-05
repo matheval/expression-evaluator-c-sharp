@@ -51,9 +51,9 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            if (!string.IsNullOrEmpty(Afe_Common.ToString(args[Afe_Common.Const_Key_One])))
+            if (!string.IsNullOrEmpty(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture)))
             {
-                return Afe_Common.ToString(args[Afe_Common.Const_Key_One]).ToUpper();
+                return Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture).ToUpper(dc.WorkingCulture);
             }
             return string.Empty;
         }

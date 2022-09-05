@@ -50,7 +50,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return this.Fact(Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])));
+            return this.Fact(Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)));
         }
 
         /// <summary>

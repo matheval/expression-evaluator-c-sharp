@@ -54,7 +54,7 @@ namespace org.matheval.Functions
         /// <param name="paramCount">param count</param>
         public FunctionDef(string name, System.Type[] args, System.Type returnType, int paramCount)
         {
-            Name = name.ToLower();
+            Name = name.ToLowerInvariant();
             Args = args;
             ReturnType = returnType;
             ParamCount = paramCount;

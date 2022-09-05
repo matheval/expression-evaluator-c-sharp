@@ -52,7 +52,7 @@ namespace org.matheval.Functions
         {
             // Random r = new Random();
             //return Afe_Common.Round(r.Next(), dc);
-            return Convert.ToDecimal(new Random().NextDouble());
+            return Convert.ToDecimal(new Random().NextDouble(), dc.WorkingCulture);
         }
     }
 }

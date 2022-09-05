@@ -57,13 +57,13 @@ namespace org.matheval.Functions
         {
             if (args.Count == 3)
             {
-                return Afe_Common.ToString(args[Afe_Common.Const_Key_One]).Replace(Afe_Common.ToString(args[Afe_Common.Const_Key_Two]), Afe_Common.ToString(args[Afe_Common.Const_Key_Three]));
+                return Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture).Replace(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture), Afe_Common.ToString(args[Afe_Common.Const_Key_Three], dc.WorkingCulture));
             }
             else
             {
-                string text = Afe_Common.ToString(args[Afe_Common.Const_Key_One]);
-                string left = text.Substring(0, Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])) - 1);
-                string right = text.Substring(Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])) - 1 + Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three])));
+                string text = Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
+                string left = text.Substring(0, Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) - 1);
+                string right = text.Substring(Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) - 1 + Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture)));
                 return left + args[Afe_Common.Const_Key_Four].ToString() + right;
             }
         }

@@ -29,6 +29,7 @@ using org.matheval.Operators.Binop;
 using org.matheval.Operators.Unary;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using static org.matheval.Common.Afe_Common;
 
 namespace org.matheval
@@ -39,6 +40,11 @@ namespace org.matheval
         /// Create object Lexer
         /// </summary>
         private Lexer Lexer;
+        
+        /// <summary>
+        /// Dc
+        /// </summary>
+        private ExpressionContext Dc;
 
         /// <summary>
         /// Create Dictionary Operators have key is string and value is interface IOperator
@@ -62,6 +68,7 @@ namespace org.matheval
         {
             this.InitOperators();
             this.InitConstants();
+            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -72,8 +79,31 @@ namespace org.matheval
         {
             this.InitOperators();
             this.InitConstants();
+            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
             this.Lexer = new Lexer(formular, this);
             //this.Lexer.GetToken();
+        }
+
+        /// <summary>
+        /// Initializes a new instance structure with a <see cref="ExpressionContext"/> instance
+        /// </summary>
+        public Parser(ExpressionContext dc)
+        {
+            this.InitOperators();
+            this.InitConstants();
+            this.Dc = dc;
+        }
+
+        /// <summary>
+        /// Initializes a new instance structure with a <see cref="ExpressionContext"/> instance and a specified type string value input expression
+        /// </summary>
+        /// <param name="formular">formular</param>
+        public Parser(ExpressionContext dc, string formular)
+        {
+            this.InitOperators();
+            this.InitConstants();
+            this.Dc = dc;
+            this.Lexer = new Lexer(formular, this);
         }
 
         /// <summary>
@@ -134,6 +164,15 @@ namespace org.matheval
         }
 
         /// <summary>
+        /// Get ExpressionContext
+        /// </summary>
+        /// <returns></returns>
+        public ExpressionContext GetExpressionContext()
+        {
+            return Dc;
+        }
+
+        /// <summary>
         /// Add Constant
         /// </summary>
         /// <param name="constantName">constantName constant name</param>
@@ -144,7 +183,7 @@ namespace org.matheval
             {
                 Constants = new Dictionary<string, Object>();
             }
-            Constants.Add(constantName.ToLower(), value);
+            Constants.Add(constantName.ToLowerInvariant(), value);
         }
 
         /// <summary>
@@ -236,11 +275,11 @@ namespace org.matheval
                 {
                     if(!identifier.Equals("pi") && !identifier.Equals("e"))
                     {
-                        return new NumberNode(Afe_Common.ToDecimal(constant), true);
+                        return new NumberNode(Afe_Common.ToDecimal(constant, Dc.WorkingCulture), true);
                     }
                     else
                     {
-                        return new NumberNode(Afe_Common.ToDecimal(constant), false);
+                        return new NumberNode(Afe_Common.ToDecimal(constant, Dc.WorkingCulture), false);
                     }
                 }
                 else if (constant is string)
@@ -273,7 +312,7 @@ namespace org.matheval
             if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_PAREN_OPEN)
             {
                 Implements.Node constantNode;
-                if ((constantNode = this.ParseConstant(identifierStr.ToLower())) != null)
+                if ((constantNode = this.ParseConstant(identifierStr.ToLowerInvariant())) != null)
                 {
                     return constantNode;
                 }
@@ -305,7 +344,7 @@ namespace org.matheval
                 IFunction funcExecuter;
                 try
                 {
-                    Type t = Type.GetType("org.matheval.Functions." + identifierStr.ToLower() + "Function", true);
+                    Type t = Type.GetType("org.matheval.Functions." + identifierStr.ToLowerInvariant() + "Function", true);
                     Object obj = (Activator.CreateInstance(t));
 
                     if (obj == null)
@@ -316,7 +355,7 @@ namespace org.matheval
                 }
                 catch (Exception e)
                 {
-                    throw new Exception(string.Format(Afe_Common.MSG_METH_NOTFOUND, new string[] { identifierStr.ToUpper() }));
+                    throw new Exception(string.Format(Afe_Common.MSG_METH_NOTFOUND, new string[] { identifierStr.ToUpperInvariant() }));
                 }
                 
                 List<FunctionDef> functionInfos = funcExecuter.GetInfo();
@@ -349,7 +388,7 @@ namespace org.matheval
                         return callFuncNode;
                     }
                 }
-                throw new Exception(string.Format(Afe_Common.MSG_WRONG_METH_PARAM, new string[] { identifierStr.ToUpper() }));
+                throw new Exception(string.Format(Afe_Common.MSG_WRONG_METH_PARAM, new string[] { identifierStr.ToUpperInvariant() }));
             }
         }
 

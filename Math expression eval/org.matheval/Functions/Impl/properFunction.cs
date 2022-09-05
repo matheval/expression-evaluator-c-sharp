@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         /// <returns>To Title Case</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return this.ToTitleCase(Afe_Common.ToString(args[Afe_Common.Const_Key_One]));
+            return this.ToTitleCase(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="phrase">phrase</param>
         /// <returns>To Title Case</returns>
-        public string ToTitleCase(string phrase)
+        public string ToTitleCase(string phrase, ExpressionContext dc)
         {
             string titlePhrase = string.Empty;
             List<string> forceLower = new List<string>();
@@ -70,13 +70,13 @@ namespace org.matheval.Functions
 
                 for (int i = 0; i < splitPhrase.Length; i++)
                 {
-                    if (!forceLower.Contains(splitPhrase[i].ToLower()) || i == 0 || i == (splitPhrase.Length - 1))
+                    if (!forceLower.Contains(splitPhrase[i].ToLower(dc.WorkingCulture)) || i == 0 || i == (splitPhrase.Length - 1))
                     {
-                        titlePhrase += splitPhrase[i].Substring(0, 1).ToUpper() + splitPhrase[i].Substring(1).ToLower() + " ";
+                        titlePhrase += splitPhrase[i].Substring(0, 1).ToUpper(dc.WorkingCulture) + splitPhrase[i].Substring(1).ToLower(dc.WorkingCulture) + " ";
                     }
                     else
                     {
-                        titlePhrase += splitPhrase[i].ToLower() + " ";
+                        titlePhrase += splitPhrase[i].ToLower(dc.WorkingCulture) + " ";
                     }
                 }
             }

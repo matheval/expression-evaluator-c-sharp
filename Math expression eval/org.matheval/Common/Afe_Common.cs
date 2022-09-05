@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace org.matheval.Common
@@ -722,7 +723,7 @@ namespace org.matheval.Common
         /// <returns>Value Round</returns>
         public static decimal Round(object value, ExpressionContext dc)
         {
-            return Math.Round(Convert.ToDecimal(value), dc.Scale, dc.Rd);
+            return Math.Round(Convert.ToDecimal(value, dc.WorkingCulture), dc.Scale, dc.Rd);
         }
 
         /// <summary>
@@ -746,28 +747,31 @@ namespace org.matheval.Common
         }
 
         /// <summary>
-        /// 
+        /// TODO poner default invariant culture.
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        public static decimal ToDecimal(object value)
+        public static decimal ToDecimal(object value, CultureInfo cultureInfo)
         {
-            if(value is decimal)
+            if (value is decimal)
             {
                 return (decimal)value;
             }
             else
             {
-                return Convert.ToDecimal(value);
+                return Convert.ToDecimal(value, cultureInfo);
             }
         }
 
         /// <summary>
         /// Connvert object to string
+        /// TODO poner default invariant culture.
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        public static string ToString(object value)
+        public static string ToString(object value, CultureInfo cultureInfo)
         {
             if (value is string)
             {
@@ -775,7 +779,7 @@ namespace org.matheval.Common
             }
             else
             {
-                return Convert.ToString(value);
+                return Convert.ToString(value, cultureInfo);
             }
         }
 
@@ -814,11 +818,12 @@ namespace org.matheval.Common
         /// <returns>Total Value</returns>
         public static int DateDif(DateTime startDate, DateTime endDate, string unit)
         {
-            if (unit != null && unit.ToLower().Equals("d"))
+            // TODO: 
+            if (unit != null && unit.Equals("d", StringComparison.InvariantCultureIgnoreCase))
             {
                 return (endDate - startDate).Days;
             }
-            else if (unit != null && unit.ToLower().Equals("m"))
+            else if (unit != null && unit.Equals("m", StringComparison.InvariantCultureIgnoreCase))
             {
                 int monthDiff = endDate.Year * 12 + endDate.Month - (startDate.Year * 12 + startDate.Month);
                 if (endDate.Day < startDate.Day)
@@ -827,7 +832,7 @@ namespace org.matheval.Common
                 }
                 return monthDiff;
             }
-            else if (unit != null && unit.ToLower().Equals("y"))
+            else if (unit != null && unit.Equals("y", StringComparison.InvariantCultureIgnoreCase))
             {
                 int monthDiff = endDate.Year * 12 + endDate.Month - (startDate.Year * 12 + startDate.Month);
                 if (endDate.Day < startDate.Day)
@@ -836,21 +841,21 @@ namespace org.matheval.Common
                 }
                 return monthDiff / 12;
             }
-            else if (unit != null && unit.ToLower().Equals("ym"))
+            else if (unit != null && unit.Equals("ym", StringComparison.InvariantCultureIgnoreCase))
             {
                 DateTime stDate = startDate;
                 int yearDiff = DateDif(startDate, endDate, "y");
                 stDate = stDate.AddYears(yearDiff);
                 return DateDif(stDate, endDate, "m");
             }
-            else if (unit != null && unit.ToLower().Equals("yd"))
+            else if (unit != null && unit.Equals("yd", StringComparison.InvariantCultureIgnoreCase))
             {
                 DateTime stDate = startDate;
                 int yearDiff = DateDif(startDate, endDate, "y");
                 stDate = stDate.AddYears(yearDiff);
                 return DateDif(stDate, endDate, "d");
             }
-            else if (unit != null && unit.ToLower().Equals("md"))
+            else if (unit != null && unit.Equals("md", StringComparison.InvariantCultureIgnoreCase))
             {
                 DateTime stDate = startDate;
                 int mDiff = DateDif(startDate, endDate, "m");

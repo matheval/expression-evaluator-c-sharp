@@ -50,8 +50,8 @@ namespace org.matheval.Functions
         public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
         {
             //return Afe_Common.Round(1 / Math.Cos(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]))), dc);
-            double result = 1d / Math.Cos(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])));
-            return Convert.ToDecimal(result);
+            double result = 1d / Math.Cos(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)));
+            return Convert.ToDecimal(result, dc.WorkingCulture);
         }
     }
 }

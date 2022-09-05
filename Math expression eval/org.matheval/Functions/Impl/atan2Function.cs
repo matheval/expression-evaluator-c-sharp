@@ -56,8 +56,8 @@ namespace org.matheval.Functions
         {
             //return Afe_Common.Round(Math.Atan2(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two]))), dc);
 
-            Double result = Math.Atan2(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])));
-            return Convert.ToDecimal(result);
+            Double result = Math.Atan2(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)));
+            return Convert.ToDecimal(result, dc.WorkingCulture);
         }
     }
 }

@@ -55,9 +55,9 @@ namespace org.matheval.Functions
         {
             if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]))
             {
-                return this.AvgList((IEnumerable)args[Afe_Common.Const_Key_One]);
+                return this.AvgList((IEnumerable)args[Afe_Common.Const_Key_One], dc);
             }
-            return this.Avg(args);
+            return this.Avg(args, dc);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Avg</returns>
-        private decimal Avg(Dictionary<string, Object> args)
+        private decimal Avg(Dictionary<string, Object> args, ExpressionContext dc)
         {
             decimal sum = 0;
             foreach (Object item in args.Values)
@@ -74,7 +74,7 @@ namespace org.matheval.Functions
                 {
                     throw new Exception(string.Format("{0} {1}", Afe_Common.ShowMessage, "AVG"));
                 }
-                sum += Afe_Common.ToDecimal(item);
+                sum += Afe_Common.ToDecimal(item, dc.WorkingCulture);
             }
             return sum / args.Count;
         }
@@ -84,7 +84,7 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private decimal AvgList(IEnumerable arg)
+        private decimal AvgList(IEnumerable arg, ExpressionContext dc)
         {
             decimal sum = 0;
             int elementCount = 0;
@@ -93,7 +93,7 @@ namespace org.matheval.Functions
             {
                 if (Afe_Common.IsNumber(item))
                 {
-                    sum += Afe_Common.ToDecimal(item);
+                    sum += Afe_Common.ToDecimal(item, dc.WorkingCulture);
                     elementCount++;
                 }
             }

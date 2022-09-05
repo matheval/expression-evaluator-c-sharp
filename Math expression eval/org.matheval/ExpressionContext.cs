@@ -22,6 +22,7 @@
     THE SOFTWARE.
 */
 using System;
+using System.Globalization;
 
 namespace org.matheval
 {
@@ -78,13 +79,18 @@ namespace org.matheval
         public DateTime[] Holidays;
 
         /// <summary>
+        /// The culture used to parse the numbers
+        /// </summary>
+        public CultureInfo WorkingCulture;
+
+        /// <summary>
         /// Initializes a new instance structure to a specified type int scale and type MidpointRounding rd
         /// </summary>
         /// <param name="scale"></param>
         /// <param name="rd"></param>
         /// <param name="dateFormat"></param>
         /// <param name="datetimeFormat"></param>
-        public ExpressionContext(int scale, MidpointRounding rd, String dateFormat, String datetimeFormat, String timeFormat)
+        public ExpressionContext(int scale, MidpointRounding rd, String dateFormat, String datetimeFormat, String timeFormat, CultureInfo workingCulture)
         {
             Scale = scale;
             Rd = rd;
@@ -92,6 +98,7 @@ namespace org.matheval
             DatetimeFormat = datetimeFormat;
             TimeFormat = timeFormat;
             DateSystem = new DateTime(1899, 12, 30);
+            WorkingCulture = workingCulture;
         }
     }
 }

@@ -55,8 +55,8 @@ namespace org.matheval.Operators.Binop
         {
             if (Common.Afe_Common.IsNumber(left) && Common.Afe_Common.IsNumber(right))
             {
-                decimal leftDecimal = Afe_Common.ToDecimal(left);
-                decimal rightDecimal = Afe_Common.ToDecimal(right);
+                decimal leftDecimal = Afe_Common.ToDecimal(left, dc.WorkingCulture);
+                decimal rightDecimal = Afe_Common.ToDecimal(right, dc.WorkingCulture);
                 return decimal.Divide(leftDecimal, rightDecimal);
             }
             throw new Exception(string.Format(MSG_WRONG_OP_PARAM_EX, new string[] { "DIV", "numeric" }));

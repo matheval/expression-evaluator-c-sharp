@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using org.matheval;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace UnitTest
 {
@@ -367,7 +368,7 @@ namespace UnitTest
 
             Expression expr8 = new Expression("if(2+1,true,false)");
             Assert.AreNotEqual(0, expr8.GetError().Count);
-            
+
         }
 
         [TestMethod]
@@ -640,7 +641,7 @@ namespace UnitTest
             var randomAngle = Math.PI / 6.03d;
 
             Expression expr1 = new Expression("MOD(EXP(5.4),1.3)*5/_a_*3^PI()");
-            Assert.AreEqual(21.366845M, expr1.Bind("_a_",3).Eval<decimal>());
+            Assert.AreEqual(21.366845M, expr1.Bind("_a_", 3).Eval<decimal>());
 
             expr1.SetFomular("3^PI()^0.1");
             Assert.AreEqual(3.42758M, expr1.Eval<decimal>());
@@ -658,7 +659,7 @@ namespace UnitTest
             Assert.AreEqual(true, expr1.Bind("y", randomAngle).Eval<bool>());
 
             expr1.SetFomular("tan(a)^3-((3*sin(a)-sin(3*a))/(3*cos(a)+cos(3*a)))");
-            Assert.AreEqual(0, expr1.Bind("a", Math.PI/6).Eval<decimal>()); 
+            Assert.AreEqual(0, expr1.Bind("a", Math.PI / 6).Eval<decimal>());
 
             expr1.SetFomular("tan(a)^3-((3*sin(a)-sin(3*a))/(3*cos(a)+cos(3*a)))");
             Assert.AreEqual(0, expr1.Bind("a", randomAngle).Eval<decimal>());
@@ -731,7 +732,7 @@ namespace UnitTest
             Assert.AreEqual(true, expr2.Bind("a", "bxyz").Eval<bool>());
 
             Expression expr3 = new Expression("a >= \"axyz\"");
-            Assert.AreEqual(false  , expr3.Bind("a", null).Eval<bool>());
+            Assert.AreEqual(false, expr3.Bind("a", null).Eval<bool>());
         }
 
         [TestMethod]
@@ -984,7 +985,7 @@ namespace UnitTest
             Assert.AreEqual("", expr6.Eval<string>());
 
             Expression expr7 = new Expression("REPT(a,5)");
-            Assert.AreEqual("", expr7.Bind("a",null).Eval<string>());
+            Assert.AreEqual("", expr7.Bind("a", null).Eval<string>());
         }
 
         [TestMethod]
@@ -1003,7 +1004,7 @@ namespace UnitTest
             Assert.AreEqual(3, expr4.Eval<int>());
 
             Expression expr5 = new Expression("If(len(a)>0,\"passed with score:\"&a,\"fail\")");
-            Assert.AreEqual("passed with score:50", expr5.Bind("a","50").Eval<string>());
+            Assert.AreEqual("passed with score:50", expr5.Bind("a", "50").Eval<string>());
 
             Expression expr6 = new Expression("len(null)");
             Assert.AreEqual(0, expr6.Eval<int>());
@@ -1111,7 +1112,7 @@ namespace UnitTest
             Assert.AreEqual(-1, expr1.Eval<int>());
 
             expr1.SetFomular("IF(SEARCH(\"A\",\"AEHABC\",4)>1,CONCAT(LEFT(name,2),\"WORD\"),\"N/A\")");
-            Assert.AreEqual("HEWORD", expr1.Bind("name","HELLO").Eval<string>());
+            Assert.AreEqual("HEWORD", expr1.Bind("name", "HELLO").Eval<string>());
 
             expr1.SetFomular("IF(SEARCH(\"A\",\"AEHABC\",4)>100,CONCAT(LEFT(name,2),\"WORD\"),\"N/A\")");
             Assert.AreEqual("N/A", expr1.Bind("name", "HELLO").Eval<string>());
@@ -1147,6 +1148,17 @@ namespace UnitTest
 
             expr1.SetFomular("ISBLANK(\"\n\")");
             Assert.AreEqual(false, expr1.Eval<bool>());
+        }
+        
+        [TestMethod]
+        public void Literals_Operation_Test()
+        {
+            var formular = "(((((4134+14.73*11.4000*100/90.5600+52.39*1.5200*100/90.5600+9.25*2.7200*100/90.5600-44.6*1.5700*100/90.5600+0.0000)*85.0082/100)*0.8357)*0.6638/1700)*(90.5600/100)*1.0000*0.9600+((1.88*0.8753-0.4028)*(90.5600-1.5700)/100)*0.0000+((1.88*0.8753-0.4028)*(90.5600-1.5700)/100)*0.0000+((1.39*0.8753-0.0375)*(90.5600-1.5700)/100)*0.0000+((1.39*0.8753-0.0375)*(90.5600-1.5700)/100)*0.0000)*1.0000";
+            var expr = new Expression(formular).SetScale(4);
+            Assert.AreEqual(1.0509M, expr.Eval<decimal>());
+            
+            var expr2 = new Expression(formular).SetScale(4).SetWorkingCulture(new CultureInfo("es-ES"));
+            Assert.ThrowsException<OverflowException>(() => expr2.Eval<decimal>());
         }
     }
 }

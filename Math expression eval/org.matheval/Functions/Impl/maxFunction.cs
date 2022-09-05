@@ -55,9 +55,9 @@ namespace org.matheval.Functions
         {
             if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]))
             {
-                return this.MaxList((IEnumerable)args[Afe_Common.Const_Key_One]);
+                return this.MaxList((IEnumerable)args[Afe_Common.Const_Key_One], dc);
             }
-            return this.Max(args);
+            return this.Max(args, dc);
         }
 
         /// <summary>
@@ -65,14 +65,14 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Max</returns>
-        private Object Max(Dictionary<string, Object> args)
+        private Object Max(Dictionary<string, Object> args, ExpressionContext dc)
         {
             Object maxEntry = null;
             foreach (Object item in args.Values)
             {
-                if (maxEntry == null || Afe_Common.ToDecimal(item) > (decimal)maxEntry)
+                if (maxEntry == null || Afe_Common.ToDecimal(item, dc.WorkingCulture) > (decimal)maxEntry)
                 {
-                    maxEntry = Afe_Common.ToDecimal(item);
+                    maxEntry = Afe_Common.ToDecimal(item, dc.WorkingCulture);
                 }
             }
             return maxEntry;
@@ -83,7 +83,7 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private Object MaxList(IEnumerable arg)
+        private Object MaxList(IEnumerable arg, ExpressionContext dc)
         {
             Object maxEntry = null;
             foreach (Object item in arg)
@@ -92,9 +92,9 @@ namespace org.matheval.Functions
                 {
                     continue;
                 }
-                if (maxEntry == null || Afe_Common.ToDecimal(item) > (decimal)maxEntry)
+                if (maxEntry == null || Afe_Common.ToDecimal(item, dc.WorkingCulture) > (decimal)maxEntry)
                 {
-                    maxEntry = Afe_Common.ToDecimal(item);
+                    maxEntry = Afe_Common.ToDecimal(item, dc.WorkingCulture);
                 }
             }
             return maxEntry;

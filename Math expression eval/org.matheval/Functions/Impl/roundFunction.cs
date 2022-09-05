@@ -53,13 +53,13 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            int digits = Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])) ;// int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two]));
+            int digits = Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) ;// int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two]));
 
             /*if (digits < 0 || digits > 28)
             {
                 throw new Exception("Input digits must be between 0 and 28");
             } */ 
-            return Math.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]), digits, dc.Rd);
+            return Math.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture), digits, dc.Rd);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return Convert.ToDecimal(Math.PI);
+            return Convert.ToDecimal(Math.PI, dc.WorkingCulture);
         }
     }
 }

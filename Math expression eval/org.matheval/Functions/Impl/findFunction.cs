@@ -24,6 +24,8 @@
 using org.matheval.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 
 namespace org.matheval.Functions
 {
@@ -53,7 +55,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            int pos = this.Find(args);
+            int pos = this.Find(args, dc);
             return pos >= 0 ? pos + 1 : pos;
         }
 
@@ -62,16 +64,23 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Index find</returns>
-        public int Find(Dictionary<string, Object> args)
+        public int Find(Dictionary<string, Object> args, ExpressionContext dc)
         {
+            int result;
+            // because IndexOf uses the current culture info for string comparison
+            var ci = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = dc.WorkingCulture;
             if (args.Count == 2)
             {
-                return Afe_Common.ToString(args[Afe_Common.Const_Key_Two]).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One]));
+                result = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             }
             else
             {
-                return Afe_Common.ToString(args[Afe_Common.Const_Key_Two]).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One]), Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three])) - 1);
+                result = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture)) - 1);
             }
+
+            Thread.CurrentThread.CurrentCulture = ci;
+            return result;
         }
     }
 }

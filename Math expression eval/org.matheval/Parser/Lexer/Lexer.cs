@@ -178,17 +178,17 @@ namespace org.matheval
                     CurrentToken = new Token(TokenType.TOKEN_OP, identifierTemp);
                     return;
                 }
-                if (identifierTemp.ToUpper().Equals(Afe_Common.Const_IF) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
+                if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_IF) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
                 {
                     CurrentToken = new Token(TokenType.TOKEN_IF, identifierTemp);
                     return;
                 }
-                else if (identifierTemp.ToUpper().Equals(Afe_Common.Const_CASE) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
+                else if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_CASE) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
                 {
                     CurrentToken = new Token(TokenType.TOKEN_CASE, identifierTemp);
                     return;
                 }
-                else if (identifierTemp.ToUpper().Equals(Afe_Common.Const_SWITCH) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
+                else if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_SWITCH) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
                 {
                     CurrentToken = new Token(TokenType.TOKEN_CASE, identifierTemp);
                     return;
@@ -200,25 +200,25 @@ namespace org.matheval
             //number 
             else if (Afe_Common.IsNumeric(this.LastChar) || (this.LastChar.Equals(Afe_Common.Const_PERIODT) && Afe_Common.IsNumeric(ViewNextChar())))
             {
-                string numberTemp = this.LastChar.ToString();
+                string numberTemp = this.LastChar.ToString(Parser.GetExpressionContext().WorkingCulture);
                 this.LastChar = this.GetChar();
                 while (!IsEof() && 
                         (
                           Afe_Common.IsNumeric(this.LastChar) ||
                           this.LastChar.Equals(Afe_Common.Const_PERIODT) ||
                           (
-                              this.LastChar.ToString().ToLower().Equals("e") &&
-                              !numberTemp.ToLower().Contains("e") &&
+                              this.LastChar.ToString(Parser.GetExpressionContext().WorkingCulture).Equals("e", StringComparison.InvariantCultureIgnoreCase) &&
+                              numberTemp.IndexOf("e", StringComparison.InvariantCultureIgnoreCase) < 0 &&
                               (ViewNextChar().Equals('+') || ViewNextChar().Equals('-'))
                           ) ||
                           (
                             this.LastChar.Equals('-') && numberTemp.Length > 0 &&
-                            Afe_Common.Right(numberTemp,1).ToLower().Equals("e") &&
+                            Afe_Common.Right(numberTemp,1).Equals("e", StringComparison.InvariantCultureIgnoreCase) &&
                             Afe_Common.IsNumeric(ViewNextChar())
                           ) ||
                           (
                             this.LastChar.Equals('+') && numberTemp.Length > 0 &&
-                            Afe_Common.Right(numberTemp,1).ToLower().Equals("e") &&
+                            Afe_Common.Right(numberTemp,1).Equals("e", StringComparison.InvariantCultureIgnoreCase) &&
                             Afe_Common.IsNumeric(ViewNextChar())
                           )
                         )
@@ -227,18 +227,18 @@ namespace org.matheval
                     numberTemp += this.LastChar;
                     this.LastChar = this.GetChar();
                 }
-                if (numberTemp.ToLower().Contains("e"))
+                if (numberTemp.IndexOf("e", StringComparison.InvariantCultureIgnoreCase) >= 0)
                 {
                     CurrentToken = new Token(
                         TokenType.TOKEN_NUMBER_DECIMAL, 
-                        decimal.Parse(numberTemp, System.Globalization.NumberStyles.Float)
+                        decimal.Parse(numberTemp, NumberStyles.Float, this.Parser.GetExpressionContext().WorkingCulture)
                         );
                 }
                 else
                 {
                     CurrentToken = new Token(
                         TokenType.TOKEN_NUMBER_DECIMAL,
-                        decimal.Parse(numberTemp)
+                        decimal.Parse(numberTemp, this.Parser.GetExpressionContext().WorkingCulture)
                         );
                 }
                 return;

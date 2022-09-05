@@ -52,11 +52,11 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            double input = Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]));
+            double input = Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             if (input >= -1 && input <= 1)
             {
                 //return Afe_Common.Round(Math.Asin(input), dc);
-                return Convert.ToDecimal(Math.Asin(input));
+                return Convert.ToDecimal(Math.Asin(input), dc.WorkingCulture);
             }
             throw new Exception(Afe_Common.MSG_WRONG_OP_ACOS);
         }
