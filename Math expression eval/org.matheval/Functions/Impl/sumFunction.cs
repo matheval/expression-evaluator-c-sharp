@@ -55,9 +55,9 @@ namespace org.matheval.Functions
         {
             if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]))
             {
-                return this.SumList((IEnumerable)args[Afe_Common.Const_Key_One]);
+                return this.SumList((IEnumerable)args[Afe_Common.Const_Key_One], dc);
             }
-            return this.Sum(args);
+            return this.Sum(args, dc);
         }
 
         /// <summary>
@@ -65,12 +65,12 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Sum</returns>
-        private decimal Sum(Dictionary<string, Object> args)
+        private decimal Sum(Dictionary<string, Object> args, ExpressionContext dc)
         {
             decimal sum = 0;
             foreach (Object item in args.Values)
             {
-                sum += Afe_Common.ToDecimal(item);
+                sum += Afe_Common.ToDecimal(item, dc.WorkingCulture);
             }
             return sum;
         }
@@ -80,14 +80,14 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private decimal SumList(IEnumerable arg)
+        private decimal SumList(IEnumerable arg, ExpressionContext dc)
         {
             decimal sum = 0;
             foreach (Object item in arg)
             {
                 if (Afe_Common.IsNumber(item))
                 {
-                    sum += Afe_Common.ToDecimal(item);
+                    sum += Afe_Common.ToDecimal(item, dc.WorkingCulture);
                 }
             }
             return sum;

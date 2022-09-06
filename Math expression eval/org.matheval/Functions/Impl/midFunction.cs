@@ -53,9 +53,9 @@ namespace org.matheval.Functions
         {
             
             return this.Mid(
-                Afe_Common.ToString(args[Afe_Common.Const_Key_One]), 
-                Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])),
-                Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three]))
+                Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), 
+                Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)),
+                Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture))
                 );
         }
 

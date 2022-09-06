@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         /// <returns>Value Replace</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return Afe_Common.ToString(args[Afe_Common.Const_Key_One]).Replace(Afe_Common.ToString(args[Afe_Common.Const_Key_Two]), Afe_Common.ToString(args[Afe_Common.Const_Key_Three]));
+            return Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture).Replace(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture), Afe_Common.ToString(args[Afe_Common.Const_Key_Three], dc.WorkingCulture));
         }
     }
 }

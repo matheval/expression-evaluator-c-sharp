@@ -59,8 +59,8 @@ namespace org.matheval.Operators.Binop
                 {
                 // double result = Math.Pow(Convert.ToDouble(left), Convert.ToDouble(right));
                 // return Math.Round(Convert.ToDecimal(result), dc.Scale, dc.Rd);
-                Double result = Math.Pow(Convert.ToDouble(left), Convert.ToDouble(right));
-                return Convert.ToDecimal(result);
+                Double result = Math.Pow(Convert.ToDouble(left, dc.WorkingCulture), Convert.ToDouble(right, dc.WorkingCulture));
+                return Convert.ToDecimal(result, dc.WorkingCulture);
             }
             throw new Exception(string.Format(MSG_WRONG_OP_PARAM_EX, new string[] { "POWER", "numeric" }));
         }

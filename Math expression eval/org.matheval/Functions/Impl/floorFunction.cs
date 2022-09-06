@@ -56,7 +56,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return this.Floor(args);
+            return this.Floor(args, dc);
         }
 
         /// <summary>
@@ -64,15 +64,15 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Floor</returns>
-        public decimal Floor(Dictionary<string, Object> args)
+        public decimal Floor(Dictionary<string, Object> args, ExpressionContext dc)
         {
             if (args.Count == 1)
             {
-                return Math.Floor(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]));
+                return Math.Floor(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             }
             else
             {
-                return Math.Floor(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]) / Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])) * Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two]);
+                return Math.Floor(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture) / Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) * Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
             }
         }
     }

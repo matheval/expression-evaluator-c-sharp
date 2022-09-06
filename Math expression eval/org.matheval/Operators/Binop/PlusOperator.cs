@@ -61,8 +61,8 @@ namespace org.matheval.Operators.Binop
 
             if (Afe_Common.IsNumber(left) && Afe_Common.IsNumber(right))
             {
-                decimal leftDecimal = Afe_Common.ToDecimal(left);
-                decimal rightDecimal = Afe_Common.ToDecimal(right);
+                decimal leftDecimal = Afe_Common.ToDecimal(left, dc.WorkingCulture);
+                decimal rightDecimal = Afe_Common.ToDecimal(right, dc.WorkingCulture);
                 return decimal.Add(leftDecimal, rightDecimal);
             }
             else if (left is string || right is string)
@@ -70,10 +70,12 @@ namespace org.matheval.Operators.Binop
                 if(left is decimal)
                 {
                     left = Afe_Common.Round(left, dc);
+                    left = ((decimal)left).ToString(dc.WorkingCulture);
                 }
                 if (right is decimal)
                 {
                     right = Afe_Common.Round(right, dc);
+                    right = ((decimal)right).ToString(dc.WorkingCulture);
                 }
                 return left.ToString() + right.ToString();
             }

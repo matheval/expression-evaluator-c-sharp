@@ -49,7 +49,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]) * (decimal)(180 / Math.PI);
+            return Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture) * (decimal)(180 / Math.PI);
         }
     }
 }

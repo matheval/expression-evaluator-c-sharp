@@ -54,7 +54,7 @@ namespace org.matheval.Functions
 
             foreach (Object item in args.Values)
             {
-                value += Afe_Common.ToString(item);
+                value += Afe_Common.ToString(item, dc.WorkingCulture);
             }
             return value;
         }

@@ -25,7 +25,9 @@ using org.matheval.Common;
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace org.matheval.Functions
 {
@@ -64,7 +66,7 @@ namespace org.matheval.Functions
         {
             if (args.Count == 2)
             {
-                string pattern = Afe_Common.ToString(args[Afe_Common.Const_Key_Two]);
+                string pattern = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
                 /*if (args[Afe_Common.Const_Key_One] is TimeSpan){
                     TimeSpan t = (TimeSpan)args[Afe_Common.Const_Key_One];
                     args[Afe_Common.Const_Key_One] = decimal.Parse((t.Hours * 60 * 60 + t.Minutes * 60 + t.Seconds).ToString()) / decimal.Parse((60 * 60 * 24).ToString());
@@ -76,85 +78,91 @@ namespace org.matheval.Functions
                     return t.ToString(pattern);
                 }
                 else*/
+
                 if (args[Afe_Common.Const_Key_One] is decimal)
                 {
+                    // because Contains uses IndexOf that uses the current culture info for string comparison
+                    var ci = Thread.CurrentThread.CurrentCulture;
+                    Thread.CurrentThread.CurrentCulture = dc.WorkingCulture;
                     string ret = pattern;
-                    decimal t = Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]);
+                    decimal t = Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
                     // Hours
-                    if (pattern.ToLower().Contains("[hh]"))
+                    if (pattern.ToLower(dc.WorkingCulture).Contains("[hh]"))
                     {
-                        decimal hh = Afe_Common.Round(t * 24,dc);
-                        ret = Regex.Replace(ret, "\\[[hH]{2,2}\\]", ((int)hh).ToString().PadLeft(2, '0'));
+                        decimal hh = Afe_Common.Round(t * 24, dc);
+                        ret = Regex.Replace(ret, "\\[[hH]{2,2}\\]", ((int)hh).ToString(dc.WorkingCulture).PadLeft(2, '0'));
                     }
-                    else if (pattern.ToLower().Contains("hh"))
+                    else if (pattern.ToLower(dc.WorkingCulture).Contains("hh"))
                     {
-                        decimal hh = Afe_Common.Round((t - (int)(t)) * 24,dc);
-                        ret = Regex.Replace(ret, "[hH]{2,2}", ((int)hh).ToString().PadLeft(2, '0'));
+                        decimal hh = Afe_Common.Round((t - (int)(t)) * 24, dc);
+                        ret = Regex.Replace(ret, "[hH]{2,2}", ((int)hh).ToString(dc.WorkingCulture).PadLeft(2, '0'));
                     }
-                    else if (pattern.ToLower().Contains("[h]"))
+                    else if (pattern.ToLower(dc.WorkingCulture).Contains("[h]"))
                     {
-                        decimal hh = Afe_Common.Round(t * 24,dc);
-                        ret = Regex.Replace(ret, "\\[[hH]{1,1}\\]", ((int)hh).ToString());
+                        decimal hh = Afe_Common.Round(t * 24, dc);
+                        ret = Regex.Replace(ret, "\\[[hH]{1,1}\\]", ((int)hh).ToString(dc.WorkingCulture));
                     }
-                    else if (pattern.ToLower().Contains("h"))
+                    else if (pattern.ToLower(dc.WorkingCulture).Contains("h"))
                     {
-                        decimal hh = Afe_Common.Round((t - (int)(t)) * 24,dc);
-                        ret = Regex.Replace(ret, "[hH]{1,1}", ((int)hh).ToString());
+                        decimal hh = Afe_Common.Round((t - (int)(t)) * 24, dc);
+                        ret = Regex.Replace(ret, "[hH]{1,1}", ((int)hh).ToString(dc.WorkingCulture));
                     }
                     //minute
                     if (pattern.Contains("[mm]"))
                     {
-                        decimal hh = Afe_Common.Round(t * 24 * 60,dc);
-                        ret = Regex.Replace(ret, "\\[[m]{2,2}\\]", ((int)hh).ToString().PadLeft(2, '0'));
+                        decimal hh = Afe_Common.Round(t * 24 * 60, dc);
+                        ret = Regex.Replace(ret, "\\[[m]{2,2}\\]", ((int)hh).ToString(dc.WorkingCulture).PadLeft(2, '0'));
                     }
                     else if (pattern.Contains("mm"))
                     {
-                        decimal hh = Afe_Common.Round(((t * 24) - (int)(t * 24)) * 60,dc);
-                        ret = Regex.Replace(ret, "[m]{2,2}", ((int)hh).ToString().PadLeft(2, '0'));
+                        decimal hh = Afe_Common.Round(((t * 24) - (int)(t * 24)) * 60, dc);
+                        ret = Regex.Replace(ret, "[m]{2,2}", ((int)hh).ToString(dc.WorkingCulture).PadLeft(2, '0'));
                     }
                     else if (pattern.Contains("[m]"))
                     {
-                        decimal hh = Afe_Common.Round(t * 24 * 60,dc);
-                        ret = Regex.Replace(ret, "\\[[m]{1,1}\\]", ((int)hh).ToString());
+                        decimal hh = Afe_Common.Round(t * 24 * 60, dc);
+                        ret = Regex.Replace(ret, "\\[[m]{1,1}\\]", ((int)hh).ToString(dc.WorkingCulture));
                     }
                     else if (pattern.Contains("m"))
                     {
-                        decimal hh = Afe_Common.Round(((t * 24) - (int)(t * 24)) * 60,dc);
-                        ret = Regex.Replace(ret, "[m]{1,1}", ((int)hh).ToString());
+                        decimal hh = Afe_Common.Round(((t * 24) - (int)(t * 24)) * 60, dc);
+                        ret = Regex.Replace(ret, "[m]{1,1}", ((int)hh).ToString(dc.WorkingCulture));
                     }
                     //sec
-                    if (pattern.ToLower().Contains("[ss]"))
+                    if (pattern.ToLower(dc.WorkingCulture).Contains("[ss]"))
                     {
-                        decimal hh = Afe_Common.Round(t * 24 * 60 * 60,dc);
-                        ret = Regex.Replace(ret, "\\[[s]{2,2}\\]", ((int)hh).ToString().PadLeft(2, '0'));
+                        decimal hh = Afe_Common.Round(t * 24 * 60 * 60, dc);
+                        ret = Regex.Replace(ret, "\\[[s]{2,2}\\]", ((int)hh).ToString(dc.WorkingCulture).PadLeft(2, '0'));
                     }
-                    else if (pattern.ToLower().Contains("ss"))
+                    else if (pattern.ToLower(dc.WorkingCulture).Contains("ss"))
                     {
                         decimal hh = Afe_Common.Round(
                             ((t * 24m * 60m) - Decimal.ToInt32((t * 24m * 60m))) * 60m,
                             dc);
-                        ret = Regex.Replace(ret, "[s]{2,2}", (Decimal.ToInt32(hh)).ToString().PadLeft(2, '0'));
+                        ret = Regex.Replace(ret, "[s]{2,2}", (Decimal.ToInt32(hh)).ToString(dc.WorkingCulture).PadLeft(2, '0'));
                     }
-                    else if (pattern.ToLower().Contains("[s]"))
+                    else if (pattern.ToLower(dc.WorkingCulture).Contains("[s]"))
                     {
-                        decimal hh = Afe_Common.Round(t * 24 * 60 * 60,dc);
-                        ret = Regex.Replace(ret, "\\[[s]{1,1}\\]", ((int)hh).ToString());
+                        decimal hh = Afe_Common.Round(t * 24 * 60 * 60, dc);
+                        ret = Regex.Replace(ret, "\\[[s]{1,1}\\]", ((int)hh).ToString(dc.WorkingCulture));
                     }
-                    else if (pattern.ToLower().Contains("s"))
+                    else if (pattern.ToLower(dc.WorkingCulture).Contains("s"))
                     {
                         decimal hh = Afe_Common.Round(
                             ((t * 24 * 60) - (int)(t * 24 * 60)) * 60,
                             dc);
-                        ret = Regex.Replace(ret, @"[sS]{1,1}", ((int)hh).ToString());
+                        ret = Regex.Replace(ret, @"[sS]{1,1}", ((int)hh).ToString(dc.WorkingCulture));
                     }
-                    if (ret!=null && ret.Equals(pattern))
+                    if (ret != null && ret.Equals(pattern))
                     {
-                        return t.ToString(pattern);
+                        Thread.CurrentThread.CurrentCulture = ci;
+                        return t.ToString(pattern, dc.WorkingCulture);
                     }
+                    Thread.CurrentThread.CurrentCulture = ci;
                     return ret;
                 }
             }
-            return Afe_Common.ToString(args[Afe_Common.Const_Key_One]);
+            return Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
         }
     }
 }

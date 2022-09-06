@@ -53,7 +53,7 @@ namespace org.matheval.Functions
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
             Regex rg = new Regex("^-?\\d*(\\.\\d+)+$");
-            return rg.IsMatch(Afe_Common.ToString(args[Afe_Common.Const_Key_One]));
+            return rg.IsMatch(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
         }
     }
 }

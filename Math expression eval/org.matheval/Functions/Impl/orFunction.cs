@@ -63,7 +63,7 @@ namespace org.matheval.Functions
         {
             foreach (Object item in args.Values)
             {
-                if ((item is Boolean) || (Boolean)item)
+                if ((item is Boolean) && (Boolean)item)
                 {
                     return true;
                 }

@@ -57,8 +57,8 @@ namespace org.matheval.Operators.Binop
             //if (left is decimal && right is decimal)
             if (Common.Afe_Common.IsNumber(left) && Common.Afe_Common.IsNumber(right))
                 {
-                decimal leftDecimal = Afe_Common.ToDecimal(left);//(decimal)left;
-                decimal rightDecimal = Afe_Common.ToDecimal(right);//(decimal)right;
+                decimal leftDecimal = Afe_Common.ToDecimal(left, dc.WorkingCulture);//(decimal)left;
+                decimal rightDecimal = Afe_Common.ToDecimal(right, dc.WorkingCulture);//(decimal)right;
                 decimal quotient = Math.Floor(leftDecimal / rightDecimal);
                 decimal result = leftDecimal - rightDecimal * quotient;
                 return result;// Math.Round(result, dc.Scale, dc.Rd);

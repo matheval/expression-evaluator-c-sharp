@@ -55,9 +55,9 @@ namespace org.matheval.Functions
         {
             if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]))
             {
-                return this.MinList((IEnumerable)args[Afe_Common.Const_Key_One]);
+                return this.MinList((IEnumerable)args[Afe_Common.Const_Key_One], dc);
             }
-            return this.Min(args);
+            return this.Min(args, dc);
         }
 
         /// <summary>
@@ -65,14 +65,14 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Min</returns>
-        private Object Min(Dictionary<string, Object> args)
+        private Object Min(Dictionary<string, Object> args, ExpressionContext dc)
         {
             Object minEntry = null;
             foreach (Object item in args.Values)
             {
-                if (minEntry == null || Afe_Common.ToDecimal(item) < (decimal)minEntry)
+                if (minEntry == null || Afe_Common.ToDecimal(item, dc.WorkingCulture) < (decimal)minEntry)
                 {
-                    minEntry = Afe_Common.ToDecimal(item);
+                    minEntry = Afe_Common.ToDecimal(item, dc.WorkingCulture);
                 }
             }
             return minEntry;
@@ -83,7 +83,7 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private Object MinList(IEnumerable arg)
+        private Object MinList(IEnumerable arg, ExpressionContext dc)
         {
             Object minEntry = null;
             foreach (Object item in arg)
@@ -92,9 +92,9 @@ namespace org.matheval.Functions
                 {
                     continue;
                 }
-                if (minEntry == null || Afe_Common.ToDecimal(item) < (decimal)minEntry)
+                if (minEntry == null || Afe_Common.ToDecimal(item, dc.WorkingCulture) < (decimal)minEntry)
                 {
-                    minEntry = Afe_Common.ToDecimal(item);
+                    minEntry = Afe_Common.ToDecimal(item, dc.WorkingCulture);
                 }
             }
             return minEntry;

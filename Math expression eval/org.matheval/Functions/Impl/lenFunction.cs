@@ -50,7 +50,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return Afe_Common.ToString(args[Afe_Common.Const_Key_One]).Length;
+            return Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture).Length;
         }
     }
 }

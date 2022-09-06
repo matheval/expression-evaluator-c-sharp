@@ -53,7 +53,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public object Execute(Dictionary<string, object> args, ExpressionContext dc)
         {
-            return Afe_Common.Round(Math.Abs(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])), dc);
+            return Afe_Common.Round(Math.Abs(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)), dc);
         }
     }
 }

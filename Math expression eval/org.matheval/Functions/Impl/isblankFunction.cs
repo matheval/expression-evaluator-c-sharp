@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         /// <returns>True or False</returns>
         public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
         {
-            return string.IsNullOrEmpty(Afe_Common.ToString(args[Afe_Common.Const_Key_One]));
+            return string.IsNullOrEmpty(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
         }
     }
 }

@@ -54,7 +54,7 @@ namespace org.matheval.Functions
         {
             if (Afe_Common.IsNumber(args[Afe_Common.Const_Key_One]))
             {
-                return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]), dc);
+                return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc);
             }
             else if (args[Afe_Common.Const_Key_One] is TimeSpan)
             {
@@ -71,7 +71,7 @@ namespace org.matheval.Functions
             {
                 try
                 {
-                    return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]), dc);
+                    return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc);
                 }
                 catch(Exception e)
                 {

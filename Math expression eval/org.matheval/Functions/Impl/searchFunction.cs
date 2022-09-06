@@ -24,6 +24,8 @@
 using org.matheval.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 
 namespace org.matheval.Functions
 {
@@ -53,7 +55,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            int pos = searchFunc(args);
+            int pos = searchFunc(args, dc);
             return pos >= 0 ? pos + 1 : pos;
         }
 
@@ -62,24 +64,31 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Index</returns>
-        public int searchFunc(Dictionary<string, Object> args)
+        public int searchFunc(Dictionary<string, Object> args, ExpressionContext dc)
         {
+            int result;
+            // because IndexOf uses the current culture info for string comparison
+            var ci = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = dc.WorkingCulture;
             if (args.Count == 2)
             {
-                return Afe_Common.ToString(args[Afe_Common.Const_Key_Two]).ToLower().IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One]).ToLower());
+                result = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture).ToLower(dc.WorkingCulture).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture).ToLower(dc.WorkingCulture));
             }
             else
             {
-                Decimal paramThree = Convert.ToDecimal(args[Afe_Common.Const_Key_Three]);
-                String paramTwo = Afe_Common.ToString(args[Afe_Common.Const_Key_Two]);
+                Decimal paramThree = Convert.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture);
+                String paramTwo = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
                 if (Decimal.ToInt32(paramThree) >= paramTwo.Length)
                 {
                     return -1;
                 }
-                return paramTwo.ToLower().IndexOf(
-                    Afe_Common.ToString(args[Afe_Common.Const_Key_One]).ToLower(),
+                result = paramTwo.ToLower(dc.WorkingCulture).IndexOf(
+                    Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture).ToLower(dc.WorkingCulture),
                     Decimal.ToInt32(paramThree) - 1);
             }
+
+            Thread.CurrentThread.CurrentCulture = ci;
+            return result;
         }
     }
 }

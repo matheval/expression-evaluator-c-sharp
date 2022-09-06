@@ -49,7 +49,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One])) & int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two]));
+            return int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc.WorkingCulture) & int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture), dc.WorkingCulture);
         }
     }
 }

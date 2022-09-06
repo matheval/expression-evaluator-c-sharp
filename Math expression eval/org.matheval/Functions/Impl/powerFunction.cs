@@ -53,8 +53,8 @@ namespace org.matheval.Functions
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
             //return Afe_Common.Round(Math.Pow(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two]))), dc);
-            Double result = Math.Pow(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])));
-            return Convert.ToDecimal(result);
+            Double result = Math.Pow(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)));
+            return Convert.ToDecimal(result, dc.WorkingCulture);
         }
     }
 }

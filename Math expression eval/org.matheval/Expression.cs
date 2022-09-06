@@ -27,6 +27,7 @@ using org.matheval.Operators;
 using org.matheval.Operators.Binop;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using static org.matheval.Common.Afe_Common;
 
 namespace org.matheval
@@ -64,9 +65,9 @@ namespace org.matheval
         /// </summary>
         public Expression()
         {
-            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm");
+            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
             this.VariableParams = new Dictionary<string, object>();
-            this.Parser = new Parser();
+            this.Parser = new Parser(this.Dc);
         }
 
         /// <summary>
@@ -75,9 +76,9 @@ namespace org.matheval
         /// <param name="formular">Input fomular text or math expression string</param>
         public Expression(string formular)
         {
-            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven,"yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm");
+            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven,"yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
             this.VariableParams = new Dictionary<string, object>();
-            this.Parser = new Parser(formular);
+            this.Parser = new Parser(this.Dc, formular);
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace org.matheval
         /// <param name="parser">Parser instance</param>
         public Expression(Parser parser)
         {
-            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm");
+            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
             this.VariableParams = new Dictionary<string, object>();
             this.Parser = parser;
         }
@@ -108,13 +109,13 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression Bind(string key, Object value)
         {
-            if (!this.VariableParams.ContainsKey(key.ToLower()))
+            if (!this.VariableParams.ContainsKey(key.ToLowerInvariant()))
             {
-                this.VariableParams.Add(key.ToLower(), value);
+                this.VariableParams.Add(key.ToLowerInvariant(), value);
             }
             else
             {
-                this.VariableParams[key.ToLower()] = value;
+                this.VariableParams[key.ToLowerInvariant()] = value;
             }
             return this;
         }
@@ -230,6 +231,17 @@ namespace org.matheval
         }
 
         /// <summary>
+        /// Set the culture used to parse the numbers
+        /// </summary>
+        /// <param name="workingCulture">The culture that will be used to parse the numbers</param>
+        /// <returns></returns>
+        public Expression SetWorkingCulture(CultureInfo workingCulture)
+        {
+            this.Dc.WorkingCulture = workingCulture;
+            return this;
+        }
+
+        /// <summary>
         /// Disable single function
         /// </summary>
         /// <param name="functionName">function name</param>
@@ -242,7 +254,7 @@ namespace org.matheval
                 {
                     this.NotAllowedFunctions = new List<String>();
                 }
-                this.NotAllowedFunctions.Add(functionName.Trim().ToLower());
+                this.NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
             }
             return this;
         }
@@ -262,11 +274,13 @@ namespace org.matheval
                     {
                         this.NotAllowedFunctions = new List<String>();
                     }
-                    this.NotAllowedFunctions.Add(functionName.Trim().ToLower());
+                    this.NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
                 }
             }
             return this;
         }
+
+        //TODO set CultureInfo
 
         /// <summary>
         /// Validate fomular string is valid or not
@@ -347,7 +361,7 @@ namespace org.matheval
             //Convert all numeric type to decimal
             if (Afe_Common.IsNumber(result) && !(typeof(T) == typeof(DateTime) || typeof(T) == typeof(TimeSpan)))
             {
-                result = Afe_Common.ToDecimal(result);
+                result = Afe_Common.ToDecimal(result, Dc.WorkingCulture);
                 result = Afe_Common.Round(result, this.Dc);
             }
 
@@ -467,15 +481,15 @@ namespace org.matheval
             else if (root is VariableNode)
             {
                 VariableNode varNode = (VariableNode)root;
-                if (!VariableParams.ContainsKey(varNode.Name.ToLower()))
+                if (!VariableParams.ContainsKey(varNode.Name.ToLowerInvariant()))
                 {
                     throw new Exception(string.Format(Afe_Common.MSG_VAR_NOTSET, new string[] { varNode.Name }));
                 }
-                Object value = VariableParams[varNode.Name.ToLower()];
+                Object value = VariableParams[varNode.Name.ToLowerInvariant()];
                 //if (value is decimal)
                 if (Afe_Common.IsNumber(value))
                 {
-                    return Afe_Common.Round(Convert.ToDecimal(value), this.Dc);
+                    return Afe_Common.Round(Convert.ToDecimal(value, Dc.WorkingCulture), this.Dc);
                 }
                 else return value;
             }
@@ -528,7 +542,7 @@ namespace org.matheval
         /// <returns>funtion execute result</returns>
         private Object ExecuteCallFunc(CallFuncNode callFunc)
         {
-            if (NotAllowedFunctions != null && NotAllowedFunctions.Contains(callFunc.FuncName.ToLower()))
+            if (NotAllowedFunctions != null && NotAllowedFunctions.Contains(callFunc.FuncName.ToLowerInvariant()))
             {
                 throw new Exception(string.Format(Afe_Common.MSG_METH_NOT_ALLOWED, new string[] { callFunc.FuncName }));
             }

@@ -51,8 +51,8 @@ namespace org.matheval.Functions
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
             //return Afe_Common.Round(Math.Sinh(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]))), dc);
-            double result = Math.Sinh(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])));
-            return Convert.ToDecimal(result);
+            double result = Math.Sinh(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)));
+            return Convert.ToDecimal(result, dc.WorkingCulture);
         }
     }
 }

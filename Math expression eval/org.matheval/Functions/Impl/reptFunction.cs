@@ -52,9 +52,9 @@ namespace org.matheval.Functions
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
             string temp = string.Empty;
-            for (int i = 1; i <= Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two])); i++)
+            for (int i = 1; i <= Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)); i++)
             {
-                temp += Afe_Common.ToString(args[Afe_Common.Const_Key_One]);
+                temp += Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
             }
             return temp;
         }

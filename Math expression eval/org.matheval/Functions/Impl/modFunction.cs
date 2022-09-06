@@ -52,7 +52,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return this.Mod(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]), Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two]));
+            return this.Mod(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture), Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture), dc);
         }
 
         /// <summary>
@@ -61,12 +61,12 @@ namespace org.matheval.Functions
         /// <param name="left">left</param>
         /// <param name="right">right</param>
         /// <returns>Value Mod</returns>
-        public decimal Mod(Object left, Object right)
+        public decimal Mod(Object left, Object right, ExpressionContext dc)
         {
-            if (left is decimal && right is decimal)
+            if (left is decimal leftDecimal && right is decimal rightDecimal)
             {
-                decimal leftDecimal = decimal.Parse(left.ToString());
-                decimal rightDecimal = decimal.Parse(right.ToString());
+                //decimal leftDecimal = decimal.Parse((decimal)left.ToString(), dc.WorkingCulture);
+                //decimal rightDecimal = decimal.Parse(right.ToString(), dc.WorkingCulture);
                 decimal quotient = Math.Floor(leftDecimal / rightDecimal);
                 return leftDecimal - (rightDecimal * quotient);
             }
