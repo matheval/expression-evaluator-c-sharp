@@ -9,7 +9,7 @@ If you get any bugs please let me know by creating a new issue.
 
 
 
-**Many thank to our contributors:**
+**Many thanks to our contributors:**
 
 [Thanhrin](https://github.com/ThanhRin) (from Da Nang, VietNam)
 
