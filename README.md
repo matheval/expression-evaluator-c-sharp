@@ -11,7 +11,7 @@ If you get any bugs please let me know by creating a new issue.
 
 **Many thank to our contributors:**
 
-Thanhrin (from Da Nang, VietNam)
+[Thanhrin](https://github.com/ThanhRin) (from Da Nang, VietNam)
 
 [Eduardo Salinas](https://github.com/butulia) (from Huesca, Spain)
 
