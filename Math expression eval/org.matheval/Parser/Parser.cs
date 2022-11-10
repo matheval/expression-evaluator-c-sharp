@@ -36,33 +36,11 @@ namespace org.matheval
 {
     public class Parser
     {
-        private static Dictionary<string, Type> _registeredFunctions;
-
-        /// <summary>
-        /// Registers a new custom function to all new Parsers
-        /// @param name function name as used in the expression
-        /// @param functionType type that implements the IFunction interface and will be used to handle the custom function call
-        /// </summary>
-        /// <param name="op">op</param>
-        public static void RegisterFunction(string name, Type functionType)
-        {
-            if (_registeredFunctions == null)
-            {
-                _registeredFunctions = new Dictionary<string, Type>();
-            }
-            //sanity check the provided type
-            //Additional checks could be done here to if needed.
-            if (functionType.IsAbstract || functionType.IsGenericType || !typeof(IFunction).IsAssignableFrom(functionType))
-                throw new ArgumentException(functionType.Name + " is not a concrete, non-generic type that implements the org.matheval.Functions.IFunction interface");
-
-            _registeredFunctions[name.ToLowerInvariant()] = functionType;
-        }
-
         /// <summary>
         /// Create object Lexer
         /// </summary>
         private Lexer Lexer;
-
+        
         /// <summary>
         /// Dc
         /// </summary>
@@ -366,8 +344,7 @@ namespace org.matheval
                 IFunction funcExecuter;
                 try
                 {
-                    if (_registeredFunctions == null || !_registeredFunctions.TryGetValue(identifierStr.ToLowerInvariant(), out Type t))
-                        t = Type.GetType("org.matheval.Functions." + identifierStr.ToLowerInvariant() + "Function", true);
+                    Type t = Type.GetType("org.matheval.Functions." + identifierStr.ToLowerInvariant() + "Function", true);
                     Object obj = (Activator.CreateInstance(t));
 
                     if (obj == null)
@@ -380,7 +357,7 @@ namespace org.matheval
                 {
                     throw new Exception(string.Format(Afe_Common.MSG_METH_NOTFOUND, new string[] { identifierStr.ToUpperInvariant() }));
                 }
-
+                
                 List<FunctionDef> functionInfos = funcExecuter.GetInfo();
                 foreach (FunctionDef functionInfo in functionInfos)
                 {
@@ -497,9 +474,9 @@ namespace org.matheval
                 while (true)
                 {
                     IOperator iopNext = this.GetOperator();
-                    if (iopNext == null ||
+                    if (iopNext == null || 
                         !(iopCurr.GetPrec() < iopNext.GetPrec() ||
-                        (iopCurr.GetPrec() == iopNext.GetPrec() &&
+                        (iopCurr.GetPrec() == iopNext.GetPrec() && 
                         iopNext.GetAss() == Assoc.RIGHT)))
                     {
                         break;
@@ -514,8 +491,8 @@ namespace org.matheval
                 {
                     /*if (!lhs.ReturnType.Equals(typeof(object)) && !rhs.ReturnType.Equals(typeof(object)))
                     {*/
-                    throw new Exception(string.Format(Afe_Common.MSG_WRONG_OP_PARAM,
-                                  new String[] { iopCurr.GetOp(), lhs.ReturnType.ToString(), rhs.ReturnType.ToString() }));
+                        throw new Exception(string.Format(Afe_Common.MSG_WRONG_OP_PARAM,
+                                      new String[] { iopCurr.GetOp(), lhs.ReturnType.ToString(), rhs.ReturnType.ToString() }));
                     /*}
                     else if (!lhs.ReturnType.Equals(typeof(object)))
                     {
@@ -623,8 +600,8 @@ namespace org.matheval
                 throw new Exception(string.Format(Afe_Common.MSG_IFELSE_WRONG_CONDITION,
                               new string[] { condition.ReturnType.ToString() }));
             }
-            // else if (!ifTrueNode.ReturnType.Equals(typeof(VariableNode)) &&
-            //          !ifFalseNode.ReturnType.Equals(typeof(VariableNode)) &&
+           // else if (!ifTrueNode.ReturnType.Equals(typeof(VariableNode)) &&
+           //          !ifFalseNode.ReturnType.Equals(typeof(VariableNode)) &&
             else if (!ifTrueNode.ReturnType.Equals(typeof(object)) &&
                      !ifFalseNode.ReturnType.Equals(typeof(object)) &&
                      !ifTrueNode.ReturnType.Equals(ifFalseNode.ReturnType))
@@ -700,7 +677,7 @@ namespace org.matheval
                     {
                         //if (!temp.Equals(typeof(VariableNode)) && !temp.Equals(varResultExprs[i].ReturnType))
                         if (!temp.Equals(typeof(object)) && !temp.Equals(varResultExprs[i].ReturnType))
-                        {
+                            {
                             throw new Exception(string.Format(Afe_Common.MSG_CONDITIONAL_WRONG_PARAMS,
                                           new string[] { Afe_Common.Const_SWITCH, temp.ToString(), varResultExprs[i].ReturnType.ToString() }));
                         }

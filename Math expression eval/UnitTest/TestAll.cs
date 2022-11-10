@@ -1188,33 +1188,5 @@ namespace UnitTest
                 .Bind("b", 1);
             Assert.AreEqual(true, expr4.Eval<bool>());
         }
-
-        [TestMethod]
-        public void Custom_Function_Test()
-        {
-            //register new custom function
-            Parser.RegisterFunction("CUSTOM", typeof(customFunction));
-
-            //call function
-            var expr = new Expression("CUSTOM('1','a','#')");
-            Assert.AreEqual("1-a-#", expr.Eval<string>());
-        }
-
-        public class customFunction : org.matheval.Functions.IFunction
-        {
-            public List<org.matheval.Functions.FunctionDef> GetInfo()
-            {
-                return new List<org.matheval.Functions.FunctionDef> { new org.matheval.Functions.FunctionDef("custom", new Type[] { typeof(string), typeof(string), typeof(string) }, typeof(string), 3) };
-            }
-
-            public object Execute(Dictionary<string, object> args, ExpressionContext dc)
-            {
-                string a1 = (string)args["1"];
-                string a2 = (string)args["2"];
-                string a3 = (string)args["3"];
-
-                return string.Join("-", a1, a2, a3);
-            }
-        }
     }
 }
