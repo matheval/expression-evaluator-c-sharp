@@ -25,8 +25,8 @@ namespace org.matheval.Node
         /// <param name="expr">expr</param>
         public UnaryNode(IOperator iop, Implements.Node expr) : base(typeof(decimal))
         {
-            this.Iop = iop;
-            this.Expr = expr;
+            Iop = iop;
+            Expr = expr;
         }
     }
 }

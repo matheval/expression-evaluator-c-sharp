@@ -52,7 +52,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            return this.LogicalAnd(args);
+            return LogicalAnd(args);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value LogicalAnd</returns>
-        private bool LogicalAnd(Dictionary<string, object?> args)
+        private static bool LogicalAnd(Dictionary<string, object?> args)
         {
             foreach (object? item in args.Values)
             {

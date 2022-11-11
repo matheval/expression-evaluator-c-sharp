@@ -52,7 +52,7 @@ namespace org.matheval.Functions
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             
-            return this.Mid(
+            return Mid(
                 Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), 
                 decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)),
                 decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture))

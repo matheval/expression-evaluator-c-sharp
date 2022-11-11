@@ -55,7 +55,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            return this.LogicalXor(args);
+            return LogicalXor(args);
         }
 
         /// <summary>

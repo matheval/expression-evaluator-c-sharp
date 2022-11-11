@@ -34,9 +34,9 @@
         /// <param name="returnType">returnType</param>
         public IfElseNode(Implements.Node condition, Implements.Node ifTrue, Implements.Node ifFalse, System.Type returnType) : base(returnType)
         {
-            this.Condition = condition;
-            this.IfTrue = ifTrue;
-            this.IfFalse = ifFalse;
+            Condition = condition;
+            IfTrue = ifTrue;
+            IfFalse = ifFalse;
         }
     }
 }

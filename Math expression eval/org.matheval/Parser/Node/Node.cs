@@ -16,7 +16,7 @@
         /// <param name="returnType">returnType</param>
         public Node(System.Type returnType)
         {
-            this.ReturnType = returnType;
+            ReturnType = returnType;
         }
     }
 }

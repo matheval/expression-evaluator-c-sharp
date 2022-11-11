@@ -71,7 +71,7 @@ namespace org.matheval
         /// <param name="type">Type token</param>
         public Token(TokenType type)
         {
-            this.Type = type;
+            Type = type;
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace org.matheval
         /// <param name="identifier">identifier</param>
         public Token(TokenType type, string identifier)
         {
-            this.Type = type;
-            this.IdentifierValue = identifier;
+            Type = type;
+            IdentifierValue = identifier;
         }
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace org.matheval
         /// <param name="identifier">doubleValue</param>
         public Token(TokenType tokType, decimal doubleValue)
         {
-            this.Type = tokType;
-            this.DoubleValue = doubleValue;
+            Type = tokType;
+            DoubleValue = doubleValue;
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace org.matheval
         /// <param name="numVal">number</param>
         public Token(TokenType tokType, int number)
         {
-            this.Type = tokType;
-            this.NumberValue = number;
+            Type = tokType;
+            NumberValue = number;
         }
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace org.matheval
         /// <param name="numVal">boolVal</param>
         public Token(TokenType tokType, bool boolVal)
         {
-            this.Type = tokType;
-            this.BoolValue = boolVal;
+            Type = tokType;
+            BoolValue = boolVal;
         }
 
         #endregion
@@ -130,27 +130,27 @@ namespace org.matheval
         public int CompareTo(object compareTo)
         {
             Token compareToEmp = (Token)compareTo;
-            if (this.Type == TokenType.TOKEN_EOF
+            if (Type == TokenType.TOKEN_EOF
                 && compareToEmp.Type == TokenType.TOKEN_EOF) return 0;
 
-            if (this.Type == TokenType.TOKEN_PAREN_OPEN
+            if (Type == TokenType.TOKEN_PAREN_OPEN
                 && compareToEmp.Type == TokenType.TOKEN_PAREN_OPEN) return 0;
 
-            if (this.Type == TokenType.TOKEN_PAREN_CLOSE
+            if (Type == TokenType.TOKEN_PAREN_CLOSE
                 && compareToEmp.Type == TokenType.TOKEN_PAREN_CLOSE) return 0;
 
-            if (this.Type == TokenType.TOKEN_COMMA
+            if (Type == TokenType.TOKEN_COMMA
                 && compareToEmp.Type == TokenType.TOKEN_COMMA) return 0;
 
-            if (this.Type == TokenType.TOKEN_IDENTIFIER
+            if (Type == TokenType.TOKEN_IDENTIFIER
                 && compareToEmp.Type == TokenType.TOKEN_IDENTIFIER)
             {
-                return string.Compare(this.IdentifierValue, compareToEmp.IdentifierValue);
+                return string.Compare(IdentifierValue, compareToEmp.IdentifierValue);
             }
-            if (this.Type == TokenType.TOKEN_ASCII
+            if (Type == TokenType.TOKEN_ASCII
                 && compareToEmp.Type == TokenType.TOKEN_ASCII)
             {
-                return string.Compare(this.IdentifierValue, compareToEmp.IdentifierValue);
+                return string.Compare(IdentifierValue, compareToEmp.IdentifierValue);
             }
             return -1;
         }
@@ -162,47 +162,47 @@ namespace org.matheval
         public override string ToString()
         {
 
-            if (this.Type == TokenType.TOKEN_EOF)
+            if (Type == TokenType.TOKEN_EOF)
             {
                 return Afe_Common.Const_EOF;
             }
-            else if (this.Type == TokenType.TOKEN_IDENTIFIER || this.Type == TokenType.TOKEN_ASCII)
+            else if (Type == TokenType.TOKEN_IDENTIFIER || Type == TokenType.TOKEN_ASCII)
             {
                 return IdentifierValue!; //Null Assert: Should never be null with these token types
             }
-            else if (this.Type == TokenType.TOKEN_NUMBER_DECIMAL)
+            else if (Type == TokenType.TOKEN_NUMBER_DECIMAL)
             {
                 return DoubleValue.ToString();
             }
-            else if (this.Type == TokenType.TOKEN_BOOL)
+            else if (Type == TokenType.TOKEN_BOOL)
             {
                 return BoolValue.ToString();
             }
-            else if (this.Type == TokenType.TOKEN_PAREN_OPEN)
+            else if (Type == TokenType.TOKEN_PAREN_OPEN)
             {
                 return char.ToString(Afe_Common.Const_BRACKETS_OPEN);
             }
-            else if (this.Type == TokenType.TOKEN_PAREN_CLOSE)
+            else if (Type == TokenType.TOKEN_PAREN_CLOSE)
             {
                 return char.ToString(Afe_Common.Const_BRACKETS_CLOSE);
             }
-            else if (this.Type == TokenType.TOKEN_COMMA)
+            else if (Type == TokenType.TOKEN_COMMA)
             {
                 return char.ToString(Afe_Common.Const_COMMA);
             }
-            else if (this.Type == TokenType.TOKEN_OP)
+            else if (Type == TokenType.TOKEN_OP)
             {
                 return IdentifierValue!; //Null Assert: Should never be null with these token types
             }
-            else if (this.Type == TokenType.TOKEN_UOP)
+            else if (Type == TokenType.TOKEN_UOP)
             {
                 return IdentifierValue!; //Null Assert: Should never be null with these token types
             }
-            else if (this.Type == TokenType.TOKEN_IF)
+            else if (Type == TokenType.TOKEN_IF)
             {
                 return Afe_Common.Const_IF;
             }
-            else if (this.Type == TokenType.TOKEN_CASE)
+            else if (Type == TokenType.TOKEN_CASE)
             {
                 return Afe_Common.Const_CASE;
             }

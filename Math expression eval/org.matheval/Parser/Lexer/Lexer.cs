@@ -68,8 +68,8 @@ namespace org.matheval
         /// <param name="parser">parser</param>
         public Lexer(string fomulaInput, Parser parser)
         {
-            this.FomulaInput = fomulaInput;
-            this.Parser = parser;
+            FomulaInput = fomulaInput;
+            Parser = parser;
         }
 
         /// <summary>
@@ -126,10 +126,10 @@ namespace org.matheval
         /// </summary>
         public void resetLexer()
         {
-            this.LastChar = Afe_Common.Const_WhiteSpace;
-            this.LexerPosition = 0;
-            this.CurrentToken = null;
-            this.PreviousToken = null;
+            LastChar = Afe_Common.Const_WhiteSpace;
+            LexerPosition = 0;
+            CurrentToken = null;
+            PreviousToken = null;
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace org.matheval
             {
                 PreviousToken = CurrentToken;
             }
-            this.Next();
+            Next();
         }
 
         /// <summary>
@@ -151,10 +151,10 @@ namespace org.matheval
         private void Next()
         {
             //remove all white space
-            //while (!IsEof() && string.IsNullOrWhiteSpace(this.LastChar))
-            while (!IsEof() && this.LastChar == Afe_Common.Const_WhiteSpace)
+            //while (!IsEof() && string.IsNullOrWhiteSpace(LastChar))
+            while (!IsEof() && LastChar == Afe_Common.Const_WhiteSpace)
             {
-                this.LastChar = this.GetChar();
+                LastChar = GetChar();
             }
 
             if (IsEof())
@@ -164,31 +164,31 @@ namespace org.matheval
             }
 
             //identifier
-            if (Afe_Common.IsAlpha(this.LastChar))
+            if (Afe_Common.IsAlpha(LastChar))
             {
-                string identifierTemp = this.LastChar.ToString();
-                this.LastChar = this.GetChar();
-                while (!IsEof() && Afe_Common.IsAlphaNumeric(this.LastChar))
+                string identifierTemp = LastChar.ToString();
+                LastChar = GetChar();
+                while (!IsEof() && Afe_Common.IsAlphaNumeric(LastChar))
                 {
-                    identifierTemp += this.LastChar;
-                    this.LastChar = this.GetChar();
+                    identifierTemp += LastChar;
+                    LastChar = GetChar();
                 }
-                if (this.Parser.GetOperators().ContainsKey(identifierTemp))
+                if (Parser.GetOperators().ContainsKey(identifierTemp))
                 {
                     CurrentToken = new Token(TokenType.TOKEN_OP, identifierTemp);
                     return;
                 }
-                if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_IF) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
+                if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_IF) && !IsEof() && LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
                 {
                     CurrentToken = new Token(TokenType.TOKEN_IF, identifierTemp);
                     return;
                 }
-                else if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_CASE) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
+                else if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_CASE) && !IsEof() && LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
                 {
                     CurrentToken = new Token(TokenType.TOKEN_CASE, identifierTemp);
                     return;
                 }
-                else if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_SWITCH) && !IsEof() && this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
+                else if (identifierTemp.ToUpperInvariant().Equals(Afe_Common.Const_SWITCH) && !IsEof() && LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
                 {
                     CurrentToken = new Token(TokenType.TOKEN_CASE, identifierTemp);
                     return;
@@ -198,134 +198,134 @@ namespace org.matheval
                 return;
             }
             //number 
-            else if (Afe_Common.IsNumeric(this.LastChar) || (this.LastChar.Equals(Afe_Common.Const_PERIODT) && Afe_Common.IsNumeric(ViewNextChar())))
+            else if (Afe_Common.IsNumeric(LastChar) || (LastChar.Equals(Afe_Common.Const_PERIODT) && Afe_Common.IsNumeric(ViewNextChar())))
             {
-                string numberTemp = this.LastChar.ToString(Parser.GetExpressionContext().WorkingCulture);
-                this.LastChar = this.GetChar();
+                string numberTemp = LastChar.ToString(Parser.GetExpressionContext().WorkingCulture);
+                LastChar = GetChar();
                 while (!IsEof() && 
                         (
-                          Afe_Common.IsNumeric(this.LastChar) ||
-                          this.LastChar.Equals(Afe_Common.Const_PERIODT) ||
+                          Afe_Common.IsNumeric(LastChar) ||
+                          LastChar.Equals(Afe_Common.Const_PERIODT) ||
                           (
-                              this.LastChar.ToString(Parser.GetExpressionContext().WorkingCulture).Equals("e", StringComparison.InvariantCultureIgnoreCase) &&
+                              LastChar.ToString(Parser.GetExpressionContext().WorkingCulture).Equals("e", StringComparison.InvariantCultureIgnoreCase) &&
                               numberTemp.IndexOf("e", StringComparison.InvariantCultureIgnoreCase) < 0 &&
                               (ViewNextChar().Equals('+') || ViewNextChar().Equals('-'))
                           ) ||
                           (
-                            this.LastChar.Equals('-') && numberTemp.Length > 0 &&
+                            LastChar.Equals('-') && numberTemp.Length > 0 &&
                             Afe_Common.Right(numberTemp,1).Equals("e", StringComparison.InvariantCultureIgnoreCase) &&
                             Afe_Common.IsNumeric(ViewNextChar())
                           ) ||
                           (
-                            this.LastChar.Equals('+') && numberTemp.Length > 0 &&
+                            LastChar.Equals('+') && numberTemp.Length > 0 &&
                             Afe_Common.Right(numberTemp,1).Equals("e", StringComparison.InvariantCultureIgnoreCase) &&
                             Afe_Common.IsNumeric(ViewNextChar())
                           )
                         )
                     )
                 {
-                    numberTemp += this.LastChar;
-                    this.LastChar = this.GetChar();
+                    numberTemp += LastChar;
+                    LastChar = GetChar();
                 }
-                if (numberTemp.IndexOf("e", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                if (numberTemp.Contains('e', StringComparison.InvariantCultureIgnoreCase))
                 {
                     CurrentToken = new Token(
                         TokenType.TOKEN_NUMBER_DECIMAL, 
-                        decimal.Parse(numberTemp, NumberStyles.Float, this.Parser.GetExpressionContext().WorkingCulture)
+                        decimal.Parse(numberTemp, NumberStyles.Float, Parser.GetExpressionContext().WorkingCulture)
                         );
                 }
                 else
                 {
                     CurrentToken = new Token(
                         TokenType.TOKEN_NUMBER_DECIMAL,
-                        decimal.Parse(numberTemp, this.Parser.GetExpressionContext().WorkingCulture)
+                        decimal.Parse(numberTemp, Parser.GetExpressionContext().WorkingCulture)
                         );
                 }
                 return;
             }
-            //else if (this.LastChar.Equals(Afe_Common.Const_MARKS_QUOTATION))
-            else if (this.LastChar == Afe_Common.Const_DOUBLE_QUOTATION)
+            //else if (LastChar.Equals(Afe_Common.Const_MARKS_QUOTATION))
+            else if (LastChar == Afe_Common.Const_DOUBLE_QUOTATION)
             {
                 string str_Temp = string.Empty;
-                this.LastChar = this.GetChar();
+                LastChar = GetChar();
                 while (!IsEof())
                 {
-                    if (this.LastChar.Equals(Afe_Common.Const_DOUBLE_QUOTATION))
+                    if (LastChar.Equals(Afe_Common.Const_DOUBLE_QUOTATION))
                     {
-                        char nextChar = this.ViewNextChar();
+                        char nextChar = ViewNextChar();
                         if (nextChar.Equals(Afe_Common.Const_DOUBLE_QUOTATION))
                         {
-                            this.LastChar = this.GetChar();
-                            str_Temp += this.LastChar;
-                            this.LastChar = this.GetChar();
+                            LastChar = GetChar();
+                            str_Temp += LastChar;
+                            LastChar = GetChar();
                         }
                         else break;
                     }
                     else
                     {
-                        str_Temp += this.LastChar;
-                        this.LastChar = this.GetChar();
+                        str_Temp += LastChar;
+                        LastChar = GetChar();
                     }
                 }
-                if (!IsEof() && this.LastChar.Equals(Afe_Common.Const_DOUBLE_QUOTATION))
+                if (!IsEof() && LastChar.Equals(Afe_Common.Const_DOUBLE_QUOTATION))
                 {
                     Token strTok = new Token(TokenType.TOKEN_STRING, str_Temp);
                     CurrentToken = strTok;
-                    this.LastChar = this.GetChar();
+                    LastChar = GetChar();
                     return;
                 }
                 throw new Exception("Quote is expected!");
 
             }
-            else if (this.LastChar == Afe_Common.Const_SINGLE_QUOTATION)
+            else if (LastChar == Afe_Common.Const_SINGLE_QUOTATION)
             {
                 string str_Temp = string.Empty;
-                this.LastChar = this.GetChar();
+                LastChar = GetChar();
                 while (!IsEof())
                 {
-                    if (this.LastChar.Equals(Afe_Common.Const_SINGLE_QUOTATION))
+                    if (LastChar.Equals(Afe_Common.Const_SINGLE_QUOTATION))
                     {
-                        char nextChar = this.ViewNextChar();
+                        char nextChar = ViewNextChar();
                         if (nextChar.Equals(Afe_Common.Const_SINGLE_QUOTATION))
                         {
-                            this.LastChar = this.GetChar();
-                            str_Temp += this.LastChar;
-                            this.LastChar = this.GetChar();
+                            LastChar = GetChar();
+                            str_Temp += LastChar;
+                            LastChar = GetChar();
                         }
                         else break;
                     }
                     else
                     {
-                        str_Temp += this.LastChar;
-                        this.LastChar = this.GetChar();
+                        str_Temp += LastChar;
+                        LastChar = GetChar();
                     }
                 }
-                if (!IsEof() && this.LastChar.Equals(Afe_Common.Const_SINGLE_QUOTATION))
+                if (!IsEof() && LastChar.Equals(Afe_Common.Const_SINGLE_QUOTATION))
                 {
                     Token strTok = new Token(TokenType.TOKEN_STRING, str_Temp);
                     CurrentToken = strTok;
-                    this.LastChar = this.GetChar();
+                    LastChar = GetChar();
                     return;
                 }
                 throw new Exception("Quote is expected!");
 
             }
-            else if (this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
+            else if (LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN))
             {
                 CurrentToken = new Token(TokenType.TOKEN_PAREN_OPEN);
-                this.LastChar = this.GetChar();
+                LastChar = GetChar();
                 return;
             }
-            else if (this.LastChar.Equals(Afe_Common.Const_BRACKETS_CLOSE))
+            else if (LastChar.Equals(Afe_Common.Const_BRACKETS_CLOSE))
             {
                 CurrentToken = new Token(TokenType.TOKEN_PAREN_CLOSE);
-                this.LastChar = this.GetChar();
+                LastChar = GetChar();
                 return;
             }
-            else if (this.LastChar.Equals(Afe_Common.Const_COMMA))
+            else if (LastChar.Equals(Afe_Common.Const_COMMA))
             {
                 CurrentToken = new Token(TokenType.TOKEN_COMMA);
-                this.LastChar = this.GetChar();
+                LastChar = GetChar();
                 return;
             }
             else
@@ -337,29 +337,29 @@ namespace org.matheval
                 int lastMatchedUopPos = -1;
 
                 while (!IsEof() &&
-                      !Afe_Common.IsAlpha(this.LastChar) &&
-                      !Afe_Common.IsNumeric(this.LastChar) &&
-                      //!string.IsNullOrWhiteSpace(this.LastChar) &&
-                      this.LastChar != Afe_Common.Const_WhiteSpace &&
-                      !this.LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN) &&
-                      !this.LastChar.Equals(Afe_Common.Const_BRACKETS_CLOSE) &&
-                      !this.LastChar.Equals(Afe_Common.Const_COMMA) &&
-                      !this.LastChar.Equals(Afe_Common.Const_DOUBLE_QUOTATION) &&
-                      !this.LastChar.Equals(Afe_Common.Const_SINGLE_QUOTATION)
+                      !Afe_Common.IsAlpha(LastChar) &&
+                      !Afe_Common.IsNumeric(LastChar) &&
+                      //!string.IsNullOrWhiteSpace(LastChar) &&
+                      LastChar != Afe_Common.Const_WhiteSpace &&
+                      !LastChar.Equals(Afe_Common.Const_BRACKETS_OPEN) &&
+                      !LastChar.Equals(Afe_Common.Const_BRACKETS_CLOSE) &&
+                      !LastChar.Equals(Afe_Common.Const_COMMA) &&
+                      !LastChar.Equals(Afe_Common.Const_DOUBLE_QUOTATION) &&
+                      !LastChar.Equals(Afe_Common.Const_SINGLE_QUOTATION)
                       )
                 {
-                    strTemp += this.LastChar;
-                    if (this.Parser.GetOperators().ContainsKey(strTemp))
+                    strTemp += LastChar;
+                    if (Parser.GetOperators().ContainsKey(strTemp))
                     {
                         matchedOp = strTemp;
-                        lastMatchedPos = this.LexerPosition;
+                        lastMatchedPos = LexerPosition;
                     }
-                    if (this.Parser.GetUnaryOperators().ContainsKey(strTemp))
+                    if (Parser.GetUnaryOperators().ContainsKey(strTemp))
                     {
                         matchedUop = strTemp;
-                        lastMatchedUopPos = this.LexerPosition;
+                        lastMatchedUopPos = LexerPosition;
                     }
-                    this.LastChar = this.GetChar();
+                    LastChar = GetChar();
                 }
                 if (PreviousToken == null ||
                    PreviousToken.Type == TokenType.TOKEN_OP ||
@@ -370,8 +370,8 @@ namespace org.matheval
                     if (lastMatchedUopPos != -1)
                     {
                         CurrentToken = new Token(TokenType.TOKEN_UOP, matchedUop);
-                        this.LexerPosition = lastMatchedUopPos;
-                        this.LastChar = this.GetChar();
+                        LexerPosition = lastMatchedUopPos;
+                        LastChar = GetChar();
                         return;
                     }
                 }
@@ -380,13 +380,13 @@ namespace org.matheval
                     if (lastMatchedPos != -1)
                     {
                         CurrentToken = new Token(TokenType.TOKEN_OP, matchedOp);
-                        this.LexerPosition = lastMatchedPos;
-                        this.LastChar = this.GetChar();
+                        LexerPosition = lastMatchedPos;
+                        LastChar = GetChar();
                         return;
                     }
                 }
                 throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS,
-                              new string[] { strTemp, this.LexerPosition.ToString() }));
+                              new string[] { strTemp, LexerPosition.ToString() }));
             }
         }
     }

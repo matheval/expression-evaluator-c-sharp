@@ -13,7 +13,7 @@
         /// <summary>
         /// Need to be rounded
         /// </summary>
-        public bool mustRoundFlag;
+        public bool MustRoundFlag;
 
         /// <summary>
         /// Initializes a new instance structure to a specified type decimal value
@@ -22,8 +22,8 @@
         /// <param name="mustRoundFlag">mustRoundFlag</param>
         public NumberNode(decimal numberVal, bool mustRoundFlag) : base(typeof(decimal))
         {
-            this.NumberValue = numberVal;
-            this.mustRoundFlag = mustRoundFlag;
+            NumberValue = numberVal;
+            MustRoundFlag = mustRoundFlag;
         }
     }
 }

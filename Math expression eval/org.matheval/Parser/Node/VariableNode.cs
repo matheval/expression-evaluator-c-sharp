@@ -17,7 +17,7 @@
         //public VariableNode(string name) : base(typeof(VariableNode))
         public VariableNode(string name) : base(typeof(object))
         {
-            this.Name = name;
+            Name = name;
         }
     }
 }

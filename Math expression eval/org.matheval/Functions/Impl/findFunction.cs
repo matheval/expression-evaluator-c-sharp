@@ -55,7 +55,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            int pos = this.Find(args, dc);
+            int pos = Find(args, dc);
             return pos >= 0 ? pos + 1 : pos;
         }
 

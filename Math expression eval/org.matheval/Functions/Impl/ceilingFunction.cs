@@ -54,7 +54,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            return this.Ceiling(args, dc);
+            return Ceiling(args, dc);
         }
 
         /// <summary>

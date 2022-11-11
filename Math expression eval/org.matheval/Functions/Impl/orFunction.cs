@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            return this.LogicalOr(args);
+            return LogicalOr(args);
         }
 
         /// <summary>

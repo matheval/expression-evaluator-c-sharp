@@ -23,7 +23,7 @@ namespace org.matheval.Node
         /// <summary>
         /// List node args
         /// </summary>
-        public List<Implements.Node> args;
+        public List<Implements.Node> Args;
 
         /// <summary>
         /// Initializes a new instance structure to a specified
@@ -36,9 +36,9 @@ namespace org.matheval.Node
         /// <param name="returnType">returnType</param>
         public CallFuncNode(string funcName, List<Implements.Node> args,Type returnType, IFunction excuter) : base(returnType)
         {
-            this.FuncName = funcName;
-            this.args = args;
-            this.Excuter = excuter;
+            FuncName = funcName;
+            Args = args;
+            Excuter = excuter;
         }
     }
 }

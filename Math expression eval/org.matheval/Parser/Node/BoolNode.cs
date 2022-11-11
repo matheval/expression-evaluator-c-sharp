@@ -18,7 +18,7 @@ namespace org.matheval.Node
         /// <param name="value">value</param>
         public BoolNode(bool value) : base(typeof(bool))
         {
-            this.Value = value;
+            Value = value;
         }
     }
 }

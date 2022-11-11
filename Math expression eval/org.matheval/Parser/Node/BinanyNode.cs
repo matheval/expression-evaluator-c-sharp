@@ -36,9 +36,9 @@ namespace org.matheval.Node
         /// <param name="returnType">returnType</param>
         public BinanyNode(IOperator iop, Implements.Node lhs, Implements.Node rhs, Type returnType) : base(returnType)
         {
-            this.iOp = iop;
-            this.LHS = lhs;
-            this.RHS = rhs;
+            iOp = iop;
+            LHS = lhs;
+            RHS = rhs;
         }
     }
 }

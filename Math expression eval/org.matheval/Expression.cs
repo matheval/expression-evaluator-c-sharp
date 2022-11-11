@@ -66,9 +66,9 @@ namespace org.matheval
         /// </summary>
         public Expression()
         {
-            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
-            this.VariableParams = new Dictionary<string, object>();
-            this.Parser = new Parser(this.Dc);
+            Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
+            VariableParams = new Dictionary<string, object>();
+            Parser = new Parser(Dc);
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace org.matheval
         /// <param name="formular">Input fomular text or math expression string</param>
         public Expression(string formular)
         {
-            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven,"yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
-            this.VariableParams = new Dictionary<string, object>();
-            this.Parser = new Parser(this.Dc, formular);
+            Dc = new ExpressionContext(6, MidpointRounding.ToEven,"yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
+            VariableParams = new Dictionary<string, object>();
+            Parser = new Parser(Dc, formular);
         }
 
         /// <summary>
@@ -88,9 +88,9 @@ namespace org.matheval
         /// <param name="parser">Parser instance</param>
         public Expression(Parser parser)
         {
-            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
-            this.VariableParams = new Dictionary<string, object>();
-            this.Parser = parser;
+            Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
+            VariableParams = new Dictionary<string, object>();
+            Parser = parser;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace org.matheval
         /// <returns>The parser</returns>
         public Parser GetParser()
         {
-            return this.Parser;
+            return Parser;
         }
 
         /// <summary>
@@ -110,13 +110,13 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression Bind(string key, object value)
         {
-            if (!this.VariableParams.ContainsKey(key.ToLowerInvariant()))
+            if (!VariableParams.ContainsKey(key.ToLowerInvariant()))
             {
-                this.VariableParams.Add(key.ToLowerInvariant(), value);
+                VariableParams.Add(key.ToLowerInvariant(), value);
             }
             else
             {
-                this.VariableParams[key.ToLowerInvariant()] = value;
+                VariableParams[key.ToLowerInvariant()] = value;
             }
             return this;
         }
@@ -128,8 +128,8 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression SetFomular(string formular)
         {
-            this.Gc();
-            this.GetParser().SetFomular(formular);
+            Gc();
+            GetParser().SetFomular(formular);
             return this;
         }
 
@@ -140,7 +140,7 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression SetScale(int scale)
         {
-            this.Dc.Scale = scale;
+            Dc.Scale = scale;
             return this;
         }
 
@@ -151,7 +151,7 @@ namespace org.matheval
         /// <returns>Value Afe_Evaluator</returns>
         public Expression SetRoundingMode(MidpointRounding rd)
         {
-            this.Dc.Rd = rd;
+            Dc.Rd = rd;
             return this;
         }
 
@@ -164,7 +164,7 @@ namespace org.matheval
         /// <returns></returns>
         public Expression SetDateSystem(int year, int month, int day)
         {
-            this.Dc.DateSystem = new DateTime(year, month, day);
+            Dc.DateSystem = new DateTime(year, month, day);
             return this;
         }
 
@@ -175,7 +175,7 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression SetInputDateFormat(string format)
         {
-            this.Dc.DateFormat = format;
+            Dc.DateFormat = format;
             return this;
         }
 
@@ -186,7 +186,7 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression SetInputDateTimeFormat(string format)
         {
-            this.Dc.DatetimeFormat = format;
+            Dc.DatetimeFormat = format;
             return this;
         }
 
@@ -197,7 +197,7 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression SetInputTimeFormat(string format)
         {
-            this.Dc.TimeFormat = format;
+            Dc.TimeFormat = format;
             return this;
         }
 
@@ -208,7 +208,7 @@ namespace org.matheval
         /// <returns>Expression instance</returns>
         public Expression SetHolidays(DateTime[] holidays)
         {
-            this.Dc.Holidays = holidays;
+            Dc.Holidays = holidays;
             return this;
         }
 
@@ -227,7 +227,7 @@ namespace org.matheval
         /// <returns></returns>
         public Expression SetWeekends(int[] weekends)
         {
-            this.Dc.Weekends = weekends;
+            Dc.Weekends = weekends;
             return this;
         }
 
@@ -238,7 +238,7 @@ namespace org.matheval
         /// <returns></returns>
         public Expression SetWorkingCulture(CultureInfo workingCulture)
         {
-            this.Dc.WorkingCulture = workingCulture;
+            Dc.WorkingCulture = workingCulture;
             return this;
         }
 
@@ -251,11 +251,11 @@ namespace org.matheval
         {
             if (functionName!=null && !functionName.Trim().Equals(""))
             {
-                if (this.NotAllowedFunctions == null)
+                if (NotAllowedFunctions == null)
                 {
-                    this.NotAllowedFunctions = new List<string>();
+                    NotAllowedFunctions = new List<string>();
                 }
-                this.NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
+                NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
             }
             return this;
         }
@@ -271,11 +271,11 @@ namespace org.matheval
             {
                 if (functionName != null && !functionName.Trim().Equals(""))
                 {
-                    if (this.NotAllowedFunctions == null)
+                    if (NotAllowedFunctions == null)
                     {
-                        this.NotAllowedFunctions = new List<string>();
+                        NotAllowedFunctions = new List<string>();
                     }
-                    this.NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
+                    NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
                 }
             }
             return this;
@@ -292,7 +292,7 @@ namespace org.matheval
             List<string> errors = new List<string>();
             try
             {
-                if (this.Parser.ParseTop() == null)
+                if (Parser.ParseTop() == null)
                 {
                     errors.Add(Afe_Common.MSG_UNABLE_PARSE_EXPR);
                 }
@@ -310,15 +310,15 @@ namespace org.matheval
         /// <returns>value</returns>
         public object? Eval()
         {
-            if (this.Root == null)
+            if (Root == null)
             {
-                this.Root = Parser.ParseTop();
+                Root = Parser.ParseTop();
             }
 
-            object? result = this.VisitNode(Root);
+            object? result = VisitNode(Root);
             if (result is decimal)
             {
-                decimal resultDec =  Afe_Common.Round(result, this.Dc);
+                decimal resultDec =  Afe_Common.Round(result, Dc);
                 if (resultDec < 0)
                 {
                    // return resultDec;
@@ -353,17 +353,17 @@ namespace org.matheval
             }
 
             //parse expression
-            if (this.Root == null)
+            if (Root == null)
             {
-                this.Root = Parser.ParseTop();
+                Root = Parser.ParseTop();
             }
             //and then evaluate
-            object? result = this.VisitNode(Root);
+            object? result = VisitNode(Root);
             //Convert all numeric type to decimal
             if (Afe_Common.IsNumber(result) && !(typeof(T) == typeof(DateTime) || typeof(T) == typeof(TimeSpan)))
             {
                 result = Afe_Common.ToDecimal(result, Dc.WorkingCulture);
-                result = Afe_Common.Round(result, this.Dc);
+                result = Afe_Common.Round(result, Dc);
             }
 
             //convert decimal to appropiate numeric type
@@ -397,9 +397,9 @@ namespace org.matheval
         /// </summary>
         public void Gc()
         {
-            if (this.Root != null)
+            if (Root != null)
             {
-                this.Root = null;
+                Root = null;
             }
         }
 
@@ -410,11 +410,11 @@ namespace org.matheval
         public List<string> getVariables()
         {
             List<string> variables = new List<string>();
-            if (this.Root == null)
+            if (Root == null)
             {
-                this.Root = Parser.ParseTop();
+                Root = Parser.ParseTop();
             }
-            VisitVariableNode(this.Root, variables);
+            VisitVariableNode(Root, variables);
             return variables;
         }
 
@@ -445,18 +445,18 @@ namespace org.matheval
             }
             else if (root is SwitchCaseNode caseNode)
             {
-                VisitVariableNode(caseNode.conditionExpr, holder);
-                for (int i = 0; i < caseNode.varResultExprs.Count - 1; i++)
+                VisitVariableNode(caseNode.ConditionExpr, holder);
+                for (int i = 0; i < caseNode.VarResultExprs.Count - 1; i++)
                 {
-                    VisitVariableNode(caseNode.varResultExprs[i], holder);
+                    VisitVariableNode(caseNode.VarResultExprs[i], holder);
                 }
-                VisitVariableNode(caseNode.defaultExpr, holder);
+                VisitVariableNode(caseNode.DefaultExpr, holder);
             }
             else if (root is CallFuncNode callFunc)
             {
-                for (int i = 0; i < callFunc.args.Count; i++)
+                for (int i = 0; i < callFunc.Args.Count; i++)
                 {
-                    Implements.Node expr = callFunc.args[i];
+                    Implements.Node expr = callFunc.Args[i];
                     VisitVariableNode(expr, holder);
                 }
             }
@@ -481,7 +481,7 @@ namespace org.matheval
             }
             else if (root is NumberNode numberNode)
             {
-                return numberNode.mustRoundFlag ? Afe_Common.Round(numberNode.NumberValue, this.Dc) : numberNode.NumberValue;
+                return numberNode.MustRoundFlag ? Afe_Common.Round(numberNode.NumberValue, Dc) : numberNode.NumberValue;
             }
             else if (root is StringNode strNode)
             {
@@ -501,14 +501,14 @@ namespace org.matheval
                 //if (value is decimal)
                 if (Afe_Common.IsNumber(value))
                 {
-                    return Afe_Common.Round(Convert.ToDecimal(value, Dc.WorkingCulture), this.Dc);
+                    return Afe_Common.Round(Convert.ToDecimal(value, Dc.WorkingCulture), Dc);
                 }
                 else return value;
             }
             else if (root is BinanyNode binNode)
             {
-                object? left = this.VisitNode(binNode.LHS);
-                object? right = this.VisitNode(binNode.RHS);
+                object? left = VisitNode(binNode.LHS);
+                object? right = VisitNode(binNode.RHS);
                 return binNode.iOp.Calculate(left, right, Dc);
             }
             else if (root is IfElseNode ifElseNode)
@@ -517,24 +517,24 @@ namespace org.matheval
                 {
                     throw new Exception(Afe_Common.MSG_IFELSE_NESTIF_CONDITION);
                 }
-                object? ConditionResult = this.VisitNode(ifElseNode.Condition);
+                object? ConditionResult = VisitNode(ifElseNode.Condition);
                 if (ConditionResult is bool bc)
                 {
-                    return bc == true ? this.VisitNode(ifElseNode.IfTrue) : VisitNode(ifElseNode.IfFalse);
+                    return bc == true ? VisitNode(ifElseNode.IfTrue) : VisitNode(ifElseNode.IfFalse);
                 }
                 throw new Exception(Afe_Common.MSG_IFELSE_WRONG_SYNTAX);
             }
             else if (root is SwitchCaseNode switchNode)
             {
-                return this.ExecuteSwitchCase(switchNode);
+                return ExecuteSwitchCase(switchNode);
             }
             else if (root is CallFuncNode callNode)
             {
-                return this.ExecuteCallFunc(callNode);
+                return ExecuteCallFunc(callNode);
             }
             else if (root is UnaryNode unaryNode)
             {
-                object? left = this.VisitNode(unaryNode.Expr);
+                object? left = VisitNode(unaryNode.Expr);
                 return unaryNode.Iop.Calculate(left, null, Dc);
             }
             else if (root is NullNode)
@@ -559,7 +559,7 @@ namespace org.matheval
             Dictionary<string, object?> argsMap = new Dictionary<string, object?>();
             int i = 0;
 
-            foreach (Implements.Node expr in callFunc.args)
+            foreach (Implements.Node expr in callFunc.Args)
             {
                 i++;
                 argsMap.Add(i.ToString(), VisitNode(expr));
@@ -575,17 +575,17 @@ namespace org.matheval
         private object? ExecuteSwitchCase(SwitchCaseNode root)
         {
             IOperator eq = new EqOperator(Afe_Common.Const_EqsOperator, 300, Assoc.LEFT);
-            object? condition = this.VisitNode(root.conditionExpr);
-            for (int i = 0; i < root.varResultExprs.Count - 1; i += 2)
+            object? condition = VisitNode(root.ConditionExpr);
+            for (int i = 0; i < root.VarResultExprs.Count - 1; i += 2)
             {
-                object? var = this.VisitNode(root.varResultExprs[i]);
-                object? compareResult = eq.Calculate(condition, var, this.Dc);
+                object? var = VisitNode(root.VarResultExprs[i]);
+                object? compareResult = eq.Calculate(condition, var, Dc);
                 if (compareResult is bool b && b)
                 {
-                    return this.VisitNode(root.varResultExprs[i+1]);
+                    return VisitNode(root.VarResultExprs[i+1]);
                 }
             }
-            return this.VisitNode(root.defaultExpr);
+            return VisitNode(root.DefaultExpr);
         }
 
     }

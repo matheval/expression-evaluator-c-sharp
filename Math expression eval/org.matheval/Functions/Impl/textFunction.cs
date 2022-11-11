@@ -70,7 +70,7 @@ namespace org.matheval.Functions
                 /*if (args[Afe_Common.Const_Key_One] is TimeSpan){
                     TimeSpan t = (TimeSpan)args[Afe_Common.Const_Key_One];
                     args[Afe_Common.Const_Key_One] = decimal.Parse((t.Hours * 60 * 60 + t.Minutes * 60 + t.Seconds).ToString()) / decimal.Parse((60 * 60 * 24).ToString());
-                    return this.Execute(args, dc);
+                    return Execute(args, dc);
                 }
                 else if (args[Afe_Common.Const_Key_One] is DateTime)
                 {

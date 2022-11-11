@@ -12,17 +12,17 @@ namespace org.matheval.Node
         /// <summary>
         /// Node condition
         /// </summary>
-        public Implements.Node conditionExpr;
+        public Implements.Node ConditionExpr;
 
         /// <summary>
         /// List node result
         /// </summary>
-        public List<Implements.Node> varResultExprs;
+        public List<Implements.Node> VarResultExprs;
 
         /// <summary>
         /// Node default
         /// </summary>
-        public Implements.Node defaultExpr;
+        public Implements.Node DefaultExpr;
 
         /// <summary>
         /// Initializes a new instance structure to a specified
@@ -37,9 +37,9 @@ namespace org.matheval.Node
         /// <param name="returnType">returnType</param>
         public SwitchCaseNode(Implements.Node conditionExpr, List<Implements.Node> varResultExprs, Implements.Node defaultExpr, Type returnType) : base(returnType)
         {
-            this.conditionExpr = conditionExpr;
-            this.varResultExprs = varResultExprs;
-            this.defaultExpr = defaultExpr;
+            ConditionExpr = conditionExpr;
+            VarResultExprs = varResultExprs;
+            DefaultExpr = defaultExpr;
         }
     }
 }

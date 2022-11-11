@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         /// <returns>To Title Case</returns>
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            return this.ToTitleCase(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc);
+            return ToTitleCase(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc);
         }
 
         /// <summary>

@@ -55,9 +55,9 @@ namespace org.matheval.Functions
         {
             if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]) && args[Afe_Common.Const_Key_One] is IEnumerable itor)
             {
-                return this.MaxList(itor, dc);
+                return MaxList(itor, dc);
             }
-            return this.Max(args, dc);
+            return Max(args, dc);
         }
 
         /// <summary>

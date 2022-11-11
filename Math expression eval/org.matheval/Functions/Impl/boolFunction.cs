@@ -48,7 +48,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            return this.ToBool(args[Afe_Common.Const_Key_One]);
+            return ToBool(args[Afe_Common.Const_Key_One]);
         }
 
         /// <summary>
