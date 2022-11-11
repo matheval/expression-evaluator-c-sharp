@@ -36,8 +36,8 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Bool, new System.Type[]{ typeof(string) }, typeof(Boolean), 1),
-                    new FunctionDef(Afe_Common.Const_Bool, new System.Type[] { typeof(decimal) }, typeof(Boolean), 1)};
+                    new FunctionDef(Afe_Common.Const_Bool, new System.Type[]{ typeof(string) }, typeof(bool), 1),
+                    new FunctionDef(Afe_Common.Const_Bool, new System.Type[] { typeof(decimal) }, typeof(bool), 1)};
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return this.ToBool(args[Afe_Common.Const_Key_One]);
         }
@@ -56,17 +56,21 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="value">value</param>
         /// <returns>Value ToBool</returns>
-        private Boolean ToBool(Object value)
+        private bool ToBool(object? value)
         {
-            if (value is decimal)
+            if (value is null)
             {
-                return (decimal)value == 1;
+                return false;
             }
-            else if (!(value.ToString().Equals(Afe_Common.Const_Key_One) || value.ToString().Equals(Afe_Common.Const_Key_Zero)))
+            else if (value is decimal dec)
+            {
+                return dec == 1M;
+            }
+            else if (!(string.Equals(value.ToString(), Afe_Common.Const_Key_One) || string.Equals(value.ToString(), Afe_Common.Const_Key_Zero)))
             {
                 throw new Exception(string.Format("{0} {1}", Afe_Common.ShowMessage, "BOOL(), expect 1 or 0"));
             }
-            return value.ToString().Equals(Afe_Common.Const_Key_One);
+            return string.Equals(value.ToString(), Afe_Common.Const_Key_One);
         }
     }
 }

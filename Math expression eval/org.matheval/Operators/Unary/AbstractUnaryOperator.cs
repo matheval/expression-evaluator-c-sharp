@@ -35,11 +35,16 @@ namespace org.matheval.Operators.Unary
     public abstract class AbstractUnaryOperator : BaseOperator, IOperator
     {
         /// <summary>
+        /// Op
+        /// </summary>
+        public override string Op { get; set; }
+
+        /// <summary>
         /// Initializes a new instance structure to a specified type string value and type int value
         /// </summary>
         /// <param name="op">op</param>
         /// <param name="precedence">precedence</param>
-        public AbstractUnaryOperator(string op, int precedence)
+        protected AbstractUnaryOperator(string op, int precedence)
         {
             Op = op;
             Prec = precedence;
@@ -52,7 +57,7 @@ namespace org.matheval.Operators.Unary
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>Calculate Value</returns>
-        public new virtual object Calculate(object left, object right, ExpressionContext dc)
+        public override object? Calculate(object? left, object? right, ExpressionContext dc)
         {
             if (right != null)
             {
@@ -65,7 +70,7 @@ namespace org.matheval.Operators.Unary
         /// GetAss
         /// </summary>
         /// <returns>Enum</returns>
-        public new Assoc GetAss()
+        public sealed override Assoc GetAss()
         {
             throw new NotImplementedException();
         }
@@ -75,7 +80,7 @@ namespace org.matheval.Operators.Unary
         /// <param name="typeLeft">typeLeft</param>
         /// <param name="typeRight">typeRight</param>
         /// <returns>Type</returns>
-        public new virtual Type Validate(Type typeLeft, Type typeRight)
+        public sealed override Type? Validate(Type typeLeft, Type typeRight)
         {
             throw new NotImplementedException();
         }

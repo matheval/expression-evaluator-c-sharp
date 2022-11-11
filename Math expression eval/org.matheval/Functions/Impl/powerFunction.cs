@@ -50,10 +50,10 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            //return Afe_Common.Round(Math.Pow(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two]))), dc);
-            Double result = Math.Pow(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)), Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)));
+            //return Afe_Common.Round(Math.Pow(decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One])), decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two]))), dc);
+            Double result = Math.Pow(decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)), decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)));
             return Convert.ToDecimal(result, dc.WorkingCulture);
         }
     }

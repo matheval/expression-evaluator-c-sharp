@@ -40,18 +40,16 @@ namespace org.matheval.Operators.Binop
         protected Assoc Assoc;
 
         /// <summary>
-        /// Initializes a new instance structure
+        /// Op
         /// </summary>
-        public AbstractBinOperator()
-        {
-        }
+        public override string Op { get; set; }
 
         /// <summary>
         /// Initializes a new instance structure to a specified type string op and type int precedence
         /// </summary>
         /// <param name="op">op</param>
         /// <param name="precedence">precedence</param>
-        public AbstractBinOperator(string op, int precedence)
+        protected AbstractBinOperator(string op, int precedence)
         {
             Op = op;
             Prec = precedence;
@@ -67,7 +65,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="op"></param>
         /// <param name="precedence"></param>
         /// <param name="assoc"></param>
-        public AbstractBinOperator(string op, int precedence, Assoc assoc)
+        protected AbstractBinOperator(string op, int precedence, Assoc assoc)
         {
             Op = op;
             Prec = precedence;
@@ -89,8 +87,8 @@ namespace org.matheval.Operators.Binop
         /// <param name="left">left</param>
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
-        /// <returns>Value is type Object result Calculate</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        /// <returns>Value is type object result Calculate</returns>
+        public override object? Calculate(object? left, object? right, ExpressionContext dc)
         {
             return new NotImplementedException();
         }
@@ -101,7 +99,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="typeLeft">typeLeft</param>
         /// <param name="typeRight">typeRight</param>
         /// <returns>Type</returns>
-        public override Type Validate(Type typeLeft, Type typeRight)
+        public override Type? Validate(Type typeLeft, Type typeRight)
         {
             return typeof(VariableNode);
         }

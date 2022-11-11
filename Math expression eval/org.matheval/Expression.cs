@@ -27,6 +27,7 @@ using org.matheval.Operators;
 using org.matheval.Operators.Binop;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using static org.matheval.Common.Afe_Common;
 
@@ -37,27 +38,27 @@ namespace org.matheval
         /// <summary>
         /// Parser
         /// </summary>
-        private Parser Parser;
+        private readonly Parser Parser;
 
         /// <summary>
         /// Root
         /// </summary>
-        private Implements.Node Root;
+        private Implements.Node? Root;
 
         /// <summary>
         /// Dc
         /// </summary>
-        private ExpressionContext Dc;
+        private readonly ExpressionContext Dc;
 
         /// <summary>
         /// VariableParams
         /// </summary>
-        private Dictionary<string, object> VariableParams;
+        private readonly Dictionary<string, object> VariableParams;
 
         /// <summary>
         /// NotAllowedFunctions
         /// </summary>
-        private List<string> NotAllowedFunctions;
+        private List<string>? NotAllowedFunctions;
 
 
         /// <summary>
@@ -107,7 +108,7 @@ namespace org.matheval
         /// <param name="key">variable name</param>
         /// <param name="value">value to bind</param>
         /// <returns>Expression instance</returns>
-        public Expression Bind(string key, Object value)
+        public Expression Bind(string key, object value)
         {
             if (!this.VariableParams.ContainsKey(key.ToLowerInvariant()))
             {
@@ -252,7 +253,7 @@ namespace org.matheval
             {
                 if (this.NotAllowedFunctions == null)
                 {
-                    this.NotAllowedFunctions = new List<String>();
+                    this.NotAllowedFunctions = new List<string>();
                 }
                 this.NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
             }
@@ -272,7 +273,7 @@ namespace org.matheval
                 {
                     if (this.NotAllowedFunctions == null)
                     {
-                        this.NotAllowedFunctions = new List<String>();
+                        this.NotAllowedFunctions = new List<string>();
                     }
                     this.NotAllowedFunctions.Add(functionName.Trim().ToLowerInvariant());
                 }
@@ -307,14 +308,14 @@ namespace org.matheval
         /// Eval fomular string and return valua in object instance
         /// </summary>
         /// <returns>value</returns>
-        public Object Eval()
+        public object? Eval()
         {
             if (this.Root == null)
             {
                 this.Root = Parser.ParseTop();
             }
 
-            Object result = this.VisitNode(Root);
+            object? result = this.VisitNode(Root);
             if (result is decimal)
             {
                 decimal resultDec =  Afe_Common.Round(result, this.Dc);
@@ -348,7 +349,7 @@ namespace org.matheval
                 ))
             {
                 throw new Exception(string.Format(Afe_Common.MSG_RETURN_TYPE_NOT_SUPPORT,
-                                 new String[] { typeof(T).ToString() }));
+                                 new string[] { typeof(T).ToString() }));
             }
 
             //parse expression
@@ -357,7 +358,7 @@ namespace org.matheval
                 this.Root = Parser.ParseTop();
             }
             //and then evaluate
-            Object result = this.VisitNode(Root);
+            object? result = this.VisitNode(Root);
             //Convert all numeric type to decimal
             if (Afe_Common.IsNumber(result) && !(typeof(T) == typeof(DateTime) || typeof(T) == typeof(TimeSpan)))
             {
@@ -366,20 +367,28 @@ namespace org.matheval
             }
 
             //convert decimal to appropiate numeric type
-            if (result is decimal && typeof(T) == typeof(int))
+            if (result is decimal dr)
             {
-                result = Decimal.ToInt32(((decimal)result));
+                if (typeof(T) == typeof(int))
+                {
+                    result = decimal.ToInt32(dr);
+                }
+                else if (typeof(T) == typeof(long))
+                {
+                    result = decimal.ToInt64(dr);
+                }
+                else if (typeof(T) == typeof(double))
+                {
+                    result = decimal.ToDouble(dr);
+                }
             }
-            else if (result is decimal && typeof(T) == typeof(Int64))
-            {
-                result = Decimal.ToInt64(((decimal)result));
-            }
-            else if (result is decimal && typeof(T) == typeof(double))
-            {
-                result = Decimal.ToDouble(((decimal)result));
-            }
+
             //convert object to expected type and return
-            return (T)Convert.ChangeType(result, typeof(T));
+            object? changed = Convert.ChangeType(result, typeof(T));
+            if (changed is null)
+                throw new Exception(string.Format(Afe_Common.MSG_RETURN_TYPE_NOT_SUPPORT,
+                                 new string[] { typeof(T).ToString() }));
+            return (T)changed;
         }
 
 
@@ -398,9 +407,9 @@ namespace org.matheval
         /// Set all variables in the fomular
         /// </summary>
         /// <returns>List of variable</returns>
-        public List<String> getVariables()
+        public List<string> getVariables()
         {
-            List<String> variables = new List<String>();
+            List<string> variables = new List<string>();
             if (this.Root == null)
             {
                 this.Root = Parser.ParseTop();
@@ -414,40 +423,45 @@ namespace org.matheval
         /// </summary>
         /// <param name="root"></param>
         /// <param name="holder"></param>
-        private void VisitVariableNode(Implements.Node root, List<String> holder)
+        private void VisitVariableNode(Implements.Node root, List<string> holder)
         {
-            if (root is VariableNode){
-                VariableNode varNode = (VariableNode)root;
+            if (root is VariableNode varNode)
+            {
                 if (!holder.Contains(varNode.Name))
                 {
                     holder.Add(varNode.Name);
                 }
-            }else if (root is BinanyNode){
-                BinanyNode binNode = (BinanyNode)root;
+            }
+            else if (root is BinanyNode binNode)
+            {
                 VisitVariableNode(binNode.LHS, holder);
                 VisitVariableNode(binNode.RHS, holder);
-            }else if (root is IfElseNode){
-                IfElseNode ifElseNode = (IfElseNode)root;
+            }
+            else if (root is IfElseNode ifElseNode)
+            {
                 VisitVariableNode(ifElseNode.Condition, holder);
                 VisitVariableNode(ifElseNode.IfTrue, holder);
                 VisitVariableNode(ifElseNode.IfFalse, holder);
-            }else if (root is SwitchCaseNode){
-                SwitchCaseNode caseNode = (SwitchCaseNode)root;
+            }
+            else if (root is SwitchCaseNode caseNode)
+            {
                 VisitVariableNode(caseNode.conditionExpr, holder);
-                for (int i = 0; i < caseNode.varResultExprs.Count - 1; i = i + 1)
+                for (int i = 0; i < caseNode.varResultExprs.Count - 1; i++)
                 {
                     VisitVariableNode(caseNode.varResultExprs[i], holder);
                 }
                 VisitVariableNode(caseNode.defaultExpr, holder);
-            }else if (root is CallFuncNode){
-                CallFuncNode callFunc = (CallFuncNode)root;
+            }
+            else if (root is CallFuncNode callFunc)
+            {
                 for (int i = 0; i < callFunc.args.Count; i++)
                 {
                     Implements.Node expr = callFunc.args[i];
                     VisitVariableNode(expr, holder);
                 }
-            }else if (root is UnaryNode){
-                UnaryNode unaryNode = (UnaryNode)root;
+            }
+            else if (root is UnaryNode unaryNode)
+            {
                 VisitVariableNode(unaryNode.Expr, holder);
             }
         }
@@ -458,34 +472,32 @@ namespace org.matheval
         /// </summary>
         /// <param name="root">root</param>
         /// <returns>Value Node</returns>
-        private Object VisitNode(Implements.Node root)
+        private object? VisitNode(Implements.Node root)
         {
             // Check root is null then Exception
             if (root == null)
             {
                 throw new Exception(Afe_Common.MSG_UNABLE_PARSE_EXPR);
             }
-            else if (root is NumberNode)
+            else if (root is NumberNode numberNode)
             {
-                NumberNode numberNode = (NumberNode)root;
-                return numberNode.mustRoundFlag ? Afe_Common.Round(numberNode.NumberValue, this.Dc): numberNode.NumberValue;
+                return numberNode.mustRoundFlag ? Afe_Common.Round(numberNode.NumberValue, this.Dc) : numberNode.NumberValue;
             }
-            else if (root is StringNode)
+            else if (root is StringNode strNode)
             {
-                return ((StringNode)root).Value;
+                return strNode.Value;
             }
-            else if (root is BoolNode)
+            else if (root is BoolNode boolNode)
             {
-                return ((BoolNode)root).Value;
+                return boolNode.Value;
             }
-            else if (root is VariableNode)
+            else if (root is VariableNode varNode)
             {
-                VariableNode varNode = (VariableNode)root;
                 if (!VariableParams.ContainsKey(varNode.Name.ToLowerInvariant()))
                 {
                     throw new Exception(string.Format(Afe_Common.MSG_VAR_NOTSET, new string[] { varNode.Name }));
                 }
-                Object value = VariableParams[varNode.Name.ToLowerInvariant()];
+                object value = VariableParams[varNode.Name.ToLowerInvariant()];
                 //if (value is decimal)
                 if (Afe_Common.IsNumber(value))
                 {
@@ -493,39 +505,36 @@ namespace org.matheval
                 }
                 else return value;
             }
-            else if (root is BinanyNode)
+            else if (root is BinanyNode binNode)
             {
-                BinanyNode binNode = (BinanyNode)root;
-                Object left = this.VisitNode(binNode.LHS);
-                Object right = this.VisitNode(binNode.RHS);
+                object? left = this.VisitNode(binNode.LHS);
+                object? right = this.VisitNode(binNode.RHS);
                 return binNode.iOp.Calculate(left, right, Dc);
             }
-            else if (root is IfElseNode)
+            else if (root is IfElseNode ifElseNode)
             {
-                IfElseNode ifElseNode = (IfElseNode)root;
                 if (ifElseNode.Condition is IfElseNode)
                 {
                     throw new Exception(Afe_Common.MSG_IFELSE_NESTIF_CONDITION);
                 }
-                Object ConditionResult = this.VisitNode(ifElseNode.Condition);
-                if (ConditionResult is Boolean)
+                object? ConditionResult = this.VisitNode(ifElseNode.Condition);
+                if (ConditionResult is bool bc)
                 {
-                    return (Boolean)ConditionResult == true ? this.VisitNode(ifElseNode.IfTrue) : VisitNode(ifElseNode.IfFalse);
+                    return bc == true ? this.VisitNode(ifElseNode.IfTrue) : VisitNode(ifElseNode.IfFalse);
                 }
                 throw new Exception(Afe_Common.MSG_IFELSE_WRONG_SYNTAX);
             }
-            else if (root is SwitchCaseNode)
-            { 
-                return this.ExecuteSwitchCase((SwitchCaseNode)root);
-            }
-            else if (root is CallFuncNode)
+            else if (root is SwitchCaseNode switchNode)
             {
-                return this.ExecuteCallFunc((CallFuncNode)root);
+                return this.ExecuteSwitchCase(switchNode);
             }
-            else if (root is UnaryNode)
+            else if (root is CallFuncNode callNode)
             {
-                UnaryNode unaryNode = (UnaryNode)root;
-                Object left = this.VisitNode(unaryNode.Expr);
+                return this.ExecuteCallFunc(callNode);
+            }
+            else if (root is UnaryNode unaryNode)
+            {
+                object? left = this.VisitNode(unaryNode.Expr);
                 return unaryNode.Iop.Calculate(left, null, Dc);
             }
             else if (root is NullNode)
@@ -540,14 +549,14 @@ namespace org.matheval
         /// </summary>
         /// <param name="callFunc">call function base</param>
         /// <returns>funtion execute result</returns>
-        private Object ExecuteCallFunc(CallFuncNode callFunc)
+        private object? ExecuteCallFunc(CallFuncNode callFunc)
         {
             if (NotAllowedFunctions != null && NotAllowedFunctions.Contains(callFunc.FuncName.ToLowerInvariant()))
             {
                 throw new Exception(string.Format(Afe_Common.MSG_METH_NOT_ALLOWED, new string[] { callFunc.FuncName }));
             }
 
-            Dictionary<string, Object> argsMap = new Dictionary<string, Object>();
+            Dictionary<string, object?> argsMap = new Dictionary<string, object?>();
             int i = 0;
 
             foreach (Implements.Node expr in callFunc.args)
@@ -563,15 +572,15 @@ namespace org.matheval
         /// </summary>
         /// <param name="root">root</param>
         /// <returns>switch condition result </returns>
-        private Object ExecuteSwitchCase(SwitchCaseNode root)
+        private object? ExecuteSwitchCase(SwitchCaseNode root)
         {
             IOperator eq = new EqOperator(Afe_Common.Const_EqsOperator, 300, Assoc.LEFT);
-            Object condition = this.VisitNode(root.conditionExpr);
+            object? condition = this.VisitNode(root.conditionExpr);
             for (int i = 0; i < root.varResultExprs.Count - 1; i += 2)
             {
-                Object var = this.VisitNode(root.varResultExprs[i]);
-                bool compareResult = (bool)eq.Calculate(condition, var, this.Dc);
-                if (compareResult)
+                object? var = this.VisitNode(root.varResultExprs[i]);
+                object? compareResult = eq.Calculate(condition, var, this.Dc);
+                if (compareResult is bool b && b)
                 {
                     return this.VisitNode(root.varResultExprs[i+1]);
                 }

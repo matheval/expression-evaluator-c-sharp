@@ -43,6 +43,6 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        object Execute(Dictionary<string, object> args, ExpressionContext dc);
+        object? Execute(Dictionary<string, object?> args, ExpressionContext dc);
     }
 }

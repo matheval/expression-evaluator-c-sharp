@@ -34,7 +34,7 @@ namespace org.matheval.Operators
         /// <summary>
         /// Op
         /// </summary>
-        public string Op { get; set; }
+        public abstract string Op { get; set; }
 
         /// <summary>
         /// Prec
@@ -47,20 +47,14 @@ namespace org.matheval.Operators
         /// <param name="left">left</param>
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
-        /// <returns>Value is type Object result Calculate</returns>
-        public virtual object Calculate(object left, object right, ExpressionContext dc)
-        {
-            return new NotImplementedException();
-        }
+        /// <returns>Value is type object result Calculate</returns>
+        public abstract object? Calculate(object? left, object? right, ExpressionContext dc);
 
         /// <summary>
         /// Get Ass
         /// </summary>
         /// <returns>Value is type enum Assoc</returns>
-        public virtual Assoc GetAss()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Assoc GetAss();
 
         /// <summary>
         /// Get Op
@@ -84,9 +78,6 @@ namespace org.matheval.Operators
         /// Validate
         /// </summary>
         /// <returns>Value is System.Type</returns>
-        public virtual Type Validate(Type typeLeft, Type typeRight)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Type? Validate(Type typeLeft, Type typeRight);
     }
 }

@@ -49,9 +49,9 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            double input = Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            double input = decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             if (input >= -1 && input <= 1)
             {
                 //return Afe_Common.Round(Math.Acos(input), dc);

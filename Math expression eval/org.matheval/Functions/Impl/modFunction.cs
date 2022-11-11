@@ -50,7 +50,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return this.Mod(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture), Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture), dc);
         }
@@ -61,7 +61,7 @@ namespace org.matheval.Functions
         /// <param name="left">left</param>
         /// <param name="right">right</param>
         /// <returns>Value Mod</returns>
-        public decimal Mod(Object left, Object right, ExpressionContext dc)
+        public decimal Mod(object left, object right, ExpressionContext dc)
         {
             if (left is decimal leftDecimal && right is decimal rightDecimal)
             {

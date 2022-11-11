@@ -49,11 +49,11 @@ namespace org.matheval.Operators.Binop
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>Calculate value</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        public override object? Calculate(object? left, object? right, ExpressionContext dc)
         {
-            if (left is bool && right is bool)
+            if (left is bool bl && right is bool br)
             {
-                return (bool)left == true && (bool)right == true;
+                return bl == true && br == true;
             }
             throw new Exception(string.Format(MSG_WRONG_OP_PARAM_EX, new string[] { "Logical AND", "Boolean" }));
         }
@@ -64,7 +64,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="typeLeft">typeLeft</param>
         /// <param name="typeRight">typeRight</param>
         /// <returns>Type Boolean or null</returns>
-        public override Type Validate(Type typeLeft, Type typeRight)
+        public override Type? Validate(Type typeLeft, Type typeRight)
         {
             if (
                 (typeLeft.Equals(typeof(bool)) || typeLeft.Equals(typeof(object)))

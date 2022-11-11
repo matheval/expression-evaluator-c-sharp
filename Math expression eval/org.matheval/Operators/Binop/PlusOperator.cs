@@ -56,7 +56,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>value Calculate</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        public override object Calculate(object? left, object? right, ExpressionContext dc)
         {
 
             if (Afe_Common.IsNumber(left) && Afe_Common.IsNumber(right))
@@ -67,17 +67,17 @@ namespace org.matheval.Operators.Binop
             }
             else if (left is string || right is string)
             {
-                if(left is decimal)
+                if(left is decimal dl)
                 {
-                    left = Afe_Common.Round(left, dc);
+                    left = Afe_Common.Round(dl, dc);
                     left = ((decimal)left).ToString(dc.WorkingCulture);
                 }
-                if (right is decimal)
+                if (right is decimal dr)
                 {
-                    right = Afe_Common.Round(right, dc);
+                    right = Afe_Common.Round(dr, dc);
                     right = ((decimal)right).ToString(dc.WorkingCulture);
                 }
-                return left.ToString() + right.ToString();
+                return string.Concat(left, right);
             }
             throw new Exception(string.Format(MSG_WRONG_OP_PARAM_EX, new string[] { "PLUS", "numeric, string, date" }));
         }
@@ -88,7 +88,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="typeLeft">typeLeft</param>
         /// <param name="typeRight">typeRight</param>
         /// <returns>Type</returns>
-        public override Type Validate(Type typeLeft, Type typeRight)
+        public override Type? Validate(Type typeLeft, Type typeRight)
         {
             if (
                 (typeLeft.Equals(typeof(object)) && typeRight.Equals(typeof(object))) ||

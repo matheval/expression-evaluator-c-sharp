@@ -10,13 +10,13 @@ namespace org.matheval.Node
         /// <summary>
         /// Value
         /// </summary>
-        public Boolean Value;
+        public bool Value;
 
         /// <summary>
         /// Initializes a new instance structure to a specified type Boolean value
         /// </summary>
         /// <param name="value">value</param>
-        public BoolNode(Boolean value) : base(typeof(Boolean))
+        public BoolNode(bool value) : base(typeof(bool))
         {
             this.Value = value;
         }

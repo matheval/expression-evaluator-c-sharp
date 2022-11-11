@@ -39,7 +39,7 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Random, null, typeof(decimal), 0)};
+                    new FunctionDef(Afe_Common.Const_Random, Array.Empty<Type>(), typeof(decimal), 0)};
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             // Random r = new Random();
             //return Afe_Common.Round(r.Next(), dc);

@@ -50,9 +50,9 @@ namespace org.matheval.Operators.Binop
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>value Calculate</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        public override object Calculate(object? left, object? right, ExpressionContext dc)
         {
-            return left.ToString() + right.ToString();
+            return string.Concat(left, right);
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace org.matheval.Functions
         /// <returns>FunctionDefs</returns>
         public List<FunctionDef> GetInfo()
         {
-            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Value, new System.Type[] { typeof(Object) }, typeof(decimal), 1) };
+            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Value, new System.Type[] { typeof(object) }, typeof(decimal), 1) };
         }
 
         /// <summary>
@@ -50,20 +50,18 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             if (Afe_Common.IsNumber(args[Afe_Common.Const_Key_One]))
             {
                 return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc);
             }
-            else if (args[Afe_Common.Const_Key_One] is TimeSpan)
+            else if (args[Afe_Common.Const_Key_One] is TimeSpan ts)
             {
-                TimeSpan ts = (TimeSpan)args[Afe_Common.Const_Key_One];
                 return Afe_Common.Round(ts.TotalMilliseconds / 1000 / 60 / 60 / 24, dc);
             }
-            else if (args[Afe_Common.Const_Key_One] is DateTime)
-            {
-                DateTime dt = (DateTime)args[Afe_Common.Const_Key_One];
+            else if (args[Afe_Common.Const_Key_One] is DateTime dt)
+            {;
                 long ms = (long)(dt - new DateTime(1970, 1, 1)).TotalMilliseconds;
                 return Afe_Common.Round(ms / 1000 / 60 / 60 / 24, dc);
             }
@@ -73,7 +71,7 @@ namespace org.matheval.Functions
                 {
                     return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc);
                 }
-                catch(Exception e)
+                catch
                 {
                     throw new Exception(string.Format(Afe_Common.MSG_METH_PARAM_INVALID, new string[] { "value" }));
                 }

@@ -39,7 +39,7 @@ namespace org.matheval
         /// <summary>
         /// String Value
         /// </summary>
-        public string IdentifierValue { get; set; }
+        public string? IdentifierValue { get; set; }
 
         /// <summary>
         /// Double Value
@@ -54,7 +54,7 @@ namespace org.matheval
         /// <summary>
         /// Bool Value
         /// </summary>
-        public Boolean BoolValue { get; set; }
+        public bool BoolValue { get; set; }
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace org.matheval
         /// <summary>
         /// Initializes a new instance
         /// </summary>
-        public Token(){}
+        public Token() { }
 
         /// <summary>
         /// Initializes a new instance structure to a specified type token value
@@ -112,7 +112,7 @@ namespace org.matheval
         /// </summary>
         /// <param name="tokType">tokType</param>
         /// <param name="numVal">boolVal</param>
-        public Token(TokenType tokType, Boolean boolVal)
+        public Token(TokenType tokType, bool boolVal)
         {
             this.Type = tokType;
             this.BoolValue = boolVal;
@@ -127,7 +127,7 @@ namespace org.matheval
         /// </summary>
         /// <param name="compareTo"></param>
         /// <returns>int value</returns>
-        public int CompareTo(Object compareTo)
+        public int CompareTo(object compareTo)
         {
             Token compareToEmp = (Token)compareTo;
             if (this.Type == TokenType.TOKEN_EOF
@@ -145,12 +145,12 @@ namespace org.matheval
             if (this.Type == TokenType.TOKEN_IDENTIFIER
                 && compareToEmp.Type == TokenType.TOKEN_IDENTIFIER)
             {
-                return this.IdentifierValue.CompareTo(compareToEmp.IdentifierValue);
+                return string.Compare(this.IdentifierValue, compareToEmp.IdentifierValue);
             }
             if (this.Type == TokenType.TOKEN_ASCII
                 && compareToEmp.Type == TokenType.TOKEN_ASCII)
             {
-                return this.IdentifierValue.CompareTo(compareToEmp.IdentifierValue);
+                return string.Compare(this.IdentifierValue, compareToEmp.IdentifierValue);
             }
             return -1;
         }
@@ -161,14 +161,14 @@ namespace org.matheval
         /// <returns>string value</returns>
         public override string ToString()
         {
-            
+
             if (this.Type == TokenType.TOKEN_EOF)
             {
                 return Afe_Common.Const_EOF;
             }
             else if (this.Type == TokenType.TOKEN_IDENTIFIER || this.Type == TokenType.TOKEN_ASCII)
             {
-                return IdentifierValue;
+                return IdentifierValue!; //Null Assert: Should never be null with these token types
             }
             else if (this.Type == TokenType.TOKEN_NUMBER_DECIMAL)
             {
@@ -180,23 +180,23 @@ namespace org.matheval
             }
             else if (this.Type == TokenType.TOKEN_PAREN_OPEN)
             {
-                return Char.ToString(Afe_Common.Const_BRACKETS_OPEN);
+                return char.ToString(Afe_Common.Const_BRACKETS_OPEN);
             }
             else if (this.Type == TokenType.TOKEN_PAREN_CLOSE)
             {
-                return Char.ToString(Afe_Common.Const_BRACKETS_CLOSE);
+                return char.ToString(Afe_Common.Const_BRACKETS_CLOSE);
             }
             else if (this.Type == TokenType.TOKEN_COMMA)
             {
-                return Char.ToString(Afe_Common.Const_COMMA);
+                return char.ToString(Afe_Common.Const_COMMA);
             }
             else if (this.Type == TokenType.TOKEN_OP)
             {
-                return IdentifierValue;
+                return IdentifierValue!; //Null Assert: Should never be null with these token types
             }
             else if (this.Type == TokenType.TOKEN_UOP)
             {
-                return IdentifierValue;
+                return IdentifierValue!; //Null Assert: Should never be null with these token types
             }
             else if (this.Type == TokenType.TOKEN_IF)
             {

@@ -40,7 +40,7 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                       new FunctionDef(Afe_Common.Const_Isblank, new System.Type[]{ typeof(Object) }, typeof(Boolean), 1)};
+                       new FunctionDef(Afe_Common.Const_Isblank, new System.Type[]{ typeof(object) }, typeof(bool), 1)};
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>True or False</returns>
-        public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return string.IsNullOrEmpty(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
         }

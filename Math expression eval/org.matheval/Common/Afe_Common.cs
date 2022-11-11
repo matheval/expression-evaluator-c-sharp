@@ -706,7 +706,7 @@ namespace org.matheval.Common
         /// <param name="stringValue">stringValue</param>
         /// <param name="count">count</param>
         /// <returns>Value Right</returns>
-        public static string Right(string stringValue, int count)
+        public static string Right(string? stringValue, int count)
         {
             if (!string.IsNullOrEmpty(stringValue))
             {
@@ -721,7 +721,7 @@ namespace org.matheval.Common
         /// <param name="value">value</param>
         /// <param name="dc">dc</param>
         /// <returns>Value Round</returns>
-        public static decimal Round(object value, ExpressionContext dc)
+        public static decimal Round(object? value, ExpressionContext dc)
         {
             return Math.Round(Convert.ToDecimal(value, dc.WorkingCulture), dc.Scale, dc.Rd);
         }
@@ -731,7 +731,7 @@ namespace org.matheval.Common
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool IsNumber(object value)
+        public static bool IsNumber(object? value)
         {
             return value is sbyte
                     || value is byte
@@ -752,11 +752,11 @@ namespace org.matheval.Common
         /// <param name="value"></param>
         /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        public static decimal ToDecimal(object value, CultureInfo cultureInfo)
+        public static decimal ToDecimal(object? value, CultureInfo? cultureInfo)
         {
-            if (value is decimal)
+            if (value is decimal dec)
             {
-                return (decimal)value;
+                return dec;
             }
             else
             {
@@ -771,15 +771,15 @@ namespace org.matheval.Common
         /// <param name="value"></param>
         /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        public static string ToString(object value, CultureInfo cultureInfo)
+        public static string ToString(object? value, CultureInfo? cultureInfo)
         {
-            if (value is string)
+            if (value is string str)
             {
-                return (string)value;
+                return str;
             }
             else
             {
-                return Convert.ToString(value, cultureInfo);
+                return Convert.ToString(value, cultureInfo) ?? string.Empty;
             }
         }
 
@@ -790,7 +790,7 @@ namespace org.matheval.Common
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        public static bool IsList(object o)
+        public static bool IsList(object? o)
         {
             if (o == null) return false;
             return o is IList &&

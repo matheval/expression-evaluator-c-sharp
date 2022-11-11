@@ -40,7 +40,7 @@ namespace org.matheval.Functions
         /// <returns>FunctionDefs</returns>
         public List<FunctionDef> GetInfo()
         {
-            return new List<FunctionDef>{new FunctionDef(Afe_Common.Const_TODAY, null, typeof(DateTime), 0)};
+            return new List<FunctionDef>{new FunctionDef(Afe_Common.Const_TODAY, Array.Empty<Type>(), typeof(DateTime), 0)};
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>TODAY</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return DateTime.Today;
         }

@@ -47,7 +47,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture) * (decimal)(180 / Math.PI);
         }

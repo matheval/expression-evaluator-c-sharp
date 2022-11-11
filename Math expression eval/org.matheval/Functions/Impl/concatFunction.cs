@@ -39,7 +39,7 @@ namespace org.matheval.Functions
         /// <returns>FunctionDefs</returns>
         public List<FunctionDef> GetInfo()
         {
-            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Concat, new System.Type[] { typeof(Object) }, typeof(string), -1) };
+            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Concat, new System.Type[] { typeof(object) }, typeof(string), -1) };
         }
 
         /// <summary>
@@ -48,11 +48,11 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             string value = string.Empty;
 
-            foreach (Object item in args.Values)
+            foreach (object? item in args.Values)
             {
                 value += Afe_Common.ToString(item, dc.WorkingCulture);
             }

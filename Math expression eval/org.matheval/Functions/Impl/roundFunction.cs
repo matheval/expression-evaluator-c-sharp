@@ -51,9 +51,9 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            int digits = Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) ;// int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two]));
+            int digits = decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) ;// int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two]));
 
             /*if (digits < 0 || digits > 28)
             {

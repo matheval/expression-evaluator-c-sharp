@@ -25,6 +25,7 @@ using org.matheval.Common;
 
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace org.matheval.Functions
 {
@@ -43,7 +44,7 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Xor, new System.Type[]{ typeof(Boolean) }, typeof(Boolean), -1)};
+                    new FunctionDef(Afe_Common.Const_Xor, new System.Type[]{ typeof(bool) }, typeof(bool), -1)};
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return this.LogicalXor(args);
         }
@@ -62,22 +63,22 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value</returns>
-        public Boolean LogicalXor(Dictionary<string, Object> args)
+        public bool LogicalXor(Dictionary<string, object?> args)
         {
             if (args.Count < 2)
             {
                 throw new Exception(string.Format("{0} {1}", "Too few agrument for method", "XOR"));
             }
-            else if (args.Count == 2)
+            else if (args.Count == 2 && args[Afe_Common.Const_Key_One] is bool bl && args[Afe_Common.Const_Key_Two] is bool br)
             {
-                return ((Boolean)args[Afe_Common.Const_Key_One]) ^ ((Boolean)args[Afe_Common.Const_Key_Two]);
+                return bl ^ br;
             }
             else
             {
                 int trueCount = 0;
-                foreach (Object obj in args.Values)
+                foreach (object? obj in args.Values)
                 {
-                    if (obj is Boolean || (Boolean)obj)
+                    if (obj is bool b && b)
                     {
                         trueCount++;
                     }

@@ -41,7 +41,7 @@ namespace org.matheval.Functions
         /// <returns>FunctionDefs</returns>
         public List<FunctionDef> GetInfo()
         {
-            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_And, new System.Type[] { typeof(Boolean) }, typeof(Boolean), -1) };
+            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_And, new System.Type[] { typeof(bool) }, typeof(bool), -1) };
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return this.LogicalAnd(args);
         }
@@ -60,11 +60,11 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value LogicalAnd</returns>
-        private Boolean LogicalAnd(Dictionary<string, Object> args)
+        private bool LogicalAnd(Dictionary<string, object?> args)
         {
-            foreach (Object item in args.Values)
+            foreach (object? item in args.Values)
             {
-                if (!(item is Boolean) || !(Boolean)item)
+                if (item is not bool b || !b)
                 {
                     return false;
                 }

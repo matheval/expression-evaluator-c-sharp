@@ -52,8 +52,8 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Text, new System.Type[]{typeof(Object) }, typeof(string), 1),
-                    new FunctionDef(Afe_Common.Const_Text, new System.Type[] { typeof(Object), typeof(string)}, typeof(string), 2)};
+                    new FunctionDef(Afe_Common.Const_Text, new System.Type[]{typeof(object) }, typeof(string), 1),
+                    new FunctionDef(Afe_Common.Const_Text, new System.Type[] { typeof(object), typeof(string)}, typeof(string), 2)};
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             if (args.Count == 2)
             {
@@ -83,7 +83,7 @@ namespace org.matheval.Functions
                 {
                     // because Contains uses IndexOf that uses the current culture info for string comparison
                     var ci = Thread.CurrentThread.CurrentCulture;
-                    Thread.CurrentThread.CurrentCulture = dc.WorkingCulture;
+                    Thread.CurrentThread.CurrentCulture = dc.WorkingCulture ?? ci;
                     string ret = pattern;
                     decimal t = Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
                     // Hours
@@ -137,9 +137,9 @@ namespace org.matheval.Functions
                     else if (pattern.ToLower(dc.WorkingCulture).Contains("ss"))
                     {
                         decimal hh = Afe_Common.Round(
-                            ((t * 24m * 60m) - Decimal.ToInt32((t * 24m * 60m))) * 60m,
+                            ((t * 24m * 60m) - decimal.ToInt32((t * 24m * 60m))) * 60m,
                             dc);
-                        ret = Regex.Replace(ret, "[s]{2,2}", (Decimal.ToInt32(hh)).ToString(dc.WorkingCulture).PadLeft(2, '0'));
+                        ret = Regex.Replace(ret, "[s]{2,2}", (decimal.ToInt32(hh)).ToString(dc.WorkingCulture).PadLeft(2, '0'));
                     }
                     else if (pattern.ToLower(dc.WorkingCulture).Contains("[s]"))
                     {

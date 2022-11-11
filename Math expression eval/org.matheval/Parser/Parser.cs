@@ -36,7 +36,7 @@ namespace org.matheval
 {
     public class Parser
     {
-        private static Dictionary<string, Type> _registeredFunctions;
+        private static Dictionary<string, Type>? _registeredFunctions;
 
         /// <summary>
         /// Registers a new custom function to all new Parsers
@@ -66,22 +66,22 @@ namespace org.matheval
         /// <summary>
         /// Dc
         /// </summary>
-        private ExpressionContext Dc;
+        private readonly ExpressionContext Dc;
 
         /// <summary>
         /// Create Dictionary Operators have key is string and value is interface IOperator
         /// </summary>
-        private Dictionary<string, IOperator> Operators = null;
+        private readonly Dictionary<string, IOperator> Operators = new Dictionary<string, IOperator>();
 
         /// <summary>
         /// Create Dictionary UnaryOperators have key is string and value is interface IOperator
         /// </summary>
-        private Dictionary<string, IOperator> UnaryOperators = null;
+        private readonly Dictionary<string, IOperator> UnaryOperators = new Dictionary<string, IOperator>();
 
         /// <summary>
         /// Create Dictionary Constants have key is string and value is interface IOperator
         /// </summary>
-        private Dictionary<string, Object> Constants = null;
+        private readonly Dictionary<string, object?> Constants = new Dictionary<string, object?>();
 
         /// <summary>
         /// Initializes a new instance structure with no param
@@ -91,6 +91,7 @@ namespace org.matheval
             this.InitOperators();
             this.InitConstants();
             this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
+            this.Lexer = new Lexer("", this);
         }
 
         /// <summary>
@@ -114,6 +115,7 @@ namespace org.matheval
             this.InitOperators();
             this.InitConstants();
             this.Dc = dc;
+            this.Lexer = new Lexer("", this);
         }
 
         /// <summary>
@@ -146,10 +148,6 @@ namespace org.matheval
         /// <param name="op">op</param>
         public void AddOperator(IOperator op)
         {
-            if (Operators == null)
-            {
-                Operators = new Dictionary<string, IOperator>();
-            }
             Operators.Add(op.GetOp(), op);
         }
 
@@ -160,10 +158,6 @@ namespace org.matheval
         /// <param name="op">op</param>
         public void AddUnaryOperator(IOperator op)
         {
-            if (UnaryOperators == null)
-            {
-                UnaryOperators = new Dictionary<string, IOperator>();
-            }
             UnaryOperators.Add(op.GetOp(), op);
         }
 
@@ -199,12 +193,8 @@ namespace org.matheval
         /// </summary>
         /// <param name="constantName">constantName constant name</param>
         /// <param name="value">Constant value</param>
-        public void AddConstant(string constantName, Object value)
+        public void AddConstant(string constantName, object? value)
         {
-            if (Constants == null)
-            {
-                Constants = new Dictionary<string, Object>();
-            }
             Constants.Add(constantName.ToLowerInvariant(), value);
         }
 
@@ -252,7 +242,8 @@ namespace org.matheval
         /// <returns>Node Base node instance</returns>
         private Implements.Node ParseDoubleNumber()
         {
-            NumberNode nbrNode = new NumberNode(this.Lexer.CurrentToken.DoubleValue, true);
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            NumberNode nbrNode = new NumberNode(this.Lexer.CurrentToken!.DoubleValue, true);
             Lexer.GetToken();
             return nbrNode;
         }
@@ -263,7 +254,8 @@ namespace org.matheval
         /// <returns>Node Base node instance</returns>
         private Implements.Node ParseString()
         {
-            StringNode strNode = new StringNode(this.Lexer.CurrentToken.IdentifierValue);
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            StringNode strNode = new StringNode(this.Lexer.CurrentToken!.IdentifierValue);
             Lexer.GetToken();
             return strNode;
         }
@@ -274,7 +266,8 @@ namespace org.matheval
         /// <returns>Node Base node instance</returns>
         private Implements.Node ParseBool()
         {
-            BoolNode boolNode = new BoolNode(this.Lexer.CurrentToken.BoolValue);
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            BoolNode boolNode = new BoolNode(this.Lexer.CurrentToken!.BoolValue);
             Lexer.GetToken();
             return boolNode;
         }
@@ -284,12 +277,11 @@ namespace org.matheval
         /// </summary>
         /// <param name="identifier">identifier</param>
         /// <returns>Node Base node instance</returns>
-        private Implements.Node ParseConstant(string identifier)
+        private Implements.Node? ParseConstant(string identifier)
         {
-            if (Constants.ContainsKey(identifier))
+            if (Constants.TryGetValue(identifier, out object? constant))
             {
-                Object constant = Constants[identifier];
-                if (constant == null)
+                if (constant is null)
                 {
                     return new NullNode();
                 }
@@ -304,13 +296,13 @@ namespace org.matheval
                         return new NumberNode(Afe_Common.ToDecimal(constant, Dc.WorkingCulture), false);
                     }
                 }
-                else if (constant is string)
+                else if (constant is string str)
                 {
-                    return new StringNode(constant.ToString());
+                    return new StringNode(str);
                 }
-                else if (constant is Boolean)
+                else if (constant is bool b)
                 {
-                    return new BoolNode((Boolean)constant);
+                    return new BoolNode(b);
                 }
                 else
                 {
@@ -329,11 +321,13 @@ namespace org.matheval
         /// <returns>Node Base node instance</returns>
         private Implements.Node ParseIdentifier()
         {
-            string identifierStr = this.Lexer.CurrentToken.IdentifierValue;
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            //Null Assert, already determined token is an identifier, so IdentifierValue is not null
+            string identifierStr = this.Lexer.CurrentToken!.IdentifierValue!;
             this.Lexer.GetToken();
             if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_PAREN_OPEN)
             {
-                Implements.Node constantNode;
+                Implements.Node? constantNode;
                 if ((constantNode = this.ParseConstant(identifierStr.ToLowerInvariant())) != null)
                 {
                     return constantNode;
@@ -357,7 +351,7 @@ namespace org.matheval
                         }
                         if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_COMMA)
                         {
-                            throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS, new String[] { this.Lexer.CurrentToken.ToString(), Lexer.LexerPosition.ToString() }));
+                            throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS, new string[] { this.Lexer.CurrentToken.ToString(), Lexer.LexerPosition.ToString() }));
                         }
                         Lexer.GetToken();
                     }
@@ -366,11 +360,13 @@ namespace org.matheval
                 IFunction funcExecuter;
                 try
                 {
-                    if (_registeredFunctions == null || !_registeredFunctions.TryGetValue(identifierStr.ToLowerInvariant(), out Type t))
+                    if (_registeredFunctions == null || !_registeredFunctions.TryGetValue(identifierStr.ToLowerInvariant(), out Type? t))
                     {
                         t = Type.GetType("org.matheval.Functions." + identifierStr.ToLowerInvariant() + "Function", true);
                     }
-                    Object obj = (Activator.CreateInstance(t));
+                    object? obj = null;
+                    if (t != null)
+                        obj = Activator.CreateInstance(t);
 
                     if (obj == null)
                     {
@@ -378,7 +374,7 @@ namespace org.matheval
                     }
                     funcExecuter = (IFunction)obj;
                 }
-                catch (Exception e)
+                catch
                 {
                     throw new Exception(string.Format(Afe_Common.MSG_METH_NOTFOUND, new string[] { identifierStr.ToUpperInvariant() }));
                 }
@@ -393,14 +389,14 @@ namespace org.matheval
                         continue;
                     }
 
-                    Boolean paramsValid = true;
+                    bool paramsValid = true;
                     for (int i = 0; i < args.Count; i++)
                     {
                         Implements.Node arg = args[i];
                         System.Type compareTarget = functionInfo.ParamCount == -1 ? functionInfo.Args[0] : functionInfo.Args[i];
                         //if (!arg.ReturnType.Equals(typeof(VariableNode)) &&
                         if (!arg.ReturnType.Equals(typeof(object)) &&
-                        !functionInfo.Args[functionInfo.ParamCount == -1 ? 0 : i].Equals(typeof(Object)) &&
+                        !functionInfo.Args[functionInfo.ParamCount == -1 ? 0 : i].Equals(typeof(object)) &&
                         !arg.ReturnType.Equals(compareTarget))
                         {
                             paramsValid = false;
@@ -425,18 +421,20 @@ namespace org.matheval
         {
             this.Lexer.GetToken();
 
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+
             //check if Parentheses has null body
-            if (this.Lexer.CurrentToken.Type == TokenType.TOKEN_PAREN_CLOSE)
+            if (this.Lexer.CurrentToken!.Type == TokenType.TOKEN_PAREN_CLOSE)
             {
                 this.Lexer.GetToken();
-                throw new Exception(string.Format(Afe_Common.MSG_PAREN_NULL_BODY, new String[] { Lexer.LexerPosition.ToString() }));
+                throw new Exception(string.Format(Afe_Common.MSG_PAREN_NULL_BODY, new string[] { Lexer.LexerPosition.ToString() }));
             }
 
             // Parse Parentheses body
             Implements.Node subNode = this.ParseEx();
             if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_PAREN_CLOSE)
             {
-                throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS, new String[] { this.Lexer.CurrentToken.ToString(), Lexer.LexerPosition.ToString() }));
+                throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS, new string[] { this.Lexer.CurrentToken.ToString(), Lexer.LexerPosition.ToString() }));
             }
 
             this.Lexer.GetToken();
@@ -452,7 +450,9 @@ namespace org.matheval
             this.Lexer.resetLexer();
             this.Lexer.GetToken();
             Implements.Node root = this.ParseEx();
-            if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_EOF)
+
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            if (this.Lexer.CurrentToken!.Type != TokenType.TOKEN_EOF)
             {
                 throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS, new string[] { this.Lexer.CurrentToken.ToString(), Lexer.LexerPosition.ToString() }));
             }
@@ -484,7 +484,7 @@ namespace org.matheval
         {
             while (true)
             {
-                IOperator iopCurr = this.GetOperator();
+                IOperator? iopCurr = this.GetOperator();
                 if (iopCurr == null || iopCurr.GetPrec() < inputPrec)
                 {
                     return lhs;
@@ -498,7 +498,7 @@ namespace org.matheval
                 }
                 while (true)
                 {
-                    IOperator iopNext = this.GetOperator();
+                    IOperator? iopNext = this.GetOperator();
                     if (iopNext == null || 
                         !(iopCurr.GetPrec() < iopNext.GetPrec() ||
                         (iopCurr.GetPrec() == iopNext.GetPrec() && 
@@ -511,13 +511,13 @@ namespace org.matheval
                 }
                 //if (!lhs.ReturnType.Equals(typeof(VariableNode)) && !rhs.ReturnType.Equals(typeof(VariableNode)))
 
-                System.Type t = iopCurr.Validate(lhs.ReturnType, rhs.ReturnType);
+                System.Type? t = iopCurr.Validate(lhs.ReturnType, rhs.ReturnType);
                 if (t == null)
                 {
                     /*if (!lhs.ReturnType.Equals(typeof(object)) && !rhs.ReturnType.Equals(typeof(object)))
                     {*/
                         throw new Exception(string.Format(Afe_Common.MSG_WRONG_OP_PARAM,
-                                      new String[] { iopCurr.GetOp(), lhs.ReturnType.ToString(), rhs.ReturnType.ToString() }));
+                                      new string[] { iopCurr.GetOp(), lhs.ReturnType.ToString(), rhs.ReturnType.ToString() }));
                     /*}
                     else if (!lhs.ReturnType.Equals(typeof(object)))
                     {
@@ -543,10 +543,11 @@ namespace org.matheval
         /// Get relate operator excuter
         /// </summary>
         /// <returns>IOperator operator executer</returns>
-        private IOperator GetOperator()
+        private IOperator? GetOperator()
         {
-            string op = this.Lexer.CurrentToken.IdentifierValue;
-            return (this.Lexer.CurrentToken.Type == TokenType.TOKEN_OP && this.Operators.ContainsKey(op)) ? this.Operators[op] : null;
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            string? op = this.Lexer.CurrentToken!.IdentifierValue;
+            return (op is not null && this.Lexer.CurrentToken.Type == TokenType.TOKEN_OP && this.Operators.ContainsKey(op)) ? this.Operators[op] : null;
         }
 
         /// <summary>
@@ -555,7 +556,8 @@ namespace org.matheval
         /// <returns>Node Base node instance</returns>
         private Implements.Node ParseUnary()
         {
-            string op = this.Lexer.CurrentToken.IdentifierValue;
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            string op = this.Lexer.CurrentToken!.IdentifierValue!;
             IOperator iop = this.UnaryOperators[op];
             this.Lexer.GetToken();
             Implements.Node lhs = this.ParsePrm();
@@ -581,11 +583,12 @@ namespace org.matheval
         {
             this.Lexer.GetToken();
 
+            //Null Assert, if Lexer is not null, CurrentToken is not null
             //parse IF condition
-            if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_PAREN_OPEN)
+            if (this.Lexer.CurrentToken!.Type != TokenType.TOKEN_PAREN_OPEN)
             {
                 throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS,
-                                  new String[] { this.Lexer.CurrentToken.ToString(), Lexer.LexerPosition.ToString() }));
+                                  new string[] { this.Lexer.CurrentToken.ToString(), Lexer.LexerPosition.ToString() }));
             }
 
             this.Lexer.GetToken();//eat (
@@ -605,7 +608,7 @@ namespace org.matheval
             if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_COMMA)
             {
                 throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS,
-                              new String[] { this.Lexer.CurrentToken.ToString(), this.Lexer.LexerPosition.ToString() }));
+                              new string[] { this.Lexer.CurrentToken.ToString(), this.Lexer.LexerPosition.ToString() }));
             }
 
             this.Lexer.GetToken(); //eat ,
@@ -619,8 +622,8 @@ namespace org.matheval
             }
 
             this.Lexer.GetToken(); //eat )
-            //if (!condition.ReturnType.Equals(typeof(VariableNode)) && !condition.ReturnType.Equals(typeof(Boolean)))
-            if (!condition.ReturnType.Equals(typeof(object)) && !condition.ReturnType.Equals(typeof(Boolean)))
+            //if (!condition.ReturnType.Equals(typeof(VariableNode)) && !condition.ReturnType.Equals(typeof(bool)))
+            if (!condition.ReturnType.Equals(typeof(object)) && !condition.ReturnType.Equals(typeof(bool)))
             {
                 throw new Exception(string.Format(Afe_Common.MSG_IFELSE_WRONG_CONDITION,
                               new string[] { condition.ReturnType.ToString() }));
@@ -632,7 +635,7 @@ namespace org.matheval
                      !ifTrueNode.ReturnType.Equals(ifFalseNode.ReturnType))
             {
                 throw new Exception(string.Format(Afe_Common.MSG_CONDITIONAL_WRONG_PARAMS,
-                              new String[] { Afe_Common.Const_IF, ifTrueNode.ReturnType.ToString(), ifFalseNode.ReturnType.ToString() }));
+                              new string[] { Afe_Common.Const_IF, ifTrueNode.ReturnType.ToString(), ifFalseNode.ReturnType.ToString() }));
             }
 
             /*if (ifTrueNode.ReturnType.Equals(typeof(VariableNode)) || ifFalseNode.ReturnType.Equals(typeof(VariableNode)))
@@ -667,8 +670,9 @@ namespace org.matheval
         {
             this.Lexer.GetToken();//eat Switch, case
 
+            //Null Assert, if Lexer is not null, CurrentToken is not null
             //parse switch condition
-            if (this.Lexer.CurrentToken.Type != TokenType.TOKEN_PAREN_OPEN)
+            if (this.Lexer.CurrentToken!.Type != TokenType.TOKEN_PAREN_OPEN)
             {
                 throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS,
                              new string[] { this.Lexer.CurrentToken.ToString(), this.Lexer.LexerPosition.ToString() }));
@@ -728,7 +732,8 @@ namespace org.matheval
         /// <returns>Node Base node instance</returns>
         private Implements.Node ParsePrm()
         {
-            if (this.Lexer.CurrentToken.Type == TokenType.TOKEN_IDENTIFIER)
+            //Null Assert, if Lexer is not null, CurrentToken is not null
+            if (this.Lexer.CurrentToken!.Type == TokenType.TOKEN_IDENTIFIER)
             {
                 return this.ParseIdentifier();
             }
@@ -761,7 +766,7 @@ namespace org.matheval
                 return this.ParseUnary();
             }
             throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS,
-                             new String[] { this.Lexer.CurrentToken.ToString(), this.Lexer.LexerPosition.ToString() }));
+                             new string[] { this.Lexer.CurrentToken.ToString(), this.Lexer.LexerPosition.ToString() }));
         }
 
     }

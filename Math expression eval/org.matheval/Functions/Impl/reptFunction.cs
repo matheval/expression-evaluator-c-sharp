@@ -49,10 +49,10 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             string temp = string.Empty;
-            for (int i = 1; i <= Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)); i++)
+            for (int i = 1; i <= decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)); i++)
             {
                 temp += Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
             }

@@ -38,7 +38,7 @@ namespace org.matheval.Functions
         /// <returns>FunctionDefs</returns>
         public List<FunctionDef> GetInfo()
         {
-            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Bitlshift, new System.Type[] { typeof(decimal), typeof(decimal) }, typeof(Boolean), 2) };
+            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Bitlshift, new System.Type[] { typeof(decimal), typeof(decimal) }, typeof(bool), 2) };
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), dc.WorkingCulture) << int.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture), dc.WorkingCulture);
         }

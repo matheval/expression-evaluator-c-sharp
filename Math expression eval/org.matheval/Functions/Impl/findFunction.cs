@@ -53,7 +53,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             int pos = this.Find(args, dc);
             return pos >= 0 ? pos + 1 : pos;
@@ -64,19 +64,19 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Index find</returns>
-        public int Find(Dictionary<string, Object> args, ExpressionContext dc)
+        public int Find(Dictionary<string, object?> args, ExpressionContext dc)
         {
             int result;
             // because IndexOf uses the current culture info for string comparison
             var ci = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = dc.WorkingCulture;
+            Thread.CurrentThread.CurrentCulture = dc.WorkingCulture ?? ci;
             if (args.Count == 2)
             {
                 result = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             }
             else
             {
-                result = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture)) - 1);
+                result = Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture).IndexOf(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture)) - 1);
             }
 
             Thread.CurrentThread.CurrentCulture = ci;

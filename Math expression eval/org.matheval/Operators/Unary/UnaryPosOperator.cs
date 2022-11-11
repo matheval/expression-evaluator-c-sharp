@@ -49,12 +49,12 @@ namespace org.matheval.Operators.Unary
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>Calculate value</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        public override object Calculate(object? left, object? right, ExpressionContext dc)
         {
             base.Calculate(left, right, dc);
-            if (left is decimal)
+            if (left is decimal dl)
             {
-                decimal retValue = +(decimal)left;
+                decimal retValue = +dl;
                 return retValue;
             }
             throw new Exception(Afe_Common.MSG_UNARY_INVALID);

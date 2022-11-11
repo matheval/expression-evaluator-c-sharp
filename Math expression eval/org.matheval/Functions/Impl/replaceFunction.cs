@@ -53,7 +53,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             if (args.Count == 3)
             {
@@ -62,9 +62,9 @@ namespace org.matheval.Functions
             else
             {
                 string text = Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
-                string left = text.Substring(0, Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) - 1);
-                string right = text.Substring(Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) - 1 + Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture)));
-                return left + args[Afe_Common.Const_Key_Four].ToString() + right;
+                string left = text.Substring(0, decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) - 1);
+                string right = text.Substring(decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)) - 1 + decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture)));
+                return string.Concat(left, args[Afe_Common.Const_Key_Four],  right);
             }
         }
     }

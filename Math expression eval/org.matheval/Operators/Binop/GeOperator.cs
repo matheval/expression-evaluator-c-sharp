@@ -53,11 +53,11 @@ namespace org.matheval.Operators.Binop
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>value Calculate</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        public override object Calculate(object? left, object? right, ExpressionContext dc)
         {
-            if (System.Object.ReferenceEquals(left, null) || System.Object.ReferenceEquals(right, null))
+            if (left is null || right is null)
             {
-                if (System.Object.ReferenceEquals(left, null) && System.Object.ReferenceEquals(right, null))
+                if (left is null && right is null)
                 {
                     return true;
                 }
@@ -74,21 +74,21 @@ namespace org.matheval.Operators.Binop
                 decimal rightDecimal = Afe_Common.ToDecimal(right, dc.WorkingCulture);
                 return Afe_Common.Round(leftDecimal, dc) >= Afe_Common.Round(rightDecimal, dc);
             }
-            else if (left is bool && right is bool)
+            else if (left is bool bl && right is bool br)
             {
-                return (bool)left == true && (bool)right == false;
+                return bl == true && br == false;
             }
-            else if (left is string && right is string)
+            else if (left is string sl && right is string sr)
             {
-                return left.ToString().CompareTo(right.ToString()) >= 0;
+                return string.Compare(sl, sr) >= 0;
             }
-            else if (left is TimeSpan && right is TimeSpan)
+            else if (left is TimeSpan tl && right is TimeSpan tr)
             {
-                return (TimeSpan)left >= (TimeSpan)right;
+                return tl >= tr;
             }
-            else if (left is DateTime && right is DateTime)
+            else if (left is DateTime dl && right is DateTime dr)
             {
-                return (DateTime)left >= (DateTime)right;
+                return dl >= dr;
             }
             throw new Exception(string.Format(MSG_WRONG_OP_PARAM_EX, new string[] { "Comparison", "Integer, Boolean, Datetime" }));
         }
@@ -99,7 +99,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="typeLeft">typeLeft</param>
         /// <param name="typeRight">typeRight</param>
         /// <returns>Type</returns>
-        public override Type Validate(Type typeLeft, Type typeRight)
+        public override Type? Validate(Type typeLeft, Type typeRight)
         {
             if (
                 ((typeLeft.Equals(typeof(decimal)) || typeLeft.Equals(typeof(object)))

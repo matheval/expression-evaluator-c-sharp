@@ -47,10 +47,10 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            //return Afe_Common.Round(1 / Math.Cos(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]))), dc);
-            double result = 1d / Math.Cos(Decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)));
+            //return Afe_Common.Round(1 / Math.Cos(decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]))), dc);
+            double result = 1d / Math.Cos(decimal.ToDouble(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)));
             return Convert.ToDecimal(result, dc.WorkingCulture);
         }
     }

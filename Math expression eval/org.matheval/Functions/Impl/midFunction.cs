@@ -49,13 +49,13 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             
             return this.Mid(
                 Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture), 
-                Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)),
-                Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture))
+                decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)),
+                decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture))
                 );
         }
 

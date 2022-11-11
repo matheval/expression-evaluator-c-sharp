@@ -49,17 +49,17 @@ namespace org.matheval
         /// <summary>
         /// Input Dateformat
         /// </summary>
-        public String DateFormat;
+        public string DateFormat;
 
         /// <summary>
         /// Input Datetime format
         /// </summary>
-        public String DatetimeFormat;
+        public string DatetimeFormat;
 
         /// <summary>
         /// Input time format
         /// </summary>
-        public String TimeFormat;
+        public string TimeFormat;
 
         /// <summary>
         /// Weekends days of week
@@ -71,17 +71,17 @@ namespace org.matheval
         /// Friday = 5,
         /// Saturday = 6
         /// </summary>
-        public int[] Weekends;
+        public int[] Weekends = Array.Empty<int>();
 
         /// <summary>
         /// List holidays or year 
         /// </summary>
-        public DateTime[] Holidays;
+        public DateTime[] Holidays = Array.Empty<DateTime>();
 
         /// <summary>
         /// The culture used to parse the numbers
         /// </summary>
-        public CultureInfo WorkingCulture;
+        public CultureInfo? WorkingCulture;
 
         /// <summary>
         /// Initializes a new instance structure to a specified type int scale and type MidpointRounding rd
@@ -90,7 +90,7 @@ namespace org.matheval
         /// <param name="rd"></param>
         /// <param name="dateFormat"></param>
         /// <param name="datetimeFormat"></param>
-        public ExpressionContext(int scale, MidpointRounding rd, String dateFormat, String datetimeFormat, String timeFormat, CultureInfo workingCulture)
+        public ExpressionContext(int scale, MidpointRounding rd, string dateFormat, string datetimeFormat, string timeFormat, CultureInfo workingCulture)
         {
             Scale = scale;
             Rd = rd;

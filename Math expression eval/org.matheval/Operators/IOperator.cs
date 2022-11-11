@@ -52,13 +52,13 @@ namespace org.matheval.Operators
         /// <summary>
         /// Calculate
         /// </summary>
-        /// <returns>Value is type Object result Calculate</returns>
-        object Calculate(object left, object right, ExpressionContext dc);
+        /// <returns>Value is type object result Calculate</returns>
+        object? Calculate(object? left, object? right, ExpressionContext dc);
 
         /// <summary>
         /// Validate
         /// </summary>
         /// <returns>Value is System.Type</returns>
-        Type Validate(Type typeLeft, Type typeRight);
+        Type? Validate(Type typeLeft, Type typeRight);
     }
 }

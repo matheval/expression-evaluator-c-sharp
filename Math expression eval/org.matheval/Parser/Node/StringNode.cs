@@ -14,9 +14,9 @@
         /// Initializes a new instance structure to a specified type string value
         /// </summary>
         /// <param name="value">value</param>
-        public StringNode(string value) : base(typeof(string))
+        public StringNode(string? value) : base(typeof(string))
         {
-            this.Value = value;
+            this.Value = value ?? "";
         }
     }
 }

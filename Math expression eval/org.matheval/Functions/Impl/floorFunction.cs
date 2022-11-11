@@ -54,7 +54,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             return this.Floor(args, dc);
         }
@@ -64,7 +64,7 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Floor</returns>
-        public decimal Floor(Dictionary<string, Object> args, ExpressionContext dc)
+        public decimal Floor(Dictionary<string, object?> args, ExpressionContext dc)
         {
             if (args.Count == 1)
             {

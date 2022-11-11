@@ -42,7 +42,7 @@ namespace org.matheval.Functions
         {
             return new List<FunctionDef>{
                        new FunctionDef(Afe_Common.Const_Sum, new System.Type[]{ typeof(decimal) }, typeof(decimal), -1),
-                       new FunctionDef(Afe_Common.Const_Sum, new System.Type[] { typeof(Object) }, typeof(decimal), 1)};
+                       new FunctionDef(Afe_Common.Const_Sum, new System.Type[] { typeof(object) }, typeof(decimal), 1)};
         }
 
         /// <summary>
@@ -51,11 +51,11 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]))
+            if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]) && args[Afe_Common.Const_Key_One] is IEnumerable itor)
             {
-                return this.SumList((IEnumerable)args[Afe_Common.Const_Key_One], dc);
+                return this.SumList(itor, dc);
             }
             return this.Sum(args, dc);
         }
@@ -65,10 +65,10 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Sum</returns>
-        private decimal Sum(Dictionary<string, Object> args, ExpressionContext dc)
+        private decimal Sum(Dictionary<string, object?> args, ExpressionContext dc)
         {
             decimal sum = 0;
-            foreach (Object item in args.Values)
+            foreach (object? item in args.Values)
             {
                 sum += Afe_Common.ToDecimal(item, dc.WorkingCulture);
             }
@@ -83,7 +83,7 @@ namespace org.matheval.Functions
         private decimal SumList(IEnumerable arg, ExpressionContext dc)
         {
             decimal sum = 0;
-            foreach (Object item in arg)
+            foreach (object? item in arg)
             {
                 if (Afe_Common.IsNumber(item))
                 {

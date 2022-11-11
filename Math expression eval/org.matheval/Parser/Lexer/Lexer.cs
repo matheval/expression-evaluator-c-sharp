@@ -33,17 +33,17 @@ namespace org.matheval
         /// <summary>
         /// Input expression
         /// </summary>
-        private string FomulaInput;
+        private readonly string FomulaInput;
 
         /// <summary>
         /// Current token
         /// </summary>
-        public Token CurrentToken { get; set; }
+        public Token? CurrentToken { get; set; }
 
         /// <summary>
         /// Previous token
         /// </summary>
-        public Token PreviousToken { get; set; }
+        public Token? PreviousToken { get; set; }
 
         /// <summary>
         /// Last char, default is white space
@@ -59,7 +59,7 @@ namespace org.matheval
         /// <summary>
         /// Create new object parser
         /// </summary>
-        private Parser Parser;
+        private readonly Parser Parser;
 
         /// <summary>
         /// Initializes a new instance structure to a specified type token value and string value
@@ -386,7 +386,7 @@ namespace org.matheval
                     }
                 }
                 throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS,
-                              new String[] { strTemp, this.LexerPosition.ToString() }));
+                              new string[] { strTemp, this.LexerPosition.ToString() }));
             }
         }
     }

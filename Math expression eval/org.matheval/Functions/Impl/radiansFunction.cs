@@ -47,7 +47,7 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
             //double v180 = double.Parse("180");
             //return Afe_Common.Round(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One]) * (decimal)(Math.PI / v180), dc);

@@ -51,29 +51,29 @@ namespace org.matheval.Operators.Binop
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>Calculate value</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        public override object Calculate(object? left, object? right, ExpressionContext dc)
         {
-            if (System.Object.ReferenceEquals(left, null) || System.Object.ReferenceEquals(right, null))
+            if (left is null || right is null)
             {
-                if (System.Object.ReferenceEquals(left, null) && System.Object.ReferenceEquals(right, null))
+                if (left is null && right is null)
                 {
                     return false;
                 }
                 return true;
             }
 
-            if (left is decimal && right is decimal)
+            if (left is decimal dl && right is decimal dr)
             {
                 //return (decimal)left != (decimal)right;
-                return Afe_Common.Round((decimal)left, dc) != Afe_Common.Round((decimal)right, dc);
+                return Afe_Common.Round(dl, dc) != Afe_Common.Round(dr, dc);
             }
-            else if (left is bool && right is bool)
+            else if (left is bool bl && right is bool br)
             {
-                return (bool)left != (bool)right;
+                return bl != br;
             }
-            else if (left is string && right is string)
+            else if (left is string sl && right is string sr)
             {
-                return !left.Equals(right);
+                return !sl.Equals(sr);
             }
             throw new Exception(string.Format(MSG_WRONG_OP_PARAM_EX, new string[] { "Comparison", "Number, Boolean, Datetime" }));
         }
@@ -84,7 +84,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="typeLeft">typeLeft</param>
         /// <param name="typeRight">typeRight</param>
         /// <returns>Type</returns>
-        public override Type Validate(Type typeLeft, Type typeRight)
+        public override Type? Validate(Type typeLeft, Type typeRight)
         {
             if (
                 ((typeLeft.Equals(typeof(decimal)) || typeLeft.Equals(typeof(object)))

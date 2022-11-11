@@ -30,7 +30,7 @@ namespace org.matheval.Functions
 {
     /// <summary>
     /// average(1,2,3) -> 2
-    /// new Afe_Evaluator('average(abc)').bind('abc',new List<Decimal>{1,2,3}).eval() -> 2
+    /// new Afe_Evaluator('average(abc)').bind('abc',new List<decimal>{1,2,3}).eval() -> 2
     /// </summary>
     public class averageFunction : IFunction
     {
@@ -42,7 +42,7 @@ namespace org.matheval.Functions
         {
             return new List<FunctionDef>{
                        new FunctionDef(Afe_Common.Const_Verage, new System.Type[]{ typeof(decimal) }, typeof(decimal), -1),
-                       new FunctionDef(Afe_Common.Const_Verage, new System.Type[] { typeof(Object) }, typeof(decimal), 1)};
+                       new FunctionDef(Afe_Common.Const_Verage, new System.Type[] { typeof(object) }, typeof(decimal), 1)};
         }
 
         /// <summary>
@@ -51,11 +51,11 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]))
+            if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]) && args[Afe_Common.Const_Key_One] is IEnumerable itor)
             {
-                return this.AvgList((IEnumerable)args[Afe_Common.Const_Key_One], dc);
+                return this.AvgList(itor, dc);
             }
             return this.Avg(args, dc);
         }
@@ -65,10 +65,10 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Avg</returns>
-        private decimal Avg(Dictionary<string, Object> args, ExpressionContext dc)
+        private decimal Avg(Dictionary<string, object?> args, ExpressionContext dc)
         {
             decimal sum = 0;
-            foreach (Object item in args.Values)
+            foreach (object? item in args.Values)
             {
                 if(!Afe_Common.IsNumber(item))
                 {
@@ -89,7 +89,7 @@ namespace org.matheval.Functions
             decimal sum = 0;
             int elementCount = 0;
 
-            foreach (Object item in arg)
+            foreach (object? item in arg)
             {
                 if (Afe_Common.IsNumber(item))
                 {

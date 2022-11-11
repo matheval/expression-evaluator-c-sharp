@@ -51,7 +51,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="right">right</param>
         /// <param name="dc">dc</param>
         /// <returns>value Calculate</returns>
-        public override object Calculate(object left, object right, ExpressionContext dc)
+        public override object Calculate(object? left, object? right, ExpressionContext dc)
         {
             if (Common.Afe_Common.IsNumber(left) && Common.Afe_Common.IsNumber(right))
             {
@@ -68,7 +68,7 @@ namespace org.matheval.Operators.Binop
         /// <param name="typeLeft">typeLeft</param>
         /// <param name="typeRight">typeRight</param>
         /// <returns>Type</returns>
-        public override Type Validate(Type typeLeft, Type typeRight)
+        public override Type? Validate(Type typeLeft, Type typeRight)
         {
             if (                
                 (typeLeft.Equals(typeof(decimal)) || typeLeft.Equals(typeof(object)))                

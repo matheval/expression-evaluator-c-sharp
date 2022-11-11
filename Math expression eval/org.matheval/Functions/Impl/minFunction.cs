@@ -30,7 +30,7 @@ namespace org.matheval.Functions
 {
     /// <summary>
     /// MIN(1,2,3) -> 1
-    /// new Afe_Evaluator('MIN(abc)').bind('abc',new List<Decimal>{1,2,3}).eval() -> 1
+    /// new Afe_Evaluator('MIN(abc)').bind('abc',new List<decimal>{1,2,3}).eval() -> 1
     /// </summary>
     public class minFunction : IFunction
     {
@@ -42,7 +42,7 @@ namespace org.matheval.Functions
         {
             return new List<FunctionDef>{
                        new FunctionDef(Afe_Common.Const_Min, new System.Type[]{ typeof(decimal) }, typeof(decimal), -1),
-                       new FunctionDef(Afe_Common.Const_Min, new System.Type[] { typeof(Object)}, typeof(decimal), 1)};
+                       new FunctionDef(Afe_Common.Const_Min, new System.Type[] { typeof(object)}, typeof(decimal), 1)};
         }
 
         /// <summary>
@@ -51,11 +51,11 @@ namespace org.matheval.Functions
         /// <param name="args">args</param>
         /// <param name="dc">dc</param>
         /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
+        public object? Execute(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]))
+            if (args.Count == 1 && Afe_Common.IsList(args[Afe_Common.Const_Key_One]) && args[Afe_Common.Const_Key_One] is IEnumerable itor)
             {
-                return this.MinList((IEnumerable)args[Afe_Common.Const_Key_One], dc);
+                return this.MinList(itor, dc);
             }
             return this.Min(args, dc);
         }
@@ -65,10 +65,10 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="args">args</param>
         /// <returns>Value Min</returns>
-        private Object Min(Dictionary<string, Object> args, ExpressionContext dc)
+        private object? Min(Dictionary<string, object?> args, ExpressionContext dc)
         {
-            Object minEntry = null;
-            foreach (Object item in args.Values)
+            object? minEntry = null;
+            foreach (object? item in args.Values)
             {
                 if (minEntry == null || Afe_Common.ToDecimal(item, dc.WorkingCulture) < (decimal)minEntry)
                 {
@@ -83,10 +83,10 @@ namespace org.matheval.Functions
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private Object MinList(IEnumerable arg, ExpressionContext dc)
+        private object? MinList(IEnumerable arg, ExpressionContext dc)
         {
-            Object minEntry = null;
-            foreach (Object item in arg)
+            object? minEntry = null;
+            foreach (object? item in arg)
             {
                 if (!Afe_Common.IsNumber(item))
                 {
