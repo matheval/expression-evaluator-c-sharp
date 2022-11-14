@@ -61,7 +61,7 @@ namespace org.matheval.Functions
         /// <param name="left">left</param>
         /// <param name="right">right</param>
         /// <returns>Value Mod</returns>
-        public decimal Mod(object left, object right, ExpressionContext dc)
+        private static decimal Mod(object left, object right, ExpressionContext dc)
         {
             if (left is decimal leftDecimal && right is decimal rightDecimal)
             {
