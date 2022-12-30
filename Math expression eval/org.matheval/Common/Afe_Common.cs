@@ -25,7 +25,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.RegularExpressions;
+// ReSharper disable InconsistentNaming
+// ReSharper disable IdentifierTypo
 
 namespace org.matheval.Common
 {
@@ -80,11 +81,6 @@ namespace org.matheval.Common
         /// Condition expression CASE
         /// </summary>
         public const string Const_CASE = "CASE";
-
-        /// <summary>
-        /// Condition expression WHEN
-        /// </summary>
-        //public const string Const_WHEN = "WHEN";
 
         /// <summary>
         /// Condition expression BRACKETS OPEN
@@ -224,17 +220,17 @@ namespace org.matheval.Common
         #region Function
 
         /// <summary>
-        /// Funtion Text
+        /// Function Text
         /// </summary>
         public const string Const_Text = "text";
 
         /// <summary>
-        /// Funtion TODAY
+        /// Function TODAY
         /// </summary>
         public const string Const_TODAY = "TODAY";
 
         /// <summary>
-        /// Funtion left
+        /// Function left
         /// </summary>
         public const string Const_LEFT = "left";
 
@@ -655,16 +651,13 @@ namespace org.matheval.Common
         /// </summary>
         /// <param name="value">The value to act on.</param>
         /// <returns>true if Alpha, false if not.</returns>
-        /*public static bool IsAlpha(string value)
-        {
-            //return !Regex.IsMatch(value, "[^a-zA-Z]");
-            Regex rg = new Regex(@"^[a-zA-Z_]+$");
-            return rg.IsMatch(value);
-        }*/
         public static bool IsAlpha(char value)
         {
-            Regex rg = new Regex(@"^[a-zA-Z_]+$");
-            return rg.IsMatch(value.ToString());
+            //Regex rg = new Regex(@"^[a-zA-Z_]+$");
+            //return rg.IsMatch(value.ToString());
+            return value is (>='A' and <='Z') 
+                or (>='a' and <='z') 
+                or ('_');
         }
 
         /// <summary>
@@ -672,15 +665,10 @@ namespace org.matheval.Common
         /// </summary>
         /// <param name="value">The value to act on.</param>
         /// <returns>true if IsAlphaNumeric, false if not.</returns>
-        /*public static bool IsAlphaNumeric(string value)
-        {
-            Regex rg = new Regex(@"^[a-zA-Z0-9_]+$");
-            return rg.IsMatch(value);
-        }*/
         public static bool IsAlphaNumeric(char value)
         {
-            Regex rg = new Regex(@"^[a-zA-Z0-9_]+$");
-            return rg.IsMatch(value.ToString());
+            //Regex rg = new Regex(@"^[a-zA-Z0-9_]+$");
+            return IsAlpha(value) || IsNumeric(value);
         }
 
         /// <summary>
@@ -688,16 +676,11 @@ namespace org.matheval.Common
         /// </summary>
         /// <param name="value">The value to act on.</param>
         /// <returns>true if IsNumeric, false if not.</returns>
-        /*public static bool IsNumeric(string value)
-        {
-            //Regex rg = new Regex(@"^(-?)(0|([1-9][0-9]*))(\\.[0-9]+)?$");
-            Regex rg = new Regex(@"^[0-9]+$");
-            return rg.IsMatch(value);
-        }*/
         public static bool IsNumeric(char value)
         {
-            Regex rg = new Regex(@"^[0-9]+$");
-            return rg.IsMatch(value.ToString());
+            //Regex rg = new Regex(@"^[0-9]+$");
+            //return rg.IsMatch(value.ToString());
+            return value is (>= '0' and <= '9');
         }
 
         /// <summary>
@@ -754,14 +737,10 @@ namespace org.matheval.Common
         /// <returns></returns>
         public static decimal ToDecimal(object value, CultureInfo cultureInfo)
         {
-            if (value is decimal)
-            {
-                return (decimal)value;
-            }
-            else
-            {
-                return Convert.ToDecimal(value, cultureInfo);
-            }
+            if (value is decimal dec)
+                return dec;
+
+            return Convert.ToDecimal(value, cultureInfo);
         }
 
         /// <summary>
@@ -773,14 +752,12 @@ namespace org.matheval.Common
         /// <returns></returns>
         public static string ToString(object value, CultureInfo cultureInfo)
         {
-            if (value is string)
+            if (value is string stringValue)
             {
-                return (string)value;
+                return stringValue;
             }
-            else
-            {
-                return Convert.ToString(value, cultureInfo);
-            }
+
+            return Convert.ToString(value, cultureInfo);
         }
 
 
@@ -818,51 +795,68 @@ namespace org.matheval.Common
         /// <returns>Total Value</returns>
         public static int DateDif(DateTime startDate, DateTime endDate, string unit)
         {
-            // TODO: 
-            if (unit != null && unit.Equals("d", StringComparison.InvariantCultureIgnoreCase))
+            while (true)
             {
-                return (endDate - startDate).Days;
-            }
-            else if (unit != null && unit.Equals("m", StringComparison.InvariantCultureIgnoreCase))
-            {
-                int monthDiff = endDate.Year * 12 + endDate.Month - (startDate.Year * 12 + startDate.Month);
-                if (endDate.Day < startDate.Day)
+                // TODO: 
+                if (unit != null && unit.Equals("d", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    monthDiff--;
+                    return (endDate - startDate).Days;
                 }
-                return monthDiff;
-            }
-            else if (unit != null && unit.Equals("y", StringComparison.InvariantCultureIgnoreCase))
-            {
-                int monthDiff = endDate.Year * 12 + endDate.Month - (startDate.Year * 12 + startDate.Month);
-                if (endDate.Day < startDate.Day)
+
+                if (unit != null && unit.Equals("m", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    monthDiff--;
+                    int monthDiff = endDate.Year * 12 + endDate.Month - (startDate.Year * 12 + startDate.Month);
+                    if (endDate.Day < startDate.Day)
+                    {
+                        monthDiff--;
+                    }
+
+                    return monthDiff;
                 }
-                return monthDiff / 12;
+
+                if (unit != null && unit.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    int monthDiff = endDate.Year * 12 + endDate.Month - (startDate.Year * 12 + startDate.Month);
+                    if (endDate.Day < startDate.Day)
+                    {
+                        monthDiff--;
+                    }
+
+                    return monthDiff / 12;
+                }
+
+                if (unit != null && unit.Equals("ym", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var stDate = startDate;
+                    var yearDiff = DateDif(startDate, endDate, "y");
+                    stDate = stDate.AddYears(yearDiff);
+                    startDate = stDate;
+                    unit = "m";
+                    continue;
+                }
+
+                if (unit != null && unit.Equals("yd", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var stDate = startDate;
+                    var yearDiff = DateDif(startDate, endDate, "y");
+                    stDate = stDate.AddYears(yearDiff);
+                    startDate = stDate;
+                    unit = "d";
+                    continue;
+                }
+
+                if (unit != null && unit.Equals("md", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var stDate = startDate;
+                    var mDiff = DateDif(startDate, endDate, "m");
+                    stDate = stDate.AddMonths(mDiff);
+                    startDate = stDate;
+                    unit = "d";
+                    continue;
+                }
+
+                throw new Exception("Please set M or D or Y for UNIT param");
             }
-            else if (unit != null && unit.Equals("ym", StringComparison.InvariantCultureIgnoreCase))
-            {
-                DateTime stDate = startDate;
-                int yearDiff = DateDif(startDate, endDate, "y");
-                stDate = stDate.AddYears(yearDiff);
-                return DateDif(stDate, endDate, "m");
-            }
-            else if (unit != null && unit.Equals("yd", StringComparison.InvariantCultureIgnoreCase))
-            {
-                DateTime stDate = startDate;
-                int yearDiff = DateDif(startDate, endDate, "y");
-                stDate = stDate.AddYears(yearDiff);
-                return DateDif(stDate, endDate, "d");
-            }
-            else if (unit != null && unit.Equals("md", StringComparison.InvariantCultureIgnoreCase))
-            {
-                DateTime stDate = startDate;
-                int mDiff = DateDif(startDate, endDate, "m");
-                stDate = stDate.AddMonths(mDiff);
-                return DateDif(stDate, endDate, "d");
-            }
-            throw new Exception("Please set M or D or Y for UNIT param");
         }
 
         #endregion
