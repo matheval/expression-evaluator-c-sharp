@@ -30,7 +30,7 @@ namespace org.matheval.Functions
     /// <summary>
     /// Returns the year from a date
     /// </summary>
-    public class yearFunction : IFunction
+    public class dateFunction : IFunction
     {
         /// <summary>
         /// Get Information
@@ -40,7 +40,7 @@ namespace org.matheval.Functions
         {
             return new List<FunctionDef>
             {
-                new FunctionDef(Afe_Common.Const_Year, new Type[] { typeof(string) }, typeof(int), 1)
+                new FunctionDef(Afe_Common.Const_Date, new Type[] { typeof(decimal), typeof(decimal), typeof(decimal) }, typeof(string), 3)
             };
         }
 
@@ -52,9 +52,11 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            string dateString = Afe_Common.ToString(args[Afe_Common.Const_Key_One].ToString(), dc.WorkingCulture);
-            DateTime date = DateTime.Parse(dateString, dc.WorkingCulture);
-            return Afe_Common.ToInteger(date.Year, dc.WorkingCulture);
+            var year = Afe_Common.ToInteger(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
+            var month = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
+            var day = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Three], dc.WorkingCulture);
+            var dateString = year.ToString(dc.WorkingCulture) + "-" + month.ToString(dc.WorkingCulture) + "-" + day.ToString(dc.WorkingCulture);
+            return Afe_Common.ToString(DateTime.Parse(dateString, dc.WorkingCulture).Date, dc.WorkingCulture);
         }
     }
 }

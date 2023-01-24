@@ -231,7 +231,7 @@ namespace org.matheval.Common
         /// <summary>
         /// Funtion TODAY
         /// </summary>
-        public const string Const_TODAY = "TODAY";
+        public const string Const_TODAY = "today";
 
         /// <summary>
         /// Funtion left
@@ -239,19 +239,9 @@ namespace org.matheval.Common
         public const string Const_LEFT = "left";
 
         /// <summary>
-        /// Function Second
-        /// </summary>
-        public const string Const_Second = "second";
-
-        /// <summary>
         /// Function code
         /// </summary>
         public const string Const_Code = "code";
-
-        /// <summary>
-        /// Function hour
-        /// </summary>
-        public const string Const_Hour = "hour";
 
         /// <summary>
         /// Function int
@@ -262,12 +252,6 @@ namespace org.matheval.Common
         /// Function isblank
         /// </summary>
         public const string Const_Isblank = "isblank";
-
-        /// <summary>
-        /// Function Minute
-        /// </summary>
-        public const string Const_Minute = "minute";
-
 
         /// <summary>
         /// Function proper
@@ -585,12 +569,6 @@ namespace org.matheval.Common
         /// </summary>
         public const string Const_Round = "round";
 
-
-        /// <summary>
-        /// Function time
-        /// </summary>
-        public const string Const_Time = "time";
-
         /// <summary>
         /// Function Exp
         /// </summary>
@@ -607,10 +585,36 @@ namespace org.matheval.Common
         public const string Const_Find = "find";
 
         /// <summary>
+        /// Function Date
+        /// </summary>
+        public const string Const_Date = "date";
+        public const string Const_DateValue = "datevalue";
+        public const string Const_Time = "time";
+        public const string Const_Second = "second";
+        public const string Const_Minute = "minute";
+        public const string Const_Hour = "hour";
+        public const string Const_Day = "day";
+        public const string Const_Month = "month";
+
+        /// <summary>
         /// Function Year
         /// </summary>
         public const string Const_Year = "year";
 
+        public const string Const_Now = "now";
+
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_Today = "today";
+        public const string Const_EDate = "edate";
+        public const string Const_Weekday = "weekday";
+        public const string Const_WeekNum = "weeknum";
+        public const string Const_Workday = "workday";
+        public const string Const_NetWorkdays = "networkdays";
+        public const string Const_EOMonth = "eomonth";
+        public const string Const_DateDif = "datedif";
+        public const string Const_Days = "days";
 
         #endregion
 
