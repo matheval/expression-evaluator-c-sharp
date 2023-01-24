@@ -606,6 +606,11 @@ namespace org.matheval.Common
         /// </summary>
         public const string Const_Find = "find";
 
+        /// <summary>
+        /// Function Year
+        /// </summary>
+        public const string Const_Year = "year";
+
 
         #endregion
 
@@ -761,6 +766,24 @@ namespace org.matheval.Common
             else
             {
                 return Convert.ToDecimal(value, cultureInfo);
+            }
+        }
+
+        /// <summary>
+        /// TODO poner default invariant culture.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="cultureInfo"></param>
+        /// <returns></returns>
+        public static decimal ToInteger(object value, CultureInfo cultureInfo)
+        {
+            if (value is int)
+            {
+                return (int)value;
+            }
+            else
+            {
+                return Convert.ToInt32(value, cultureInfo);
             }
         }
 
