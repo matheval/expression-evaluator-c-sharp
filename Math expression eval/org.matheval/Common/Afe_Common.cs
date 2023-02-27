@@ -779,7 +779,7 @@ namespace org.matheval.Common
         /// <param name="value"></param>
         /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        public static decimal ToInteger(object value, CultureInfo cultureInfo)
+        public static int ToInteger(object value, CultureInfo cultureInfo)
         {
             if (value is int)
             {

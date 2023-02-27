@@ -55,8 +55,7 @@ namespace org.matheval.Functions
             var year = Afe_Common.ToInteger(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
             var month = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
             var day = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Three], dc.WorkingCulture);
-            var dateString = year.ToString(dc.WorkingCulture) + "-" + month.ToString(dc.WorkingCulture) + "-" + day.ToString(dc.WorkingCulture);
-            return Afe_Common.ToString(DateTime.Parse(dateString, dc.WorkingCulture).Date, dc.WorkingCulture);
+            return Afe_Common.ToString(new DateTime(year, month, day), dc.WorkingCulture);
         }
     }
 }
