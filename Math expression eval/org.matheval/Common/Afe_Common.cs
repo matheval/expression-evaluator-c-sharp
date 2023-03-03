@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace org.matheval.Common
@@ -588,12 +589,33 @@ namespace org.matheval.Common
         /// Function Date
         /// </summary>
         public const string Const_Date = "date";
+        /// <summary>
+        /// Function DateValue
+        /// </summary>
         public const string Const_DateValue = "datevalue";
+        /// <summary>
+        /// Function Time
+        /// </summary>
         public const string Const_Time = "time";
+        /// <summary>
+        /// Function Time
+        /// </summary>
         public const string Const_Second = "second";
+        /// <summary>
+        /// Function Time
+        /// </summary>
         public const string Const_Minute = "minute";
+        /// <summary>
+        /// Function Time
+        /// </summary>
         public const string Const_Hour = "hour";
+        /// <summary>
+        /// Function Time
+        /// </summary>
         public const string Const_Day = "day";
+        /// <summary>
+        /// Function Time
+        /// </summary>
         public const string Const_Month = "month";
 
         /// <summary>
@@ -601,16 +623,34 @@ namespace org.matheval.Common
         /// </summary>
         public const string Const_Year = "year";
 
+        /// <summary>
+        /// Function Year
+        /// </summary>
         public const string Const_Now = "now";
 
         /// <summary>
         /// Function Today
         /// </summary>
         public const string Const_Today = "today";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_EDate = "edate";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_Weekday = "weekday";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_WeekNum = "weeknum";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_Workday = "workday";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_NetWorkdays = "networkdays";
         public const string Const_EOMonth = "eomonth";
         public const string Const_DateDif = "datedif";
@@ -809,8 +849,6 @@ namespace org.matheval.Common
                 return Convert.ToString(value, cultureInfo);
             }
         }
-
-
 
         /// <summary>
         /// Check object instance of List
