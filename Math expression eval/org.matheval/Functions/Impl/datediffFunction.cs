@@ -54,7 +54,7 @@ namespace org.matheval.Functions
             var startDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             var endDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture));
             var unit = Afe_Common.ToString(args[Afe_Common.Const_Key_Three], dc.WorkingCulture);
-            return Afe_Common.ToString(SubtractDates(startDate, endDate, unit), dc.WorkingCulture);
+            return Afe_Common.ToDecimal(SubtractDates(startDate, endDate, unit), dc.WorkingCulture);
         }
 
         private static string SubtractDates(DateTime startDate, DateTime endDate, string unit)

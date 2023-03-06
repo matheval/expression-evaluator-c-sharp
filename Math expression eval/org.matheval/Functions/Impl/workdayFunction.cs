@@ -54,19 +54,17 @@ namespace org.matheval.Functions
         {
             var startDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             var days = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
-            DateTime finalDate = startDate;
             int i = 0;
-            do
+            while (i < days)
             {
                 var dayOfWeek = startDate.DayOfWeek.ToString();
                 if (dayOfWeek != "Saturday" && dayOfWeek != "Sunday")
                 {
-                    finalDate = finalDate.AddDays(1);
                     i++;
                 }
                 startDate = startDate.AddDays(1);
-            } while (i < days);
-            return Afe_Common.ToInteger(finalDate, dc.WorkingCulture);
+            }
+            return Afe_Common.ToString(startDate, dc.WorkingCulture);
         }
     }
 }

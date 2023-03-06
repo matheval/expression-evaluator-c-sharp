@@ -4,7 +4,8 @@ Console.WriteLine("date test");
 Expression expression = new("date(2022, 3, 30)");
 var val = expression.Eval();
 Console.WriteLine(val);
-/*
+
+
 Console.WriteLine("datevalue test");
 expression = new("datevalue('2023-01-15')");
 val = expression.Eval();
@@ -135,8 +136,6 @@ expression = new("eomonth('01/01/2023 04:50:45',11)");
 val = expression.Eval();
 Console.WriteLine(val);
 
-
-
 Console.WriteLine("datediff test");
 expression = new("datediff('01/01/2023 04:50:45','02/05/2023 04:50:45','day')");
 val = expression.Eval();
@@ -155,7 +154,7 @@ expression = new("datediff('01/01/2023','04/25/2024','month')");
 val = expression.Eval();
 Console.WriteLine(val);
 
-expression = new("datediff('01/01/2023','08/02/2023','year')");
+expression = new("datediff('01/01/2023','07/01/2023','year')");
 val = expression.Eval();
 Console.WriteLine(val);
 expression = new("datediff('01/01/2023','04/25/2025','year')");
@@ -172,4 +171,3 @@ Console.WriteLine(val);
 expression = new("days('01/01/2023','04/08/2023')");
 val = expression.Eval();
 Console.WriteLine(val);
-*/

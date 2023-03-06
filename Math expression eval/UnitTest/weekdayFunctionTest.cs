@@ -1,4 +1,4 @@
-﻿/*
+/*
     The MIT License
 
     Copyright (c) 2021 MathEval.org
@@ -21,38 +21,26 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-using org.matheval.Common;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using org.matheval;
 using System;
-using System.Collections.Generic;
 
-namespace org.matheval.Functions
+namespace UnitTest
 {
-    /// <summary>
-    /// Returns the hour component of a Time, Datetime
-    /// </summary>
-    public class hourFunction : IFunction
+    [TestClass]
+    public class weekdayFunctionTest
     {
-        /// <summary>
-        /// Get Information
-        /// </summary>
-        /// <returns>FunctionDefs</returns>
-        public List<FunctionDef> GetInfo()
+        [TestMethod]
+        public void ReturnWeekDay()
         {
-            return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Tan, new System.Type[]{typeof(string)}, typeof(string), 1)};
-        }
-
-        /// <summary>
-        /// Execute
-        /// </summary>
-        /// <param name="args">args</param>
-        /// <param name="dc">dc</param>
-        /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
-        {
-            var dateTime = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
-            return Afe_Common.ToInteger(dateTime.Hour, dc.WorkingCulture);
+            DateTime date = new DateTime(2023,01,01);//sunday
+            Expression expression = new Expression();
+            for (int i = 1; i <= 7; i++)
+            {
+                expression = new Expression("weekday('" + date.ToString() + "')");
+                Assert.AreEqual(i, expression.Eval());
+                date = date.AddDays(1);
+            }
         }
     }
 }

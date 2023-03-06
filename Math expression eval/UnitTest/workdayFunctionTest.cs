@@ -1,4 +1,4 @@
-﻿/*
+/*
     The MIT License
 
     Copyright (c) 2021 MathEval.org
@@ -21,38 +21,22 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-using org.matheval.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using org.matheval;
 
-using System;
-using System.Collections.Generic;
-
-namespace org.matheval.Functions
+namespace UnitTest
 {
-    /// <summary>
-    /// Returns the hour component of a Time, Datetime
-    /// </summary>
-    public class hourFunction : IFunction
+    [TestClass]
+    public class workdayFunctionTest
     {
-        /// <summary>
-        /// Get Information
-        /// </summary>
-        /// <returns>FunctionDefs</returns>
-        public List<FunctionDef> GetInfo()
+        [TestMethod]
+        public void ReturnWorkDayDate()
         {
-            return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Tan, new System.Type[]{typeof(string)}, typeof(string), 1)};
-        }
-
-        /// <summary>
-        /// Execute
-        /// </summary>
-        /// <param name="args">args</param>
-        /// <param name="dc">dc</param>
-        /// <returns>Value</returns>
-        public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
-        {
-            var dateTime = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
-            return Afe_Common.ToInteger(dateTime.Hour, dc.WorkingCulture);
+            Expression expression = new Expression("workday('01/01/2023 04:50:45',3)");
+            Assert.AreEqual("01/05/2023 04:50:45", expression.Eval());
+            
+            expression = new Expression("workday('01/01/2023',7)");
+            Assert.AreEqual("01/11/2023 00:00:00", expression.Eval());
         }
     }
 }

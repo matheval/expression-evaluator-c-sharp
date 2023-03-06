@@ -53,7 +53,7 @@ namespace org.matheval.Functions
         {
             var startDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             var endDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture));
-            return Afe_Common.ToString(endDate.Subtract(startDate).TotalDays, dc.WorkingCulture);
+            return Afe_Common.ToInteger(endDate.Subtract(startDate).TotalDays, dc.WorkingCulture);
         }
     }
 }
