@@ -112,9 +112,8 @@ Console.WriteLine(val);
 expression = new("workday('01/01/2023',99)");
 val = expression.Eval();
 Console.WriteLine(val);
-*/
 
-Console.WriteLine("workday test");
+Console.WriteLine("networkday test");
 expression = new("networkdays('01/01/2023 04:50:45','01/25/2023 04:50:45')");
 val = expression.Eval();
 Console.WriteLine(val);
@@ -124,3 +123,53 @@ Console.WriteLine(val);
 expression = new("networkdays('01/01/2023 04:50:45','01/01/2023 04:50:45')");
 val = expression.Eval();
 Console.WriteLine(val);
+
+Console.WriteLine("eomonth test");
+expression = new("eomonth('01/01/2023 04:50:45',2)");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("eomonth('01/01/2023',2)");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("eomonth('01/01/2023 04:50:45',11)");
+val = expression.Eval();
+Console.WriteLine(val);
+
+
+
+Console.WriteLine("datediff test");
+expression = new("datediff('01/01/2023 04:50:45','02/05/2023 04:50:45','day')");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("datediff('01/01/2023','01/01/2024','day')");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("datediff('01/01/2023','04/08/2023','day')");
+val = expression.Eval();
+Console.WriteLine(val);
+
+expression = new("datediff('01/01/2023','03/03/2023','month')");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("datediff('01/01/2023','04/25/2024','month')");
+val = expression.Eval();
+Console.WriteLine(val);
+
+expression = new("datediff('01/01/2023','08/02/2023','year')");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("datediff('01/01/2023','04/25/2025','year')");
+val = expression.Eval();
+Console.WriteLine(val);
+
+Console.WriteLine("days test");
+expression = new("days('01/01/2023 04:50:45','01/05/2023 04:50:45')");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("days('01/01/2023','01/01/2024')");
+val = expression.Eval();
+Console.WriteLine(val);
+expression = new("days('01/01/2023','04/08/2023')");
+val = expression.Eval();
+Console.WriteLine(val);
+*/

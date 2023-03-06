@@ -25,7 +25,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace org.matheval.Common
@@ -652,8 +651,17 @@ namespace org.matheval.Common
         /// Function Today
         /// </summary>
         public const string Const_NetWorkdays = "networkdays";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_EOMonth = "eomonth";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_DateDif = "datedif";
+        /// <summary>
+        /// Function Today
+        /// </summary>
         public const string Const_Days = "days";
 
         #endregion

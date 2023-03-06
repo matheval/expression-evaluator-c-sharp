@@ -25,14 +25,13 @@ using org.matheval.Common;
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace org.matheval.Functions
 {
     /// <summary>
-    /// Returns a number that represents a date that is the indicated number of working days before or after a date (the starting date).
+    /// Returns the day component of a Date, Datetime
     /// </summary>
-    public class workdayFunction : IFunction
+    public class datediffFunction : IFunction
     {
         /// <summary>
         /// Get Information
@@ -41,7 +40,7 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Tan, new System.Type[]{typeof(string),typeof(decimal)}, typeof(string), 2)};
+                    new FunctionDef(Afe_Common.Const_Tan, new System.Type[]{typeof(string), typeof(string), typeof(string)}, typeof(string), 3)};
         }
 
         /// <summary>
@@ -53,20 +52,24 @@ namespace org.matheval.Functions
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
             var startDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
-            var days = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
-            DateTime finalDate = startDate;
-            int i = 0;
-            do
+            var endDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture));
+            var unit = Afe_Common.ToString(args[Afe_Common.Const_Key_Three], dc.WorkingCulture);
+            return Afe_Common.ToString(SubtractDates(startDate, endDate, unit), dc.WorkingCulture);
+        }
+
+        private static string SubtractDates(DateTime startDate, DateTime endDate, string unit)
+        {
+            switch (unit)
             {
-                var dayOfWeek = startDate.DayOfWeek.ToString();
-                if (dayOfWeek != "Saturday" && dayOfWeek != "Sunday")
-                {
-                    finalDate = finalDate.AddDays(1);
-                    i++;
-                }
-                startDate = startDate.AddDays(1);
-            } while (i < days);
-            return Afe_Common.ToInteger(finalDate, dc.WorkingCulture);
+                case "day":
+                    return endDate.Subtract(startDate).TotalDays.ToString();
+                case "month":
+                    return (((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month).ToString();
+                case "year":
+                    return ((decimal)(((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month) / 12).ToString(".##");
+                default:
+                    return null;
+            }
         }
     }
 }
