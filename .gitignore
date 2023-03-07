@@ -33,3 +33,4 @@ packages
 project.lock.json
 .vs
 /Math expression eval/UnitTest/UnitTest.csproj.user
+Math expression eval/ConsoleApp/Properties/PublishProfiles/FolderProfile.pubxml

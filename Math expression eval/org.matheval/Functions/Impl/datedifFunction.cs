@@ -31,7 +31,7 @@ namespace org.matheval.Functions
     /// <summary>
     /// Returns the day component of a Date, Datetime
     /// </summary>
-    public class datediffFunction : IFunction
+    public class datedifFunction : IFunction
     {
         /// <summary>
         /// Get Information
@@ -40,7 +40,7 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Tan, new System.Type[]{typeof(string), typeof(string), typeof(string)}, typeof(string), 3)};
+                    new FunctionDef(Afe_Common.Const_DateDif, new System.Type[]{typeof(string), typeof(string), typeof(string)}, typeof(decimal), 3)};
         }
 
         /// <summary>

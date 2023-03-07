@@ -40,7 +40,7 @@ namespace org.matheval.Functions
         /// <returns>FunctionDefs</returns>
         public List<FunctionDef> GetInfo()
         {
-            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_MID, new System.Type[] { typeof(string), typeof(decimal) }, typeof(string), 2) };
+            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_EOMonth, new System.Type[] { typeof(string), typeof(decimal) }, typeof(string), 2) };
         }
 
         /// <summary>

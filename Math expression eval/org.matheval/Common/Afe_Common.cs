@@ -630,10 +630,6 @@ namespace org.matheval.Common
         /// <summary>
         /// Function Today
         /// </summary>
-        public const string Const_Today = "today";
-        /// <summary>
-        /// Function Today
-        /// </summary>
         public const string Const_EDate = "edate";
         /// <summary>
         /// Function Today

@@ -40,7 +40,7 @@ namespace org.matheval.Functions
         {
             return new List<FunctionDef>
             {
-                new FunctionDef(Afe_Common.Const_Date, new Type[] { typeof(string), typeof(decimal) }, typeof(string), 2)
+                new FunctionDef(Afe_Common.Const_EDate, new Type[] { typeof(string), typeof(decimal) }, typeof(string), 2)
             };
         }
 
