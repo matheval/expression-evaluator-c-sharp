@@ -27,10 +27,10 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class dateFunctionTest
+    public class DateFunctionTest
     {
         [TestMethod]
-        public void ConvertDates()
+        public void CreateDate()
         {
             Expression expr1 = new Expression("date(2022, 3, 30)");
             Assert.AreEqual("03/30/2022 00:00:00", expr1.Eval());

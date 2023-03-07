@@ -27,16 +27,25 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class workdayFunctionTest
+    public class WorkDayFunctionTest
     {
         [TestMethod]
-        public void ReturnWorkDayDate()
+        public void ReturnDatePositiveWorkDay()
         {
             Expression expression = new Expression("workday('01/01/2023 04:50:45',3)");
             Assert.AreEqual("01/05/2023 04:50:45", expression.Eval());
             
             expression = new Expression("workday('01/01/2023',7)");
             Assert.AreEqual("01/11/2023 00:00:00", expression.Eval());
+        }
+            [TestMethod]
+            public void ReturnDateNegativeWorkDay()
+            {
+                Expression expression = new Expression("workday('01/01/2023 04:50:45',-3)");
+                Assert.AreEqual("12/27/2022 04:50:45", expression.Eval());
+
+                expression = new Expression("workday('01/01/2023',-7)");
+                Assert.AreEqual("12/21/2022 00:00:00", expression.Eval());
         }
     }
 }

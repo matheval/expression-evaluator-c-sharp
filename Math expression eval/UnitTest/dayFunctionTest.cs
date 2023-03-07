@@ -28,7 +28,7 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class dayFunctionTest
+    public class DayFunctionTest
     {
         [TestMethod]
         public void ReturnDays()

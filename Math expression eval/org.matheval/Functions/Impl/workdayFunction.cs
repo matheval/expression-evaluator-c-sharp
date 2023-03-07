@@ -52,19 +52,19 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            var startDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            var date = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
             var days = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
             int i = 0;
-            while (i < days)
+            while (i < Math.Abs(days))
             {
-                var dayOfWeek = startDate.DayOfWeek.ToString();
+                var dayOfWeek = date.DayOfWeek.ToString();
                 if (dayOfWeek != "Saturday" && dayOfWeek != "Sunday")
                 {
                     i++;
                 }
-                startDate = startDate.AddDays(1);
+                date = days >= 0 ? date.AddDays(1) : date.AddDays(-1);
             }
-            return Afe_Common.ToString(startDate, dc.WorkingCulture);
+            return Afe_Common.ToString(date, dc.WorkingCulture);
         }
     }
 }

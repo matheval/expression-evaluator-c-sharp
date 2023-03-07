@@ -28,7 +28,7 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class datediffFunctionTest
+    public class DateDiffFunctionTest
     {
         [TestMethod]
         public void DayDifference()

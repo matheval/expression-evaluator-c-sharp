@@ -28,19 +28,16 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class WeekDayFunctionTest
+    public class MinuteFunctionTest
     {
         [TestMethod]
-        public void ReturnDayOfWeekNumber()
+        public void ReturnMinutes()
         {
-            DateTime date = new DateTime(2023,01,01);//sunday
-            Expression expression = new Expression();
-            for (int i = 1; i <= 7; i++)
-            {
-                expression = new Expression("weekday('" + date.ToString() + "')");
-                Assert.AreEqual(i, expression.Eval());
-                date = date.AddDays(1);
-            }
+            Expression expression = new Expression("minute('01:23:20')"); ;
+            Assert.AreEqual(23, expression.Eval());
+
+            expression = new Expression("minute('03/30/2022 04:50:45')");
+            Assert.AreEqual(50, expression.Eval());
         }
     }
 }

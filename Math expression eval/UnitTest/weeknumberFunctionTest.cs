@@ -28,10 +28,10 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class weeknumberFunctionTest
+    public class WeekNumberFunctionTest
     {
         [TestMethod]
-        public void ReturnWeekNumber()
+        public void CalculatesWeekNumber()
         {
             Expression expression = new Expression("weeknum('01/01/2022 04:50:45')");
             Assert.AreEqual(1, expression.Eval());

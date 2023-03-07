@@ -27,10 +27,10 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class daysFunctionTest
+    public class DaysFunctionTest
     {
         [TestMethod]
-        public void ReturnDaysBetweenDates()
+        public void DaysBetweenDates()
         {
             Expression  expression = new Expression("days('01/01/2023 04:50:45','01/05/2023 04:50:45')");
             Assert.AreEqual(4, expression.Eval());

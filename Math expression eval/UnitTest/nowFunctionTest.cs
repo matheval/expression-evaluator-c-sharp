@@ -28,7 +28,7 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class nowFunctionTest
+    public class NowFunctionTest
     {
         [TestMethod]
         public void ReturnCurrentDate() 

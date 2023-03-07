@@ -27,7 +27,7 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class yearFunctionTest
+    public class YearFunctionTest
     {
         [TestMethod]
         public void ReturnYear()

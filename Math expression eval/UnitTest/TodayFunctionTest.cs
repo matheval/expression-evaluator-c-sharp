@@ -28,19 +28,13 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class WeekDayFunctionTest
+    public class TodayFunctionTest
     {
         [TestMethod]
-        public void ReturnDayOfWeekNumber()
+        public void ReturnCurrentDate() 
         {
-            DateTime date = new DateTime(2023,01,01);//sunday
-            Expression expression = new Expression();
-            for (int i = 1; i <= 7; i++)
-            {
-                expression = new Expression("weekday('" + date.ToString() + "')");
-                Assert.AreEqual(i, expression.Eval());
-                date = date.AddDays(1);
-            }
+            Expression expression = new Expression("Today()");
+            Assert.AreEqual(DateTime.Today.Date, DateTime.Parse(expression.Eval().ToString()).Date);
         }
     }
 }

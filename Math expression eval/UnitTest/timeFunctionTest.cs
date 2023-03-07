@@ -27,10 +27,10 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class timeFunctionTest
+    public class TimeFunctionTest
     {
         [TestMethod]
-        public void ConvertDates()
+        public void ReturnTime()
         {
             Expression expression = new Expression("time(10,15,32)");
             Assert.AreEqual("10:15:32", expression.Eval());

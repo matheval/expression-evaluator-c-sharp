@@ -27,17 +27,16 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class networkdayFunctionTest
+    public class NetWorkDayFunctionTest
     {
         [TestMethod]
-        public void ReturnWorkDays()
+        public void CalculateWorkDaysBetweenDates()
         {
             Expression expression = new Expression("networkdays('01/01/2023 04:50:45','01/22/2023 04:50:45')");
             Assert.AreEqual(15, expression.Eval());
 
             expression = new Expression("networkdays('01/01/2023 04:50:45','01/01/2023 04:50:45')");
             Assert.AreEqual(0, expression.Eval());
-
         }
     }
 }

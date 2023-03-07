@@ -27,12 +27,11 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class eomonthFunctionTest
+    public class EMonthFunctionTest
     {
         [TestMethod]
-        public void ReturnEndOfMonth()
+        public void EndOfMonth()
         {
-
             Expression expression = new Expression("eomonth('01/01/2023',2)");
             Assert.AreEqual("03/31/2023 00:00:00", expression.Eval());
 

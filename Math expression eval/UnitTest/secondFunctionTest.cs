@@ -27,7 +27,7 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class secondFunctionTest
+    public class SecondFunctionTest
     {
         [TestMethod]
         public void ReturnSeconds()

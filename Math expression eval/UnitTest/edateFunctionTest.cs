@@ -28,16 +28,26 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class edateFunctionTest
+    public class EDateFunctionTest
     {
         [TestMethod]
-        public void ReturnDate()
+        public void AddMonthsToDate()
         {
             Expression expression = new Expression("edate('05/30/2022 04:50:45',5)");
             Assert.AreEqual("10/30/2022 04:50:45", expression.Eval());
 
             expression = new Expression("edate('05/30/2022',15)");
             Assert.AreEqual("08/30/2023 00:00:00", expression.Eval());
+        }
+
+        [TestMethod]
+        public void SubtractMonthsFromDate()
+        {
+            Expression expression = new Expression("edate('05/30/2022 04:50:45',-5)");
+            Assert.AreEqual("12/30/2021 04:50:45", expression.Eval());
+
+            expression = new Expression("edate('05/30/2022',-1)");
+            Assert.AreEqual("04/30/2022 00:00:00", expression.Eval());
         }
     }
 }

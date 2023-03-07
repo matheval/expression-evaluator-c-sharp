@@ -28,19 +28,16 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class WeekDayFunctionTest
+    public class MonthFunctionTest
     {
         [TestMethod]
-        public void ReturnDayOfWeekNumber()
+        public void ReturnMonths()
         {
-            DateTime date = new DateTime(2023,01,01);//sunday
-            Expression expression = new Expression();
-            for (int i = 1; i <= 7; i++)
-            {
-                expression = new Expression("weekday('" + date.ToString() + "')");
-                Assert.AreEqual(i, expression.Eval());
-                date = date.AddDays(1);
-            }
+            Expression expression = new Expression("month('03/15/2022')");
+            Assert.AreEqual(03, expression.Eval());
+
+            expression = new Expression("month('05/30/2022 04:50:45')");
+            Assert.AreEqual(05, expression.Eval());
         }
     }
 }

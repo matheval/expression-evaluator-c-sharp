@@ -27,10 +27,10 @@ using org.matheval;
 namespace UnitTest
 {
     [TestClass]
-    public class hourFunctionTest
+    public class HourFunctionTest
     {
         [TestMethod]
-        public void ReturnHour()
+        public void ReturnHours()
         {
             Expression expression = new Expression("hour('01:23:20')");
             Assert.AreEqual(01, expression.Eval());
