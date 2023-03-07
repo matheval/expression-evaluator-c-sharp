@@ -38,7 +38,7 @@ namespace org.matheval.Functions
         /// <returns>FunctionDefs</returns>
         public List<FunctionDef> GetInfo()
         {
-            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Not, new System.Type[] { }, typeof(Boolean), 0) };
+            return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_Now, null, typeof(string), 0) };
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            return DateTime.UtcNow;
+            return DateTime.UtcNow.ToString();
         }
     }
 }
