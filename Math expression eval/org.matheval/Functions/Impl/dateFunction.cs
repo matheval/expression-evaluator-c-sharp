@@ -28,7 +28,7 @@ using System.Collections.Generic;
 namespace org.matheval.Functions
 {
     /// <summary>
-    /// Returns the year from a date
+    /// Constructs a Date from Integer representations of the year, month (1=Jan), and day
     /// </summary>
     public class dateFunction : IFunction
     {

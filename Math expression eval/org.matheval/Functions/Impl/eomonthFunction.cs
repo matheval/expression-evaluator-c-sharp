@@ -28,9 +28,7 @@ using System.Collections.Generic;
 namespace org.matheval.Functions
 {
     /// <summary>
-    /// Extracts a given number of characters 
-    /// from the middle of a supplied text string
-    /// MID("abcd",1,2) -> ab
+    // Calculates the last day of the month after adding a specified number of months to a date, datetime
     /// </summary>
     public class eomonthFunction : IFunction
     {

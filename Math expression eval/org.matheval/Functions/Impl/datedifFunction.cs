@@ -29,7 +29,7 @@ using System.Collections.Generic;
 namespace org.matheval.Functions
 {
     /// <summary>
-    /// Returns the day component of a Date, Datetime
+    /// Calculates the number of days, months, or years between two dates.
     /// </summary>
     public class datedifFunction : IFunction
     {

@@ -30,7 +30,7 @@ using System.Globalization;
 namespace org.matheval.Functions
 {
     /// <summary>
-    /// Returns the day of the week corresponding to a date. The day is given as an integer, ranging from 1 (Sunday) to 7 (Saturday)
+    /// Returns the number of whole workdays between two dates
     /// </summary>
     public class networkdaysFunction : IFunction
     {

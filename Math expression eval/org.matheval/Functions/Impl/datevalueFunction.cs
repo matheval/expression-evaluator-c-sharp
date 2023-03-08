@@ -29,7 +29,7 @@ using System.Globalization;
 namespace org.matheval.Functions
 {
     /// <summary>
-    /// Returns the year from a date
+    /// Constructs a Date from String representations of the year–month–day
     /// </summary>
     public class datevalueFunction : IFunction
     {

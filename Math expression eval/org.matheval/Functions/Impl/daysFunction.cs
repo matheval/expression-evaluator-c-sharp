@@ -29,7 +29,7 @@ using System.Collections.Generic;
 namespace org.matheval.Functions
 {
     /// <summary>
-    /// Returns the day component of a Date, Datetime
+    /// Returns the number of days between two dates
     /// </summary>
     public class daysFunction : IFunction
     {
