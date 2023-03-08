@@ -28,38 +28,38 @@ using System;
 namespace UnitTest
 {
     [TestClass]
-    public class DateDiffFunctionTest
+    public class DateDifFunctionTest
     {
         [TestMethod]
         public void DayDifference()
         {
-            Expression expression = new Expression("datediff('01/01/2023 04:50:45','02/05/2023 04:50:45','day')");
+            Expression expression = new Expression("datedif('01/01/2023 04:50:45','02/05/2023 04:50:45','day')");
             Assert.AreEqual((decimal)35, expression.Eval());
 
-            expression = new Expression("datediff('01/01/2023','01/01/2024','day')");
+            expression = new Expression("datedif('01/01/2023','01/01/2024','day')");
             Assert.AreEqual((decimal)365, expression.Eval());
 
-            expression = new Expression("datediff('01/01/2023','04/11/2023','day')");
+            expression = new Expression("datedif('01/01/2023','04/11/2023','day')");
             Assert.AreEqual((decimal)100, expression.Eval());
         }
 
         [TestMethod]
         public void MonthDifference()
         {
-            Expression  expression = new Expression("datediff('01/01/2023','03/03/2023','month')");
+            Expression  expression = new Expression("datedif('01/01/2023','03/03/2023','month')");
             Assert.AreEqual((decimal)2, expression.Eval());
 
-            expression = new Expression("datediff('01/01/2023','04/25/2024','month')");
+            expression = new Expression("datedif('01/01/2023','04/25/2024','month')");
             Assert.AreEqual((decimal)15, expression.Eval());
         }
 
         [TestMethod]
         public void YearDifference()
         {
-            Expression expression = new Expression("datediff('01/01/2023','07/01/2023','year')");
+            Expression expression = new Expression("datedif('01/01/2023','07/01/2023','year')");
             Assert.AreEqual((decimal).50, expression.Eval());
 
-            expression = new Expression("datediff('01/01/2023','04/25/2025','year')");
+            expression = new Expression("datedif('01/01/2023','04/25/2025','year')");
             Assert.AreEqual((decimal)2.25, expression.Eval());
         }
     }
