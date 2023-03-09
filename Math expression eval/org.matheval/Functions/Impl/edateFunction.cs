@@ -52,9 +52,9 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            var date = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            var dateTime = Afe_Common.ToDateTime(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
             var month = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
-            return Afe_Common.ToString(date.AddMonths(month), dc.WorkingCulture);
+            return Afe_Common.ToString(dateTime.AddMonths(month), dc.WorkingCulture);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            var dateTime = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            var dateTime = Afe_Common.ToDateTime(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
             var weekNum = dc.WorkingCulture.Calendar.GetWeekOfYear(dateTime, dc.WorkingCulture.DateTimeFormat.CalendarWeekRule, dc.WorkingCulture.DateTimeFormat.FirstDayOfWeek);
             return Afe_Common.ToInteger(weekNum, dc.WorkingCulture);
         }

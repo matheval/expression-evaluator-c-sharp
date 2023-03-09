@@ -51,8 +51,8 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            var startDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
-            var endDate = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_Two], dc.WorkingCulture));
+            var startDate = Afe_Common.ToDateTime(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
+            var endDate = Afe_Common.ToDateTime(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
             var unit = Afe_Common.ToString(args[Afe_Common.Const_Key_Three], dc.WorkingCulture);
             return Afe_Common.ToDecimal(SubtractDates(startDate, endDate, unit), dc.WorkingCulture);
         }

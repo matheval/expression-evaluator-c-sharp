@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            var dateTime = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            var dateTime = Afe_Common.ToDateTime(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
             int day = 0;
             switch (dateTime.DayOfWeek.ToString())
             {

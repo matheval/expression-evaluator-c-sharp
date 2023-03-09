@@ -51,7 +51,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            var dateTime = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            var dateTime = Afe_Common.TimeValidation(DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture)));
             return Afe_Common.ToInteger(dateTime.Hour, dc.WorkingCulture);
         }
     }

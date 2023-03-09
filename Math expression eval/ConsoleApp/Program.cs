@@ -1,8 +1,9 @@
-﻿using org.matheval;
+﻿//using org.matheval;
 
-Expression expression = new("minute(now())");
-var val = expression.Eval();
-Console.WriteLine(val);
+
+//Expression expression = new("minute(now())");
+//var val = expression.Eval();
+//Console.WriteLine(val);
 
 
 //Console.WriteLine("datevalue test");
@@ -37,6 +38,10 @@ Console.WriteLine(val);
 //expression = new("second('03/30/2022 04:50:45')");
 //val = expression.Eval();
 //Console.WriteLine(val);
+////expression = new("second('03/30/2022')");
+////val = expression.Eval();
+////Console.WriteLine(val);
+
 
 //Console.WriteLine("minute test");
 //expression = new("minute('01:23:20')");
@@ -45,6 +50,10 @@ Console.WriteLine(val);
 //expression = new("minute('03/30/2022 04:50:45')");
 //val = expression.Eval();
 //Console.WriteLine(val);
+
+////expression = new("minute('03/30/2022')");
+////val = expression.Eval();
+////Console.WriteLine(val);
 
 //Console.WriteLine("hour test");
 //expression = new("hour('01:23:20')");
@@ -61,6 +70,7 @@ Console.WriteLine(val);
 //expression = new("day('05/30/2022 04:50:45')");
 //val = expression.Eval();
 //Console.WriteLine(val);
+
 
 //Console.WriteLine("month test");
 //expression = new("month('03/15/2022')");
@@ -91,7 +101,7 @@ Console.WriteLine(val);
 //    date = DateTime.UtcNow.AddDays(i);
 //    expression = new("weekday('" + date.ToString() + "')");
 //    val = expression.Eval();
-//    Console.WriteLine(date.DayOfWeek +": "+ val.ToString());
+//    Console.WriteLine(date.DayOfWeek + ": " + val.ToString());
 //}
 
 //Console.WriteLine("weeknum test");
@@ -138,28 +148,28 @@ Console.WriteLine(val);
 //val = expression.Eval();
 //Console.WriteLine(val);
 
-//Console.WriteLine("datediff test");
-//expression = new("datediff('01/01/2023 04:50:45','02/05/2023 04:50:45','day')");
+//Console.WriteLine("datedif test");
+//expression = new("datedif('01/01/2023 04:50:45','02/05/2023 04:50:45','day')");
 //val = expression.Eval();
 //Console.WriteLine(val);
-//expression = new("datediff('01/01/2023','01/01/2024','day')");
+//expression = new("datedif('01/01/2023','01/01/2024','day')");
 //val = expression.Eval();
 //Console.WriteLine(val);
-//expression = new("datediff('01/01/2023','04/08/2023','day')");
-//val = expression.Eval();
-//Console.WriteLine(val);
-
-//expression = new("datediff('01/01/2023','03/03/2023','month')");
-//val = expression.Eval();
-//Console.WriteLine(val);
-//expression = new("datediff('01/01/2023','04/25/2024','month')");
+//expression = new("datedif('01/01/2023','04/08/2023','day')");
 //val = expression.Eval();
 //Console.WriteLine(val);
 
-//expression = new("datediff('01/01/2023','07/01/2023','year')");
+//expression = new("datedif('01/01/2023','03/03/2023','month')");
 //val = expression.Eval();
 //Console.WriteLine(val);
-//expression = new("datediff('01/01/2023','04/25/2025','year')");
+//expression = new("datedif('01/01/2023','04/25/2024','month')");
+//val = expression.Eval();
+//Console.WriteLine(val);
+
+//expression = new("datedif('01/01/2023','07/01/2023','year')");
+//val = expression.Eval();
+//Console.WriteLine(val);
+//expression = new("datedif('01/01/2023','04/25/2025','year')");
 //val = expression.Eval();
 //Console.WriteLine(val);
 

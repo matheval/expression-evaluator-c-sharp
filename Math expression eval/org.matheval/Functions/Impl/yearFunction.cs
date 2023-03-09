@@ -52,9 +52,8 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            string dateString = Afe_Common.ToString(args[Afe_Common.Const_Key_One].ToString(), dc.WorkingCulture);
-            DateTime date = DateTime.Parse(dateString, dc.WorkingCulture);
-            return Afe_Common.ToInteger(date.Year, dc.WorkingCulture);
+            var dateTime = Afe_Common.ToDateTime(args[Afe_Common.Const_Key_One].ToString(), dc.WorkingCulture);
+            return Afe_Common.ToInteger(dateTime.Year, dc.WorkingCulture);
         }
     }
 }

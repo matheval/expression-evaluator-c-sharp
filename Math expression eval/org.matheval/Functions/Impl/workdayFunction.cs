@@ -52,7 +52,7 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            var date = DateTime.Parse(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            var date = Afe_Common.ToDateTime(args[Afe_Common.Const_Key_One], dc.WorkingCulture);
             var days = Afe_Common.ToInteger(args[Afe_Common.Const_Key_Two], dc.WorkingCulture);
             int i = 0;
             while (i < Math.Abs(days))

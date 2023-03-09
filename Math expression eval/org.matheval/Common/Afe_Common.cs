@@ -836,11 +836,34 @@ namespace org.matheval.Common
         }
 
         /// <summary>
-        /// Connvert object to string
-        /// TODO poner default invariant culture.
+        /// connvert object to string
+        /// todo poner default invariant culture.
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="cultureInfo"></param>
+        /// <param name="cultureinfo"></param>
+        /// <returns></returns>
+        public static DateTime ToDateTime(object value, CultureInfo cultureInfo)
+        {
+            if(value is DateTime)
+            {
+                return (DateTime)value;
+            }
+            else if (TimeSpan.TryParse(value.ToString(), out _))
+            {
+                throw new ArgumentException("Date is Invalid");
+            }
+            else
+            {
+                return Convert.ToDateTime(value, cultureInfo);
+            }
+        }
+
+        /// <summary>
+        /// connvert object to string
+        /// todo poner default invariant culture.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="cultureinfo"></param>
         /// <returns></returns>
         public static string ToString(object value, CultureInfo cultureInfo)
         {
@@ -934,6 +957,20 @@ namespace org.matheval.Common
             throw new Exception("Please set M or D or Y for UNIT param");
         }
 
+        /// <summary>
+        /// DateDif
+        /// </summary>
+        /// <param name="startDate">dateTime</param>
+        /// <returns>Blank Time Check</returns>
+        /// 
+        public static DateTime TimeValidation (DateTime dateTime)
+        {
+            if (dateTime.ToString("HH:mm:ss") == "00:00:00")
+            {
+                throw new ArgumentException("Time is Invalid");
+            }
+            return dateTime;
+        }
         #endregion
 
         #region Enum
