@@ -1,9 +1,9 @@
-﻿//using org.matheval;
+﻿using org.matheval;
 
 
-//Expression expression = new("minute(now())");
-//var val = expression.Eval();
-//Console.WriteLine(val);
+Expression expression = new("minute(now())");
+var val = expression.Eval();
+Console.WriteLine(val);
 
 
 //Console.WriteLine("datevalue test");
