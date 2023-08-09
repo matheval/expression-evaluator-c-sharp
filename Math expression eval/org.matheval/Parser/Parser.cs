@@ -353,9 +353,9 @@ namespace org.matheval
                     }
                     funcExecuter = (IFunction)obj;
                 }
-                catch (Exception e)
+                catch
                 {
-                    throw new Exception(string.Format(Afe_Common.MSG_METH_NOTFOUND, new string[] { identifierStr.ToUpperInvariant() }));
+                    return CallFuncNode.ExternalFunction(identifierStr.ToUpperInvariant(), args);
                 }
                 
                 List<FunctionDef> functionInfos = funcExecuter.GetInfo();

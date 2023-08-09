@@ -26,6 +26,7 @@ using org.matheval;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace UnitTest
 {
@@ -1169,24 +1170,88 @@ namespace UnitTest
                 .Bind("a", 0)
                 .Bind("b", 0);
             Assert.AreEqual(false, expr.Eval<bool>());
-            
+
             // false, true = true
             var expr2 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 0)
                 .Bind("b", 1);
             Assert.AreEqual(true, expr2.Eval<bool>());
-            
+
             // true, false = true
             var expr3 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 1)
                 .Bind("b", 0);
             Assert.AreEqual(true, expr3.Eval<bool>());
-            
+
             // true, true = true
             var expr4 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 1)
                 .Bind("b", 1);
             Assert.AreEqual(true, expr4.Eval<bool>());
+        }
+
+        public static IEnumerable<object[]> External_Function_Data =>
+            new[] {
+                new object[] { "RANGE(5,6,7)", 2.0m },
+                new object[] { "RANGE(1,2,3,3,3)", 2.0m },
+                new object[] { "RANGE(1,2,2,3,3,10)", 9.0m },
+                new object[] { "REPEAT(\"xY\", 0)", "" },
+                new object[] { "REPEAT(\"xY\", 1)", "xY" },
+                new object[] { "REPEAT(\"xY\", 2)", "xYxY" },
+            };
+
+        [DataTestMethod]
+        [DynamicData(nameof(External_Function_Data))] // Can't pass decimals using DataRow
+        public void External_Function_Test(string formula, object expected)
+        {
+            var expr = new Expression(formula);
+            expr.TryExternalFunction = TryFunction;
+            Assert.AreEqual(expected, expr.Eval<object>());
+        }
+
+        [DataTestMethod]
+        [DataRow("REPEAT()")]
+        [DataRow("XXYYZZ()")]
+        public void External_Function_Missing_Test(string formula)
+        {
+            var expr = new Expression(formula);
+            expr.TryExternalFunction = TryFunction;
+            Assert.ThrowsException<Exception>(() => expr.Eval<object>());
+        }
+
+        [DataTestMethod]
+        [DataRow("RANGE(1,2)")]
+        [DataRow("REPEAT(\"xx\",3)")]
+        public void External_Function_NoExternal_Test(string formula)
+        {
+            var expr = new Expression(formula);
+            Assert.ThrowsException<Exception>(() => expr.Eval<object>());
+        }
+
+        private bool TryFunction(string functionName, object[] args, ExpressionContext dc, out object value)
+        {
+            switch (functionName)
+            {
+                case "RANGE": // The highest minus the lowest number
+                    {
+                        var values = args.Cast<decimal>().ToArray();
+                        value = values.Max() - values.Min();
+                        return true;
+                    }
+                case "REPEAT": // Repeat the text a given number of times
+                    {
+                        if (args.Length == 2 && args[0] is string text && args[1] is decimal count)
+                        {
+                            value = string.Concat(Enumerable.Repeat(text, (int)count));
+                            return true;
+                        }
+                        break;
+
+                    }
+            }
+
+            value = null;
+            return false;
         }
     }
 }

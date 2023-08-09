@@ -10,6 +10,9 @@ namespace org.matheval.Node
     /// </summary>
     public class CallFuncNode : Implements.Node
     {
+        public static CallFuncNode ExternalFunction(string name, List<Implements.Node> args)
+            => new CallFuncNode(name, args, typeof(object), null, true);
+
         /// <summary>
         /// Function Name
         /// </summary>
@@ -26,6 +29,11 @@ namespace org.matheval.Node
         public List<Implements.Node> args;
 
         /// <summary>
+        /// Is this an external function?
+        /// </summary>
+        public bool IsExternal { get; }
+
+        /// <summary>
         /// Initializes a new instance structure to a specified
         /// 1. Function Name
         /// 2. List Value args
@@ -34,11 +42,18 @@ namespace org.matheval.Node
         /// <param name="funcName">funcName</param>
         /// <param name="args">args</param>
         /// <param name="returnType">returnType</param>
-        public CallFuncNode(string funcName, List<Implements.Node> args,Type returnType, IFunction excuter) : base(returnType)
+        public CallFuncNode(string funcName, List<Implements.Node> args, Type returnType, IFunction excuter)
+            : this(funcName, args, returnType, excuter, false)
+        {
+        }
+
+        private CallFuncNode(string funcName, List<Implements.Node> args, Type returnType, IFunction excuter, bool isExternal)
+            : base(returnType)
         {
             this.FuncName = funcName;
             this.args = args;
             this.Excuter = excuter;
+            IsExternal = isExternal;
         }
     }
 }

@@ -28,6 +28,7 @@ using org.matheval.Operators.Binop;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using static org.matheval.Common.Afe_Common;
 
 namespace org.matheval
@@ -59,6 +60,9 @@ namespace org.matheval
         /// </summary>
         private List<string> NotAllowedFunctions;
 
+        public delegate bool TryExternalFunctionDelegate(string functionName, object[] args, ExpressionContext dc, out object value);
+
+        public TryExternalFunctionDelegate TryExternalFunction { get; set; }
 
         /// <summary>
         /// Initializes a new instance structure
@@ -76,7 +80,7 @@ namespace org.matheval
         /// <param name="formular">Input fomular text or math expression string</param>
         public Expression(string formular)
         {
-            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven,"yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
+            this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
             this.VariableParams = new Dictionary<string, object>();
             this.Parser = new Parser(this.Dc, formular);
         }
@@ -248,7 +252,7 @@ namespace org.matheval
         /// <returns>Current instance</returns>
         public Expression DisableFunction(string functionName)
         {
-            if (functionName!=null && !functionName.Trim().Equals(""))
+            if (functionName != null && !functionName.Trim().Equals(""))
             {
                 if (this.NotAllowedFunctions == null)
                 {
@@ -317,10 +321,10 @@ namespace org.matheval
             Object result = this.VisitNode(Root);
             if (result is decimal)
             {
-                decimal resultDec =  Afe_Common.Round(result, this.Dc);
+                decimal resultDec = Afe_Common.Round(result, this.Dc);
                 if (resultDec < 0)
                 {
-                   // return resultDec;
+                    // return resultDec;
                 }
                 return resultDec;
             }
@@ -416,22 +420,29 @@ namespace org.matheval
         /// <param name="holder"></param>
         private void VisitVariableNode(Implements.Node root, List<String> holder)
         {
-            if (root is VariableNode){
+            if (root is VariableNode)
+            {
                 VariableNode varNode = (VariableNode)root;
                 if (!holder.Contains(varNode.Name))
                 {
                     holder.Add(varNode.Name);
                 }
-            }else if (root is BinanyNode){
+            }
+            else if (root is BinanyNode)
+            {
                 BinanyNode binNode = (BinanyNode)root;
                 VisitVariableNode(binNode.LHS, holder);
                 VisitVariableNode(binNode.RHS, holder);
-            }else if (root is IfElseNode){
+            }
+            else if (root is IfElseNode)
+            {
                 IfElseNode ifElseNode = (IfElseNode)root;
                 VisitVariableNode(ifElseNode.Condition, holder);
                 VisitVariableNode(ifElseNode.IfTrue, holder);
                 VisitVariableNode(ifElseNode.IfFalse, holder);
-            }else if (root is SwitchCaseNode){
+            }
+            else if (root is SwitchCaseNode)
+            {
                 SwitchCaseNode caseNode = (SwitchCaseNode)root;
                 VisitVariableNode(caseNode.conditionExpr, holder);
                 for (int i = 0; i < caseNode.varResultExprs.Count - 1; i = i + 1)
@@ -439,14 +450,18 @@ namespace org.matheval
                     VisitVariableNode(caseNode.varResultExprs[i], holder);
                 }
                 VisitVariableNode(caseNode.defaultExpr, holder);
-            }else if (root is CallFuncNode){
+            }
+            else if (root is CallFuncNode)
+            {
                 CallFuncNode callFunc = (CallFuncNode)root;
                 for (int i = 0; i < callFunc.args.Count; i++)
                 {
                     Implements.Node expr = callFunc.args[i];
                     VisitVariableNode(expr, holder);
                 }
-            }else if (root is UnaryNode){
+            }
+            else if (root is UnaryNode)
+            {
                 UnaryNode unaryNode = (UnaryNode)root;
                 VisitVariableNode(unaryNode.Expr, holder);
             }
@@ -468,7 +483,7 @@ namespace org.matheval
             else if (root is NumberNode)
             {
                 NumberNode numberNode = (NumberNode)root;
-                return numberNode.mustRoundFlag ? Afe_Common.Round(numberNode.NumberValue, this.Dc): numberNode.NumberValue;
+                return numberNode.mustRoundFlag ? Afe_Common.Round(numberNode.NumberValue, this.Dc) : numberNode.NumberValue;
             }
             else if (root is StringNode)
             {
@@ -515,7 +530,7 @@ namespace org.matheval
                 throw new Exception(Afe_Common.MSG_IFELSE_WRONG_SYNTAX);
             }
             else if (root is SwitchCaseNode)
-            { 
+            {
                 return this.ExecuteSwitchCase((SwitchCaseNode)root);
             }
             else if (root is CallFuncNode)
@@ -555,7 +570,14 @@ namespace org.matheval
                 i++;
                 argsMap.Add(i.ToString(), VisitNode(expr));
             }
-            return callFunc.Excuter.Execute(argsMap, Dc);
+
+            if (!callFunc.IsExternal)
+                return callFunc.Excuter.Execute(argsMap, Dc);
+
+            if (TryExternalFunction != null && TryExternalFunction(callFunc.FuncName, argsMap.Values.ToArray(), Dc, out Object result))
+                return result;
+
+            throw new Exception(string.Format(Afe_Common.MSG_METH_NOTFOUND, new string[] { callFunc.FuncName }));
         }
 
         /// <summary>
@@ -573,7 +595,7 @@ namespace org.matheval
                 bool compareResult = (bool)eq.Calculate(condition, var, this.Dc);
                 if (compareResult)
                 {
-                    return this.VisitNode(root.varResultExprs[i+1]);
+                    return this.VisitNode(root.varResultExprs[i + 1]);
                 }
             }
             return this.VisitNode(root.defaultExpr);
