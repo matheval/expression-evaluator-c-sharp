@@ -1222,7 +1222,7 @@ namespace UnitTest
         [DataTestMethod]
         [DataRow("RANGE(1,2)")]
         [DataRow("REPEAT(\"xx\",3)")]
-        public void External_Function_NoExternal_Test(string formula)
+        public void External_Function_NotSet_Test(string formula)
         {
             var expr = new Expression(formula);
             Assert.ThrowsException<Exception>(() => expr.Eval<object>());
