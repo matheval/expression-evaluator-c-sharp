@@ -324,7 +324,7 @@ namespace org.matheval
                 decimal resultDec =  Afe_Common.Round(result, this.Dc);
                 if (resultDec < 0)
                 {
-                    // return resultDec;
+                   // return resultDec;
                 }
                 return resultDec;
             }
@@ -519,7 +519,7 @@ namespace org.matheval
                 throw new Exception(Afe_Common.MSG_IFELSE_WRONG_SYNTAX);
             }
             else if (root is SwitchCaseNode)
-            {
+            { 
                 return this.ExecuteSwitchCase((SwitchCaseNode)root);
             }
             else if (root is CallFuncNode)

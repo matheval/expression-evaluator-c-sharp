@@ -1170,19 +1170,19 @@ namespace UnitTest
                 .Bind("a", 0)
                 .Bind("b", 0);
             Assert.AreEqual(false, expr.Eval<bool>());
-
+            
             // false, true = true
             var expr2 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 0)
                 .Bind("b", 1);
             Assert.AreEqual(true, expr2.Eval<bool>());
-
+            
             // true, false = true
             var expr3 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 1)
                 .Bind("b", 0);
             Assert.AreEqual(true, expr3.Eval<bool>());
-
+            
             // true, true = true
             var expr4 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 1)
