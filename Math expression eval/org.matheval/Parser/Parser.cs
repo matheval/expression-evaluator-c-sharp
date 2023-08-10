@@ -40,7 +40,7 @@ namespace org.matheval
         /// Create object Lexer
         /// </summary>
         private Lexer Lexer;
-        
+
         /// <summary>
         /// Dc
         /// </summary>
@@ -355,9 +355,10 @@ namespace org.matheval
                 }
                 catch
                 {
-                    return CallFuncNode.ExternalFunction(identifierStr.ToUpperInvariant(), args);
+                    CallFuncNode callFuncNode = new CallFuncNode(identifierStr, args, typeof(object), null);
+                    return callFuncNode;
                 }
-                
+
                 List<FunctionDef> functionInfos = funcExecuter.GetInfo();
                 foreach (FunctionDef functionInfo in functionInfos)
                 {
@@ -474,9 +475,9 @@ namespace org.matheval
                 while (true)
                 {
                     IOperator iopNext = this.GetOperator();
-                    if (iopNext == null || 
+                    if (iopNext == null ||
                         !(iopCurr.GetPrec() < iopNext.GetPrec() ||
-                        (iopCurr.GetPrec() == iopNext.GetPrec() && 
+                        (iopCurr.GetPrec() == iopNext.GetPrec() &&
                         iopNext.GetAss() == Assoc.RIGHT)))
                     {
                         break;
@@ -670,7 +671,7 @@ namespace org.matheval
                     {
                         throw new Exception(Afe_Common.MSG_CASE_WRONG_PARAMS);
                     }
-                    this.Lexer.GetToken(); //eat )  				
+                    this.Lexer.GetToken(); //eat )
 
                     System.Type temp = varResultExprs[varResultExprs.Count - 1].ReturnType;
                     for (int i = 1; i < varResultExprs.Count - 1; i += 2)
