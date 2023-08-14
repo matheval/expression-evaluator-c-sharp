@@ -23,9 +23,12 @@
 */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using org.matheval;
+using org.matheval.Common;
+using org.matheval.Functions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 
 namespace UnitTest
 {
@@ -1187,6 +1190,162 @@ namespace UnitTest
                 .Bind("a", 1)
                 .Bind("b", 1);
             Assert.AreEqual(true, expr4.Eval<bool>());
+        }
+
+        [TestMethod]
+        public void Rand_0Parameters_Test()
+        {
+            var expr1 = new Expression("Rand()");
+            // Shouldn't error
+            var _ = expr1.Eval<decimal>();
+        }
+
+        [DataTestMethod]
+        [DataRow("xxx")]
+        [DataRow(1d)]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Rand_1Parameter_Test(object seed)
+        {
+            string seedString = seed is string ? $"\"{seed.ToString()}\"" : seed.ToString();
+            var expr = new Expression($"Rand({seedString})");
+            var random = new Random(seed.GetHashCode());
+            var expected = Math.Round(random.NextDouble(), 6);
+
+            // Seed should always return same value
+            Assert.AreEqual(expected, expr.Eval<double>());
+        }
+
+        [TestMethod]
+        public void Rand_2Parameters_Test()
+        {
+            var expr = new Expression("Rand(10,12)");
+            bool got10 = false;
+            bool got11 = false;
+            for (int count = 0; count < 1000; count++)
+            {
+                // Either 10 or 11
+                var actual = expr.Eval<int>();
+                if (actual == 10)
+                {
+                    got10 = true;
+                }
+                else if (actual == 11)
+                {
+                    got11 = true;
+                }
+                else
+                {
+                    Assert.Fail("Expected 10 or 11");
+                }
+                if (got10 && got11) // Stop if you found a 10 and 11
+                    break;
+            }
+
+            if (!got10 || !got11)
+            {
+                Assert.Fail("Expected 10 or 11");
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("seed")]
+        [DataRow(1d)]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Rand_3Parameters_Test(object seed)
+        {
+            string seedString = seed is string ? $"\"{seed.ToString()}\"" : seed.ToString();
+            var expr = new Expression($"Rand({seedString},1000,2000)");
+            var random = new Random(seed.GetHashCode());
+            var expected = random.Next(1000, 2000);
+
+            // Seed should always return same value
+            Assert.AreEqual(expected, expr.Eval<int>());
+        }
+
+        [TestMethod]
+        [DataRow("JOIN('-', 1,'a','#')", "1-a-#")]
+        [DataRow("JOIN('-', 1,'a')", "1-a")]
+        [DataRow("JOIN('-', 1)", "1")]
+        [DataRow("JOIN('-')", "")]
+        [DataRow("MID('12345',3,1)", "3")]
+        [DataRow("MID('12345',3,2)", "34")]
+        [DataRow("MID('12345',3,3)", "345")]
+        [DataRow("MID('12345',3,4)", "345")]
+        [DataRow("MID('12345',3)", "345")]
+        [DataRow("MID('12345',4)", "45")]
+        [DataRow("MID('12345',5)", "5")]
+        public void Custom_Function_Test(string formula, string expected)
+        {
+            //register new custom functions
+            Parser.RegisterFunction(typeof(joinFunction));
+            Parser.RegisterFunction(typeof(midFunction));
+
+            //call function
+            var expr = new Expression(formula);
+            Assert.AreEqual(expected, expr.Eval<string>());
+        }
+
+        public class joinFunction : IFunction
+        {
+            public List<FunctionDef> GetInfo()
+            {
+                return new List<FunctionDef> {
+                    new FunctionDef("join", new Type[] { typeof(object) }, typeof(string), -1)
+                };
+            }
+
+            public object Execute(Dictionary<string, object> args, ExpressionContext dc)
+            {
+                if (args.Count < 2)
+                    return string.Empty;
+
+                string delimiter = null;
+                var output = new StringBuilder();
+                foreach (var arg in args)
+                {
+                    if (arg.Key == Afe_Common.Const_Key_One)
+                    {
+                        delimiter = arg.Value.ToString();
+                    }
+                    else
+                    {
+                        if (output.Length > 0)
+                        {
+                            output.Append(delimiter);
+                        }
+                        output.Append(arg.Value);
+                    }
+                }
+                return output.ToString();
+            }
+        }
+
+        public class midFunction : IFunction
+        {
+            public List<FunctionDef> GetInfo()
+            {
+                return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_MID, new System.Type[] { typeof(string), typeof(decimal) }, typeof(string), 2) };
+            }
+
+            public object Execute(Dictionary<string, object> args, ExpressionContext dc)
+            {
+                return this.Mid(
+                    Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture),
+                    Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture))
+                );
+            }
+
+            private string Mid(string stringValue, int index)
+            {
+                if (!string.IsNullOrEmpty(stringValue) && index > 0 && index <= stringValue.Length)
+                {
+                    int len = stringValue.Length - index + 1;
+                    return stringValue.Substring(index - 1, len);
+                }
+                return string.Empty;
+            }
         }
     }
 }
