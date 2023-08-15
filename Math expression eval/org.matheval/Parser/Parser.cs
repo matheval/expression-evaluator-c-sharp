@@ -31,7 +31,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using static org.matheval.Common.Afe_Common;
+
+[assembly: InternalsVisibleTo("UnitTest")]
 
 namespace org.matheval
 {
@@ -50,7 +53,12 @@ namespace org.matheval
         /// <summary>
         /// Create Dictionary Functions have key is string and value a list of FunctionExecutor
         /// </summary>
-        private static Dictionary<string, List<FunctionExecutor>> Functions = null;
+        private static Dictionary<string, List<FunctionExecutor>> Functions = new Dictionary<string, List<FunctionExecutor>>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static bool InternalFunctionsRegistered = false;
 
         /// <summary>
         /// Create Dictionary Operators have key is string and value is interface IOperator
@@ -69,12 +77,31 @@ namespace org.matheval
 
         public static void RegisterFunction(Type type)
         {
-            RegisterFunction((IFunction)Activator.CreateInstance(type));
+            if(InternalFunctionsRegistered)
+            {
+                Functions = new Dictionary<string, List<FunctionExecutor>>();
+                InternalFunctionsRegistered = false;
+            }
+            RegisterFunctionInternal(type);
         }
 
         public static void RegisterFunction(IFunction function)
         {
-            InitFunctions();
+            if (InternalFunctionsRegistered)
+            {
+                Functions = new Dictionary<string, List<FunctionExecutor>>();
+                InternalFunctionsRegistered = false;
+            }
+            RegisterFunctionInternal(function);
+        }
+
+        public static void RegisterFunctionInternal(Type type)
+        {
+            RegisterFunctionInternal((IFunction)Activator.CreateInstance(type));
+        }
+
+        public static void RegisterFunctionInternal(IFunction function)
+        {
             foreach (var functionDef in function.GetInfo())
             {
                 var name = functionDef.Name;
@@ -228,16 +255,16 @@ namespace org.matheval
         /// </summary>
         private static void InitFunctions()
         {
-            if (Functions == null)
+            if (!InternalFunctionsRegistered)
             {
-                Functions = new Dictionary<string, List<FunctionExecutor>>();
                 var iFunctionType = typeof(IFunction);
                 var types = iFunctionType.Assembly.GetTypes().Where(p => iFunctionType.IsAssignableFrom(p) && p != iFunctionType);
 
                 foreach (var type in types)
                 {
-                    RegisterFunction(type);
+                    RegisterFunctionInternal(type);
                 }
+                InternalFunctionsRegistered = true;
             }
         }
 

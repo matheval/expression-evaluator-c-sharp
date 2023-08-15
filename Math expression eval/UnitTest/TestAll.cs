@@ -26,8 +26,10 @@ using org.matheval;
 using org.matheval.Common;
 using org.matheval.Functions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 using System.Text;
 
 namespace UnitTest
@@ -1213,6 +1215,8 @@ namespace UnitTest
             //call function
             var expr = new Expression(formula);
             Assert.AreEqual(expected, expr.Eval<string>());
+
+            ParserUnregisterFunctions();
         }
 
         public class joinFunction : IFunction
@@ -1274,6 +1278,65 @@ namespace UnitTest
                 }
                 return string.Empty;
             }
+        }
+
+        [TestMethod]
+        [DataRow("ISBLANK(null)", true, true)]
+        [DataRow("ISBLANK('')", true, true)]
+        [DataRow("ISBLANK('A')", false, false)]
+        [DataRow("ISBLANK(' ')", false, true)]
+        [DataRow("ISBLANK('\r\n')", false, true)]
+        [DataRow("ISBLANK('\t')", false, true)]
+        public void Custom_Function_Replacement_Test(string formula, bool expectedBefore, bool expectedAfter)
+        {
+            //call function
+            var expr = new Expression(formula);
+            Assert.AreEqual(expectedBefore, expr.Eval<bool>());
+
+            //register new custom functions
+            Parser.RegisterFunction(typeof(isblankFunction));
+
+            //call function
+            expr = new Expression(formula);
+            Assert.AreEqual(expectedAfter, expr.Eval<bool>());
+
+            ParserUnregisterFunctions();
+        }
+
+        /// <summary>
+        /// Alter the ISBLANK function to return true if the value is whitespace
+        /// </summary>
+        public class isblankFunction : IFunction
+        {
+            /// <summary>
+            /// Get Information
+            /// </summary>
+            /// <returns>FunctionDefs</returns>
+            public List<FunctionDef> GetInfo()
+            {
+                return new List<FunctionDef>{
+                       new FunctionDef(Afe_Common.Const_Isblank, new System.Type[]{ typeof(Object) }, typeof(Boolean), 1)};
+            }
+
+            /// <summary>
+            /// Execute
+            /// </summary>
+            /// <param name="args">args</param>
+            /// <param name="dc">dc</param>
+            /// <returns>True or False</returns>
+            public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
+            {
+                return string.IsNullOrWhiteSpace(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            }
+        }
+
+        private static void ParserUnregisterFunctions()
+        {
+            var field = typeof(Parser).GetField("Functions", BindingFlags.Static | BindingFlags.NonPublic);
+            field.SetValue(null, new Dictionary<string, List<FunctionExecutor>>());
+
+            field = typeof(Parser).GetField("InternalFunctionsRegistered", BindingFlags.Static | BindingFlags.NonPublic);
+            field.SetValue(null, false);
         }
     }
 }
