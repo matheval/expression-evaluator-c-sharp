@@ -812,29 +812,17 @@ namespace org.matheval
 
     internal class FunctionExecutor
     {
-        public IFunction Function { get; set; }
-        public FunctionDef FunctionDef { get; set; }
+        private string _toString;
+
+        public IFunction Function { get; private set; }
+        public FunctionDef FunctionDef { get; private set; }
 
         public FunctionExecutor(IFunction function, FunctionDef functionDef)
         {
             Function = function;
             FunctionDef = functionDef;
-        }
 
-        public override int GetHashCode()
-        {
-            return ToString().GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is FunctionExecutor other
-                && ToString() == other.ToString();
-        }
-
-        public override string ToString()
-        {
-            return Function.GetType().FullName
+            _toString = Function.GetType().FullName
                 + ":"
                 + FunctionDef.Name
                 + "("
@@ -842,6 +830,22 @@ namespace org.matheval
                 + (FunctionDef.Args == null ? "" : string.Join(",", FunctionDef.Args.Select(x => x.FullName).ToArray()))
                 + ")"
                 + FunctionDef.ReturnType.FullName;
+        }
+
+        public override int GetHashCode()
+        {
+            return _toString.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FunctionExecutor other
+                && _toString == other._toString;
+        }
+
+        public override string ToString()
+        {
+            return _toString;
         }
     }
 }
