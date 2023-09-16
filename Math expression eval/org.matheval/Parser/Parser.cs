@@ -95,12 +95,12 @@ namespace org.matheval
             RegisterFunctionInternal(function);
         }
 
-        public static void RegisterFunctionInternal(Type type)
+        private static void RegisterFunctionInternal(Type type)
         {
             RegisterFunctionInternal((IFunction)Activator.CreateInstance(type));
         }
 
-        public static void RegisterFunctionInternal(IFunction function)
+        private static void RegisterFunctionInternal(IFunction function)
         {
             foreach (var functionDef in function.GetInfo())
             {
