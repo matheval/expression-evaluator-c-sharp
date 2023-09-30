@@ -28,7 +28,78 @@ PM> Install-Package org.matheval -Version 1.0.0.2
 
 # Supported operators, contants, functions
 
-[https://matheval.org/math-expression-eval-for-c-sharp/#op-constants-funcs](https://matheval.org/math-expression-eval-for-c-sharp/#op-constants-funcs)
+## Supported Operators
+<table>
+
+<tbody>
+
+<tr>
+
+<th>Operator</th>
+
+<th>Description</th>
+
+</tr>
+
+<tr>
+
+<td>+</td>
+
+<td>Additive operator / Unary plus / Concatenate string / Datetime addition</td>
+
+</tr>
+
+<tr>
+
+<td>&</td>
+
+<td>Concatenate string</td>
+
+</tr>
+
+<tr>
+
+<td>–</td>
+
+<td>Subtraction operator / Unary minus / Datetime subtraction</td>
+
+</tr>
+
+<tr>
+
+<td>*</td>
+
+<td>Multiplication operator, can be omitted in front of an open bracket</td>
+
+</tr>
+
+<tr>
+
+<td>/</td>
+
+<td>Division operator</td>
+
+</tr>
+
+<tr>
+
+<td>%</td>
+
+<td>Remainder operator (Modulo)</td>
+
+</tr>
+
+<tr>
+
+<td>^</td>
+
+<td>Power operator</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 # Usage examples
 
