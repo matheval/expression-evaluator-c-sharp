@@ -118,19 +118,19 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**IF**(logical_condition, value_if_true, value_if_false)</td>
+<td>IF(logical_condition, value_if_true, value_if_false)</td>
 
 <td>Example:  
-`**IF(2>1,"Pass","Fail")**`</td>
+`IF(2>1,"Pass","Fail")`</td>
 
 </tr>
 
 <tr>
 
-<td>**SWITCH**(expression, val1,result1, [val2,result2], …, [default])</td>
+<td>SWITCH(expression, val1,result1, [val2,result2], …, [default])</td>
 
 <td>Example:  
-**`SWITCH(3+2,5,"Apple",7,"Mango",3,"Good","N/A")`**</td>
+`SWITCH(3+2,5,"Apple",7,"Mango",3,"Good","N/A")`</td>
 
 </tr>
 
@@ -154,7 +154,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**AND**(logical1, [logical2], …)</td>
+<td>AND(logical1, [logical2], …)</td>
 
 <td>Determine if all conditions are TRUE</td>
 
@@ -162,7 +162,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**OR**(logical1, [logical2], …)</td>
+<td>OR(logical1, [logical2], …)</td>
 
 <td>Determine if any conditions in a test are TRUE</td>
 
@@ -170,7 +170,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**NOT**(_logical_)</td>
+<td>NOT(_logical_)</td>
 
 <td>To confirm one value is not equal to another</td>
 
@@ -178,7 +178,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**XOR**(logical1, [logical2], …)</td>
+<td>XOR(logical1, [logical2], …)</td>
 
 <td>Exclusive OR function</td>
 
@@ -186,7 +186,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**SUM**(number1, [number2],…)</td>
+<td>SUM(number1, [number2],…)</td>
 
 <td>Return sum of numbers supplied</td>
 
@@ -194,7 +194,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**AVERAGE**(number1, [number2],…)</td>
+<td>AVERAGE(number1, [number2],…)</td>
 
 <td>Return average of numbers supplied</td>
 
@@ -202,7 +202,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**MIN**(number1, [number2],…)</td>
+<td>MIN(number1, [number2],…)</td>
 
 <td>Return the smallest value from the numbers supplied</td>
 
@@ -210,7 +210,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**MAX**(number1, [number2],…)</td>
+<td>MAX(number1, [number2],…)</td>
 
 <td>Return the biggest value from the numbers supplied</td>
 
@@ -218,7 +218,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**MOD**(number, divisor)</td>
+<td>MOD(number, divisor)</td>
 
 <td>Get remainder of two given numbers after division operator.</td>
 
@@ -226,7 +226,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**ROUND**(number, num_digits)</td>
+<td>ROUND(number, num_digits)</td>
 
 <td>Returns the rounded approximation of given number using half-even rounding mode  
 ( you can change to another rounding mode)</td>
@@ -235,7 +235,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**FLOOR**(number, significance)</td>
+<td>FLOOR(number, significance)</td>
 
 <td>Rounds a given number towards zero to the nearest multiple of a specified significance</td>
 
@@ -243,7 +243,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**`CEILING`**(number, significance)</td>
+<td>`CEILING`(number, significance)</td>
 
 <td>Rounds a given number away from zero, to the nearest multiple of a given number</td>
 
@@ -251,7 +251,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**POWER**(number, power)</td>
+<td>POWER(number, power)</td>
 
 <td>Returns the result of a number raised to a given power</td>
 
@@ -259,7 +259,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**RAND**()</td>
+<td>RAND()</td>
 
 <td>Produces a random number between 0 and 1</td>
 
@@ -267,7 +267,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**SIN**(number)</td>
+<td>SIN(number)</td>
 
 <td>Returns the trigonometric sine of the angle given in radians</td>
 
@@ -275,7 +275,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**SINH**(number)</td>
+<td>SINH(number)</td>
 
 <td>Returns the hyperbolic sine of a number</td>
 
@@ -283,7 +283,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**ASIN**(number)</td>
+<td>ASIN(number)</td>
 
 <td>Returns the arc sine of an angle, in the range of -pi/2 through pi/2</td>
 
@@ -291,7 +291,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**COS**(number)</td>
+<td>COS(number)</td>
 
 <td>Returns the trigonometric cos of the angle given in radians</td>
 
@@ -299,7 +299,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**COSH**(number)</td>
+<td>COSH(number)</td>
 
 <td>Returns the hyperbolic cos of a number</td>
 
@@ -307,7 +307,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**ACOS**(number)</td>
+<td>ACOS(number)</td>
 
 <td>Returns the arc cosine of an angle, in the range of 0.0 through pi</td>
 
@@ -315,7 +315,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**TAN**(number)</td>
+<td>TAN(number)</td>
 
 <td>Returns the tangent of the angle given in radians</td>
 
@@ -323,7 +323,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**TANH**(number)</td>
+<td>TANH(number)</td>
 
 <td>Returns the hyperbolic tangent of a number</td>
 
@@ -331,7 +331,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**ATAN**(number)</td>
+<td>ATAN(number)</td>
 
 <td>Returns the arc tangent of an angle given in radians</td>
 
@@ -339,7 +339,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**ATAN2**(x_number, y_number)</td>
+<td>ATAN2(x_number, y_number)</td>
 
 <td>Returns the arctangent from x- and y-coordinates</td>
 
@@ -347,7 +347,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**COT**(number)</td>
+<td>COT(number)</td>
 
 <td>Returns the cotangent of an angle given in radians.</td>
 
@@ -355,7 +355,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**COTH**(number)</td>
+<td>COTH(number)</td>
 
 <td>Returns the hyperbolic cotangent of a number</td>
 
@@ -363,7 +363,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**SQRT**(number)</td>
+<td>SQRT(number)</td>
 
 <td>Returns the correctly rounded positive square root of given number</td>
 
@@ -371,7 +371,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**LN**(number)</td>
+<td>LN(number)</td>
 
 <td>Returns the natural logarithm (base _e_) of given number</td>
 
@@ -379,7 +379,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**LOG10**(number)</td>
+<td>LOG10(number)</td>
 
 <td>Returns the logarithm (base 10) of given number</td>
 
@@ -387,7 +387,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**EXP**(number)</td>
+<td>EXP(number)</td>
 
 <td>Returns e raised to the power of given number</td>
 
@@ -395,7 +395,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**ABS**(number)</td>
+<td>ABS(number)</td>
 
 <td>Returns the absolute value of given number</td>
 
@@ -403,7 +403,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**FACT**(number)</td>
+<td>FACT(number)</td>
 
 <td>Returns the factorial of a given number</td>
 
@@ -411,7 +411,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**SEC**(number)</td>
+<td>SEC(number)</td>
 
 <td>Returns the secant of an angle given in radians</td>
 
@@ -419,7 +419,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**CSC**(number)</td>
+<td>CSC(number)</td>
 
 <td>Returns the cosecant of an angle given in radians</td>
 
@@ -427,7 +427,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**PI**()</td>
+<td>PI()</td>
 
 <td>Return value of Pi</td>
 
@@ -435,7 +435,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**RADIANS**(degrees)</td>
+<td>RADIANS(degrees)</td>
 
 <td>Convert degrees to radians</td>
 
@@ -443,7 +443,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**`DEGREES`**`(radians)`</td>
+<td>DEGREES(radians)</td>
 
 <td>Convert radians to degrees</td>
 
@@ -451,7 +451,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**INT**(number)</td>
+<td>INT(number)</td>
 
 <td>Returns the Integer value of given number</td>
 
@@ -535,31 +535,31 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**LEFT**(text, num_chars)</td>
+<td>LEFT(text, num_chars)</td>
 
-<td>Extracts a given number of characters from the left side of a supplied **text string**</td>
-
-</tr>
-
-<tr>
-
-<td>**RIGHT**(text, num_chars)</td>
-
-<td>Extracts a given number of characters from the right side of a supplied **text string**</td>
+<td>Extracts a given number of characters from the left side of a supplied text string</td>
 
 </tr>
 
 <tr>
 
-<td>**MID**(text, start_num, num_chars)</td>
+<td>RIGHT(text, num_chars)</td>
 
-<td>Extracts a given number of characters from the middle of a supplied _text string_</td>
+<td>Extracts a given number of characters from the right side of a supplied text string</td>
 
 </tr>
 
 <tr>
 
-<td>**REVERSE**(text)</td>
+<td>MID(text, start_num, num_chars)</td>
+
+<td>Extracts a given number of characters from the middle of a supplied text string</td>
+
+</tr>
+
+<tr>
+
+<td>REVERSE(text)</td>
 
 <td>Reverse a string</td>
 
@@ -567,7 +567,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**ISNUMBER**(text)</td>
+<td>ISNUMBER(text)</td>
 
 <td>Check if a value is a number</td>
 
@@ -575,7 +575,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**LOWER**(text)</td>
+<td>LOWER(text)</td>
 
 <td>Converts all letters in the specified string to lowercase</td>
 
@@ -583,7 +583,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**UPPER**(text)</td>
+<td>UPPER(text)</td>
 
 <td>Converts all letters in the specified string to uppercase</td>
 
@@ -591,7 +591,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**PROPER**(text)</td>
+<td>PROPER(text)</td>
 
 <td>Capitalizes words given text string</td>
 
@@ -599,7 +599,7 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**TRIM**(text)</td>
+<td>TRIM(text)</td>
 
 <td>Removes extra spaces from text</td>
 
@@ -607,19 +607,19 @@ PM> Install-Package org.matheval -Version 1.0.0.3
 
 <tr>
 
-<td>**LEN**(text)</td>
+<td>LEN(text)</td>
 
-<td>Returns the length of a **string**/ **text**</td>
+<td>Returns the length of a string/ text</td>
 
 </tr>
 
 <tr>
 
-<td>**TEXT**(value, [format_text])</td>
+<td>TEXT(value, [format_text])</td>
 
 <td>Convert a numeric value into a text string. You can use the TEXT function to embed formatted numbers inside text  
 Example:  
-`**
+`
 
 <div class="enlighter-default enlighter-v-inline enlighter-t-enlighter "><span class="enlighter"><span class="enlighter-m0">TEXT</span><span class="enlighter-g1">(</span><span class="enlighter-n1">123</span><span class="enlighter-g1">)</span> <span class="enlighter-text">-</span><span class="enlighter-g1">></span> <span class="enlighter-text"></span> <span class="enlighter-n1">123</span></span></div>
 
@@ -647,13 +647,13 @@ Example:
 
 <div class="enlighter-default enlighter-v-inline enlighter-t-enlighter "><span class="enlighter"><span class="enlighter-m0">TEXT</span><span class="enlighter-g1">(</span><span class="enlighter-m0">TIME</span><span class="enlighter-g1">(</span><span class="enlighter-n1">12</span><span class="enlighter-text">,</span><span class="enlighter-n4">00</span><span class="enlighter-text">,</span><span class="enlighter-n4">00</span><span class="enlighter-g1">)</span><span class="enlighter-text">-</span><span class="enlighter-m0">TIME</span><span class="enlighter-g1">(</span><span class="enlighter-n1">10</span><span class="enlighter-text">,</span><span class="enlighter-n1">30</span><span class="enlighter-text">,</span><span class="enlighter-n1">10</span><span class="enlighter-g1">)</span><span class="enlighter-text">,</span><span class="enlighter-s0">"hh hours and mm minutes and ss seconds"</span><span class="enlighter-g1">)</span> <span class="enlighter-text">-</span><span class="enlighter-g1">></span> <span class="enlighter-text"></span> <span class="enlighter-s0">"01 hours and 29 minutes and 50 seconds"</span></span></div>
 
-`TEXT(TIME(12,00,00)-TIME(10,30,10),"hh hours and mm minutes and ss seconds") -> "01 hours and 29 minutes and 50 seconds"`**`</td>
+`TEXT(TIME(12,00,00)-TIME(10,30,10),"hh hours and mm minutes and ss seconds") -> "01 hours and 29 minutes and 50 seconds"``</td>
 
 </tr>
 
 <tr>
 
-<td>**REPLACE**(old_text, start_num, num_chars, new_text)</td>
+<td>REPLACE(old_text, start_num, num_chars, new_text)</td>
 
 <td>Replaces characters specified by location in a given text string with another text string</td>
 
@@ -661,7 +661,7 @@ Example:
 
 <tr>
 
-<td>**SUBSTITUTE**(text, old_text, new_text)</td>
+<td>SUBSTITUTE(text, old_text, new_text)</td>
 
 <td>Replaces a set of characters with another</td>
 
@@ -669,7 +669,7 @@ Example:
 
 <tr>
 
-<td>**FIND**(find_text, within_text, [start_num])</td>
+<td>FIND(find_text, within_text, [start_num])</td>
 
 <td>Returns the location of a substring in a string (case sensitive)</td>
 
@@ -677,7 +677,7 @@ Example:
 
 <tr>
 
-<td>**SEARCH**(find_text, within_text, [start_num])</td>
+<td>SEARCH(find_text, within_text, [start_num])</td>
 
 <td>Returns the location of a substring in a string (case insensitive)</td>
 
@@ -685,7 +685,7 @@ Example:
 
 <tr>
 
-<td>**CONCAT**(text1, text2, text3,…)</td>
+<td>CONCAT(text1, text2, text3,…)</td>
 
 <td>Combines the text from multiple strings</td>
 
@@ -693,7 +693,7 @@ Example:
 
 <tr>
 
-<td>**ISBLANK**(text)</td>
+<td>ISBLANK(text)</td>
 
 <td>Returns TRUE when a given string is null or empty, otherwise return FALSE</td>
 
@@ -701,7 +701,7 @@ Example:
 
 <tr>
 
-<td>**REPT**(text, repeat_time)</td>
+<td>REPT(text, repeat_time)</td>
 
 <td>Repeats characters a given number of times</td>
 
@@ -709,7 +709,7 @@ Example:
 
 <tr>
 
-<td>**CHAR**(char_code)</td>
+<td>CHAR(char_code)</td>
 
 <td>Return character from ascii code</td>
 
@@ -717,7 +717,7 @@ Example:
 
 <tr>
 
-<td>**CODE**(char)</td>
+<td>CODE(char)</td>
 
 <td>Returns a ascii code of a character</td>
 
@@ -725,7 +725,7 @@ Example:
 
 <tr>
 
-<td>**VALUE**(text)</td>
+<td>VALUE(text)</td>
 
 <td>Convert numbers stored as text to numbers</td>
 
