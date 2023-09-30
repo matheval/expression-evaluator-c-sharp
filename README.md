@@ -20,7 +20,7 @@ If you get any bugs please let me know by creating a new issue.
 Using Package Manager
 
 ```bash
-PM> Install-Package org.matheval -Version 1.0.0.2
+PM> Install-Package org.matheval -Version 1.0.0.3
 ```
 # Official document
 
