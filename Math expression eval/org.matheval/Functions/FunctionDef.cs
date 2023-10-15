@@ -46,6 +46,15 @@ namespace org.matheval.Functions
         public int ParamCount;
 
         /// <summary>
+        /// Function def constructor. paramCount=args.Length
+        /// </summary>
+        /// <param name="name">Function name</param>
+        /// <param name="args">Param type</param>
+        /// <param name="returnType">return datatype</param>
+        public FunctionDef(string name, System.Type[] args, System.Type returnType)
+            : this(name, args, returnType, args.Length) { }
+
+        /// <summary>
         /// Function def constructor
         /// </summary>
         /// <param name="name">Function name</param>

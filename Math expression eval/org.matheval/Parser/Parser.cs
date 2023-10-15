@@ -30,7 +30,11 @@ using org.matheval.Operators.Unary;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using static org.matheval.Common.Afe_Common;
+
+[assembly: InternalsVisibleTo("UnitTest")]
 
 namespace org.matheval
 {
@@ -47,6 +51,16 @@ namespace org.matheval
         private ExpressionContext Dc;
 
         /// <summary>
+        /// Create Dictionary Functions have key is string and value a list of FunctionExecutor
+        /// </summary>
+        private static Dictionary<string, List<FunctionExecutor>> Functions = new Dictionary<string, List<FunctionExecutor>>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static bool InternalFunctionsRegistered = false;
+
+        /// <summary>
         /// Create Dictionary Operators have key is string and value is interface IOperator
         /// </summary>
         private Dictionary<string, IOperator> Operators = null;
@@ -61,13 +75,59 @@ namespace org.matheval
         /// </summary>
         private Dictionary<string, Object> Constants = null;
 
+        public static void RegisterFunction(Type type)
+        {
+            if(InternalFunctionsRegistered)
+            {
+                Functions = new Dictionary<string, List<FunctionExecutor>>();
+                InternalFunctionsRegistered = false;
+            }
+            RegisterFunctionInternal(type);
+        }
+
+        public static void RegisterFunction(IFunction function)
+        {
+            if (InternalFunctionsRegistered)
+            {
+                Functions = new Dictionary<string, List<FunctionExecutor>>();
+                InternalFunctionsRegistered = false;
+            }
+            RegisterFunctionInternal(function);
+        }
+
+        private static void RegisterFunctionInternal(Type type)
+        {
+            RegisterFunctionInternal((IFunction)Activator.CreateInstance(type));
+        }
+
+        private static void RegisterFunctionInternal(IFunction function)
+        {
+            foreach (var functionDef in function.GetInfo())
+            {
+                var name = functionDef.Name;
+                if (!Functions.TryGetValue(name, out var functionExecutors))
+                {
+                    functionExecutors = new List<FunctionExecutor>();
+                    Functions.Add(name, functionExecutors);
+                }
+                var functionExecutor = new FunctionExecutor(function, functionDef);
+                if (!functionExecutors.Contains(functionExecutor))
+                {
+                    functionExecutors.Add(functionExecutor);
+                }
+                else
+                {
+                    Console.WriteLine("Already registered function: " + name);
+                }
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance structure with no param
         /// </summary>
         public Parser()
         {
-            this.InitOperators();
-            this.InitConstants();
+            this.Init();
             this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
         }
 
@@ -77,8 +137,7 @@ namespace org.matheval
         /// <param name="formular">formular</param>
         public Parser(string formular)
         {
-            this.InitOperators();
-            this.InitConstants();
+            this.Init();
             this.Dc = new ExpressionContext(6, MidpointRounding.ToEven, "yyyy-MM-dd", "yyyy-MM-dd HH:mm", @"hh\:mm", CultureInfo.InvariantCulture);
             this.Lexer = new Lexer(formular, this);
             //this.Lexer.GetToken();
@@ -89,8 +148,7 @@ namespace org.matheval
         /// </summary>
         public Parser(ExpressionContext dc)
         {
-            this.InitOperators();
-            this.InitConstants();
+            this.Init();
             this.Dc = dc;
         }
 
@@ -100,8 +158,7 @@ namespace org.matheval
         /// <param name="formular">formular</param>
         public Parser(ExpressionContext dc, string formular)
         {
-            this.InitOperators();
-            this.InitConstants();
+            this.Init();
             this.Dc = dc;
             this.Lexer = new Lexer(formular, this);
         }
@@ -184,6 +241,31 @@ namespace org.matheval
                 Constants = new Dictionary<string, Object>();
             }
             Constants.Add(constantName.ToLowerInvariant(), value);
+        }
+
+        private void Init()
+        {
+            InitFunctions();
+            this.InitOperators();
+            this.InitConstants();
+        }
+
+        /// <summary>
+        /// Init Function
+        /// </summary>
+        private static void InitFunctions()
+        {
+            if (!InternalFunctionsRegistered)
+            {
+                var iFunctionType = typeof(IFunction);
+                var types = iFunctionType.Assembly.GetTypes().Where(p => iFunctionType.IsAssignableFrom(p) && p != iFunctionType);
+
+                foreach (var type in types)
+                {
+                    RegisterFunctionInternal(type);
+                }
+                InternalFunctionsRegistered = true;
+            }
         }
 
         /// <summary>
@@ -341,26 +423,14 @@ namespace org.matheval
                     }
                 }
                 this.Lexer.GetToken();// eat )
-                IFunction funcExecuter;
-                try
-                {
-                    Type t = Type.GetType("org.matheval.Functions." + identifierStr.ToLowerInvariant() + "Function", true);
-                    Object obj = (Activator.CreateInstance(t));
-
-                    if (obj == null)
-                    {
-                        throw new Exception();
-                    }
-                    funcExecuter = (IFunction)obj;
-                }
-                catch (Exception e)
+                if (!Functions.TryGetValue(identifierStr.ToLowerInvariant(), out var funcExecuters))
                 {
                     throw new Exception(string.Format(Afe_Common.MSG_METH_NOTFOUND, new string[] { identifierStr.ToUpperInvariant() }));
                 }
-                
-                List<FunctionDef> functionInfos = funcExecuter.GetInfo();
-                foreach (FunctionDef functionInfo in functionInfos)
+
+                foreach (var funcExecuter in funcExecuters)
                 {
+                    var functionInfo = funcExecuter.FunctionDef;
                     //getParamCount() = -1 when params is unlimited
                     if ((functionInfo.ParamCount != -1 && args.Count != functionInfo.ParamCount) ||
                         (functionInfo.ParamCount == -1 && args.Count < 1))
@@ -384,7 +454,7 @@ namespace org.matheval
 
                     if (paramsValid)
                     {
-                        CallFuncNode callFuncNode = new CallFuncNode(identifierStr, args, functionInfo.ReturnType, funcExecuter);
+                        CallFuncNode callFuncNode = new CallFuncNode(identifierStr, args, functionInfo.ReturnType, funcExecuter.Function);
                         return callFuncNode;
                     }
                 }
@@ -738,6 +808,44 @@ namespace org.matheval
             throw new Exception(string.Format(Afe_Common.MSG_UNEXPECT_TOKEN_AT_POS,
                              new String[] { this.Lexer.CurrentToken.ToString(), this.Lexer.LexerPosition.ToString() }));
         }
+    }
 
+    internal class FunctionExecutor
+    {
+        private string _toString;
+
+        public IFunction Function { get; private set; }
+        public FunctionDef FunctionDef { get; private set; }
+
+        public FunctionExecutor(IFunction function, FunctionDef functionDef)
+        {
+            Function = function;
+            FunctionDef = functionDef;
+
+            _toString = Function.GetType().FullName
+                + ":"
+                + FunctionDef.Name
+                + "("
+                + (FunctionDef.ParamCount == -1 ? "params " : "")
+                + (FunctionDef.Args == null ? "" : string.Join(",", FunctionDef.Args.Select(x => x.FullName).ToArray()))
+                + ")"
+                + FunctionDef.ReturnType.FullName;
+        }
+
+        public override int GetHashCode()
+        {
+            return _toString.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FunctionExecutor other
+                && _toString == other._toString;
+        }
+
+        public override string ToString()
+        {
+            return _toString;
+        }
     }
 }
