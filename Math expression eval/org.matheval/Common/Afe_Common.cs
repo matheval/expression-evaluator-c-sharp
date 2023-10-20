@@ -231,7 +231,7 @@ namespace org.matheval.Common
         /// <summary>
         /// Funtion TODAY
         /// </summary>
-        public const string Const_TODAY = "TODAY";
+        public const string Const_TODAY = "today";
 
         /// <summary>
         /// Funtion left
@@ -239,19 +239,9 @@ namespace org.matheval.Common
         public const string Const_LEFT = "left";
 
         /// <summary>
-        /// Function Second
-        /// </summary>
-        public const string Const_Second = "second";
-
-        /// <summary>
         /// Function code
         /// </summary>
         public const string Const_Code = "code";
-
-        /// <summary>
-        /// Function hour
-        /// </summary>
-        public const string Const_Hour = "hour";
 
         /// <summary>
         /// Function int
@@ -262,12 +252,6 @@ namespace org.matheval.Common
         /// Function isblank
         /// </summary>
         public const string Const_Isblank = "isblank";
-
-        /// <summary>
-        /// Function Minute
-        /// </summary>
-        public const string Const_Minute = "minute";
-
 
         /// <summary>
         /// Function proper
@@ -585,12 +569,6 @@ namespace org.matheval.Common
         /// </summary>
         public const string Const_Round = "round";
 
-
-        /// <summary>
-        /// Function time
-        /// </summary>
-        public const string Const_Time = "time";
-
         /// <summary>
         /// Function Exp
         /// </summary>
@@ -606,6 +584,81 @@ namespace org.matheval.Common
         /// </summary>
         public const string Const_Find = "find";
 
+        /// <summary>
+        /// Function Date
+        /// </summary>
+        public const string Const_Date = "date";
+        /// <summary>
+        /// Function DateValue
+        /// </summary>
+        public const string Const_DateValue = "datevalue";
+        /// <summary>
+        /// Function Time
+        /// </summary>
+        public const string Const_Time = "time";
+        /// <summary>
+        /// Function Time
+        /// </summary>
+        public const string Const_Second = "second";
+        /// <summary>
+        /// Function Time
+        /// </summary>
+        public const string Const_Minute = "minute";
+        /// <summary>
+        /// Function Time
+        /// </summary>
+        public const string Const_Hour = "hour";
+        /// <summary>
+        /// Function Time
+        /// </summary>
+        public const string Const_Day = "day";
+        /// <summary>
+        /// Function Time
+        /// </summary>
+        public const string Const_Month = "month";
+
+        /// <summary>
+        /// Function Year
+        /// </summary>
+        public const string Const_Year = "year";
+
+        /// <summary>
+        /// Function Year
+        /// </summary>
+        public const string Const_Now = "now";
+
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_EDate = "edate";
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_Weekday = "weekday";
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_WeekNum = "weeknum";
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_Workday = "workday";
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_NetWorkdays = "networkdays";
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_EOMonth = "eomonth";
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_DateDif = "datedif";
+        /// <summary>
+        /// Function Today
+        /// </summary>
+        public const string Const_Days = "days";
 
         #endregion
 
@@ -765,11 +818,52 @@ namespace org.matheval.Common
         }
 
         /// <summary>
-        /// Connvert object to string
         /// TODO poner default invariant culture.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="cultureInfo"></param>
+        /// <returns></returns>
+        public static int ToInteger(object value, CultureInfo cultureInfo)
+        {
+            if (value is int)
+            {
+                return (int)value;
+            }
+            else
+            {
+                return Convert.ToInt32(value, cultureInfo);
+            }
+        }
+
+        /// <summary>
+        /// connvert object to string
+        /// todo poner default invariant culture.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="cultureinfo"></param>
+        /// <returns></returns>
+        public static DateTime ToDateTime(object value, CultureInfo cultureInfo)
+        {
+            if(value is DateTime)
+            {
+                return (DateTime)value;
+            }
+            else if (TimeSpan.TryParse(value.ToString(), out _))
+            {
+                throw new ArgumentException("Date is Invalid");
+            }
+            else
+            {
+                return Convert.ToDateTime(value, cultureInfo);
+            }
+        }
+
+        /// <summary>
+        /// connvert object to string
+        /// todo poner default invariant culture.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="cultureinfo"></param>
         /// <returns></returns>
         public static string ToString(object value, CultureInfo cultureInfo)
         {
@@ -782,8 +876,6 @@ namespace org.matheval.Common
                 return Convert.ToString(value, cultureInfo);
             }
         }
-
-
 
         /// <summary>
         /// Check object instance of List
@@ -865,6 +957,20 @@ namespace org.matheval.Common
             throw new Exception("Please set M or D or Y for UNIT param");
         }
 
+        /// <summary>
+        /// DateDif
+        /// </summary>
+        /// <param name="startDate">dateTime</param>
+        /// <returns>Blank Time Check</returns>
+        /// 
+        public static DateTime TimeValidation (DateTime dateTime)
+        {
+            if (dateTime.ToString("HH:mm:ss") == "00:00:00")
+            {
+                throw new ArgumentException("Time is Invalid");
+            }
+            return dateTime;
+        }
         #endregion
 
         #region Enum
