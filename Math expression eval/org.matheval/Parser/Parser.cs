@@ -36,6 +36,28 @@ namespace org.matheval
 {
     public class Parser
     {
+        private static Dictionary<string, Type> _registeredFunctions;
+
+        /// <summary>
+        /// Registers a new custom function to all new Parsers
+        /// @param name function name as used in the expression
+        /// @param functionType type that implements the IFunction interface and will be used to handle the custom function call
+        /// </summary>
+        /// <param name="op">op</param>
+        public static void RegisterFunction(string name, Type functionType)
+        {
+            if (_registeredFunctions == null)
+            {
+                _registeredFunctions = new Dictionary<string, Type>();
+            }
+            //sanity check the provided type
+            //Additional checks could be done here to if needed.
+            if (functionType.IsAbstract || functionType.IsGenericType || !typeof(IFunction).IsAssignableFrom(functionType))
+                throw new ArgumentException(functionType.Name + " is not a concrete, non-generic type that implements the org.matheval.Functions.IFunction interface");
+
+            _registeredFunctions[name.ToLowerInvariant()] = functionType;
+        }
+
         /// <summary>
         /// Create object Lexer
         /// </summary>
@@ -344,7 +366,10 @@ namespace org.matheval
                 IFunction funcExecuter;
                 try
                 {
-                    Type t = Type.GetType("org.matheval.Functions." + identifierStr.ToLowerInvariant() + "Function", true);
+                    if (_registeredFunctions == null || !_registeredFunctions.TryGetValue(identifierStr.ToLowerInvariant(), out Type t))
+                    {
+                        t = Type.GetType("org.matheval.Functions." + identifierStr.ToLowerInvariant() + "Function", true);
+                    }
                     Object obj = (Activator.CreateInstance(t));
 
                     if (obj == null)
