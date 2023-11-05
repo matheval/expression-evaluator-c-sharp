@@ -410,10 +410,6 @@ namespace UnitTest
 
             Expression expr6 = new Expression("BITRSHIFT(13,2)");
             Assert.AreEqual(3, expr6.Eval<int>());
-
-            Expression expr7 = new Expression("VALUE(\"123\")");
-            Assert.AreEqual(123, expr7.Eval<int>());
-
         }
 
         [TestMethod]
@@ -920,6 +916,27 @@ namespace UnitTest
             Expression expr1 = new Expression("ISNUMBER(\"0.23\")");
             Assert.AreEqual(true, expr1.Eval<bool>());
 
+            expr1.SetFomular("ISNUMBER(\"23\")");
+            Assert.AreEqual(true, expr1.Eval<bool>());
+
+            expr1.SetFomular("ISNUMBER(\".23\")");
+            Assert.AreEqual(true, expr1.Eval<bool>());
+
+            expr1.SetFomular("ISNUMBER(\"23.\")");
+            Assert.AreEqual(true, expr1.Eval<bool>());
+
+            expr1.SetFomular("ISNUMBER(\"-23\")");
+            Assert.AreEqual(true, expr1.Eval<bool>());
+
+            expr1.SetFomular("ISNUMBER(\"-.23\")");
+            Assert.AreEqual(true, expr1.Eval<bool>());
+
+            expr1.SetFomular("ISNUMBER(\"-23.\")");
+            Assert.AreEqual(true, expr1.Eval<bool>());
+
+            expr1.SetFomular("ISNUMBER(\".23.\")");
+            Assert.AreEqual(false, expr1.Eval<bool>());
+
             expr1.SetFomular("ISNUMBER(\"0.2a3\")");
             Assert.AreEqual(false, expr1.Eval<bool>());
 
@@ -1151,6 +1168,28 @@ namespace UnitTest
         }
 
         [TestMethod]
+        public void Text_Function_Value_Test()
+        {
+            Expression expr1 = new Expression("VALUE(\"123\")");
+            Assert.AreEqual(123, expr1.Eval<int>());
+
+            expr1.SetFomular("VALUE(\"123.123\")");
+            Assert.AreEqual(123.123m, expr1.Eval<decimal>());
+
+            expr1.SetFomular("VALUE(\".123\")");
+            Assert.AreEqual(0.123m, expr1.Eval<decimal>());
+
+            expr1.SetFomular("VALUE(\"-.123\")");
+            Assert.AreEqual(-0.123m, expr1.Eval<decimal>());
+
+            expr1.SetFomular("VALUE(\"123.\")");
+            Assert.AreEqual(123, expr1.Eval<int>());
+
+            expr1.SetFomular("VALUE(\".123.\")");
+            Assert.ThrowsException<Exception>(() => expr1.Eval<int>());
+        }
+
+        [TestMethod]
         public void Literals_Operation_Test()
         {
             var formular = "(((((4134+14.73*11.4000*100/90.5600+52.39*1.5200*100/90.5600+9.25*2.7200*100/90.5600-44.6*1.5700*100/90.5600+0.0000)*85.0082/100)*0.8357)*0.6638/1700)*(90.5600/100)*1.0000*0.9600+((1.88*0.8753-0.4028)*(90.5600-1.5700)/100)*0.0000+((1.88*0.8753-0.4028)*(90.5600-1.5700)/100)*0.0000+((1.39*0.8753-0.0375)*(90.5600-1.5700)/100)*0.0000+((1.39*0.8753-0.0375)*(90.5600-1.5700)/100)*0.0000)*1.0000";
@@ -1169,19 +1208,19 @@ namespace UnitTest
                 .Bind("a", 0)
                 .Bind("b", 0);
             Assert.AreEqual(false, expr.Eval<bool>());
-            
+
             // false, true = true
             var expr2 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 0)
                 .Bind("b", 1);
             Assert.AreEqual(true, expr2.Eval<bool>());
-            
+
             // true, false = true
             var expr3 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 1)
                 .Bind("b", 0);
             Assert.AreEqual(true, expr3.Eval<bool>());
-            
+
             // true, true = true
             var expr4 = new Expression("OR (a>0, b>0)")
                 .Bind("a", 1)
