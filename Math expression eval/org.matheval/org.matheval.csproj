@@ -24,5 +24,6 @@
     <FileVersion>1.0.0.2</FileVersion>    
     <SignAssembly>false</SignAssembly>    
     <RepositoryType>git</RepositoryType>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 </Project>
