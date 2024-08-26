@@ -850,6 +850,16 @@ public class Program
 ```
 ## Trigonometry
 ```cs
+Expression expr = new Expression('SIN(PI())^2+COS(PI())^2');
+Object value = expr.Eval(); //return 1
+```
+
+```cs
+Expression expr = new Expression("sin(a) - cos(a) = SQRT(2) * sin(a - pi / 4)");
+bool value = expr.Bind("a", Math.PI/5).Eval<bool>(); //return true
+```
+
+```cs
 using System;
 using org.matheval;
 					
@@ -862,6 +872,11 @@ public class Program
 		Console.WriteLine(value); //return 0		
 	}
 }
+```
+## Unary operator
+```cs
+Expression expr = new Expression("3--2+--3-(-(++2))");
+Object value = expr.Eval(); //return 10
 ```
 
 ## Deal with string
@@ -881,6 +896,22 @@ public class Program
 	}
 }
 ```
+
+## Left, right
+```cs
+Expression expr = new Expression("IF(VALUE(LEFT(date,4))<2020,'n/a','generation of ' & LEFT(date,4))");
+expr.Bind("date", "2022-01-20");
+String value = expr.Eval<String>();
+```
+
+## Calculate tax
+```cs
+Expression taxExpr = new Expression("IF(LOWER(TAX_CODE)='vat',amount*10/100,IF(LOWER(TAX_CODE)='gst',amount*15/100,0))");
+taxExpr.Bind("TAX_CODE","GST");
+taxExpr.Bind("amount", 5005m);
+Decimal value = taxExpr.Eval<Decimal>();
+```
+
 ## Concatenate strings
 ```cs
 using System;
@@ -895,6 +926,94 @@ public class Program
 		Console.WriteLine(value);//The United States of America	
 	}
 }
+```
+
+## Datetime
+December 30, 1899 date system
+
+We use 1899 date system, the first day that is supported is December 30, 1899. Any date you supply to this library will be converted into a serial number that represents the number of elapsed days starting from December 30, 1899. Look at the sample below:
+```cs
+Expression expr = new Expression("DATETIME(2025,01,02,12,11,10)");
+Decimal serialDate = expr.Eval<Decimal>(); // return 45659.507755 (days elapsed from December 30, 1899)
+DateTime datetime = expr.Eval<DateTime>(); // return 2025/01/02 12:11:10
+```
+## Setting holidays and weekend for expression context
+```cs
+Expression expr = new Expression("NETWORKDAYS(B5,C5)");
+expr.SetHolidays(
+        new DateTime[] {
+            new DateTime(2017,11,23),
+            new DateTime(2017, 12, 25),
+            new DateTime(2018, 1, 1)
+        }
+    );
+expr.SetWeekends(new Int32[] { 1, 2, 3 }); //Sunday = 0, ..., Saturday = 6
+expr.Bind("B5", new DateTime(2017, 1, 15));
+expr.Bind("C5", new DateTime(2018, 1, 21));
+Decimal value = expr.Eval<Decimal>(); //return 212
+```
+## Calculate networkday
+```cs
+Expression expr = new Expression("NETWORKDAYS(DATEVALUE('2021-03-30'),DATEVALUE('2022-05-16'))");
+int value = expr.Eval<int>(); // return 295
+```
+```cs
+Expression expr = new Expression("NETWORKDAYS(startdate,enddate)");
+expr.Bind("startdate", new DateTime(2021, 08, 11));
+expr.Bind("enddate", new DateTime(2021, 10, 4));
+Object value = expr.Eval(); // return 39
+```
+## Calculates the number of days, months, or years between two dates.
+```cs
+Expression expr = new Expression("DATEDIF(DATEVALUE('2021-01-31'),DATEVALUE('2029-08-29'),'Y')");
+Object value = expr.Eval(); // return 8
+```
+```cs
+Expression expr = new Expression("DATEDIF(DATEVALUE('2021-01-31'),DATEVALUE('2029-08-29'),'M')");
+Object value = expr.Eval(); // return 102
+```
+```cs
+Expression expr = new Expression("DATEDIF(DATEVALUE('2021-01-31'),DATEVALUE('2029-08-29'),'D')");
+Object value = expr.Eval(); // return 3132
+```
+```cs
+Expression expr = new Expression("DATEDIF(DATEVALUE('2021-01-31'),DATEVALUE('2029-08-29'),'MD')");
+Object value = expr.Eval(); // return 29
+```
+## Calculates the number of days, hours, mins between two datetime.
+```cs
+Expression expr = new Expression("DATETIME(2021,2,28,15,50,0)-DATETIME(2021,2,21,23,0,0)");
+Decimal value = expr.Eval<Decimal>(); // return 6.70139 (days)
+```
+```cs
+Expression expr = new Expression("(DATETIME(2021,2,28,15,50,0)-DATETIME(2021,2,21,23,0,0))*24");
+Decimal value = expr.Eval<Decimal>(); // return 160.8 (hours)
+```
+```cs
+Expression expr = new Expression("(DATETIME(2021,2,28,15,50,0)-DATETIME(2021,2,21,23,0,0))*24*60");
+Decimal value = expr.Eval<Decimal>(); // return 9650 (mins)
+```
+## Calculates the number of days, hours, mins between two timespan.
+```cs
+Expression expr = new Expression("DATETIME(2021,2,28,15,50,0)-DATETIME(2021,2,21,23,0,0)");
+Object value = expr.Eval(); // return 6.701389 (days)
+```
+## Substract, add datetime
+```cs
+Expression expr = new Expression("DATETIME(2021,2,28,15,50,0)-DATETIME(2021,2,21,23,0,0)");
+Object value = expr.Eval(); // return 6.701389 (days)
+```
+```cs
+Expression expr = new Expression("DATE(2021,2,28)-DATE(2021,2,21)");
+Object value = expr.Eval(); // return 7 (days)
+```
+```cs
+Expression expr = new Expression("DATE(2021,9,20)+3");
+DateTime value = expr.Eval<DateTime>(); // return 2021-09-23
+```
+```cs
+Expression expr = new Expression("TIME(10,10,0)+TIME(10,10,0)");
+TimeSpan value = expr.Eval<TimeSpan>(); // return 20:20:00
 ```
 
 ## License
