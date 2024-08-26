@@ -757,7 +757,7 @@ public class Program
 ```
 
 ## Conditional statements
-
+IF/ELSE
 ```cs
 using System;
 using org.matheval;
@@ -776,6 +776,14 @@ public class Program
 	}
 }
 ```
+SWITCH/CASE
+```cs
+Expression expr = new Expression("SWITCH(name,1,'apple',2,'mango',3,'banana','N/A')");
+//Bind variable
+expr.Bind("name", 2);
+//eval
+String value = expr.Eval<String>(); //return "mango"
+```
 
 ## Validate expression
 ```cs
@@ -790,7 +798,80 @@ if(errors.Count > 0)
 }	
 ```
 
+## Get variables that appear in the expression
+```cs
+Expression expression = new Expression("sin(pi/2+x)-cos(x) = a");
+//validate expression
+List<String> errors = expression.GetError();
+if (errors.Count == 0)
+{
+ // get variables
+ List<String> variables = expression.getVariables();
+ foreach (String variable in variables)
+ {
+  Console.WriteLine(variable); // will print x, a
+ }
+}
+```
+## Disable functions
+```cs
+Expression expression = new Expression();
+expression.DisableFunction("SIN");
+expression.DisableFunction("COS");
+```
+```cs
+Expression expression = new Expression();
+expression.DisableFunction(new string[] { "SIN", "COS" });
+```
+# Work with number expression
+Scale and rounding mode
+
+Use setScale() method to set number of digits to the right of the decimal point. Use setRoundingMode() method to set rounding mode. You can choose 1 of the following options:
+
+    MidpointRounding.AwayFromZero
+    MidpointRounding.ToEven
+    MidpointRounding.ToZero
+```cs
+Expression expression = new Expression("pi/2");
+expression.SetScale(3);
+expression.SetRoundingMode(MidpointRounding.ToEven);
+Decimal value = expression.Eval<Decimal>();//return 1.571
+```
+    
 ## Min, max, sum, avg
+
+```cs
+Expression expr = new Expression("MIN(a,b,c)");
+expr.Bind("a", 2);
+expr.Bind("b", 3);
+expr.Bind("c", 16);
+int value = expr.Eval<int>(); // return 2
+```
+
+```cs
+Expression expr = new Expression("MAX(a)");
+expr.Bind("a", new List<Decimal> { 10m, 9.6m, 135, 724.2m, 6m, -4m });
+Decimal value = expr.Eval<Decimal>(); // return 724.2
+```
+
+```cs
+Expression expr = new Expression("SUM(a,b,c)");
+expr.Bind("a", 2d);
+expr.Bind("b", 3d);
+expr.Bind("c", 16d);
+Double sum = expr.Eval<Double>(); // return 21
+expr.SetFomular("AVERAGE(a,b,c)");
+Double avg = expr.Eval<Double>(); // return 7
+```
+
+```cs
+Expression expr = new Expression("SUM(a)");
+expr.Bind("a", new List<Decimal> { 2m, 3m, 16m });
+Decimal sum = expr.Eval<Decimal>(); // return 21
+expr.SetFomular("AVERAGE(a)");
+Decimal avg = expr.Eval<Decimal>(); // return 7
+```
+
 ```cs
 using System;
 using org.matheval;
