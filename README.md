@@ -22,9 +22,6 @@ Using Package Manager
 ```bash
 PM> Install-Package org.matheval -Version 1.0.0.3
 ```
-# Official document
-
-[https://matheval.org/math-expression-eval-for-c-sharp/](https://matheval.org/math-expression-eval-for-c-sharp/)
 
 # Supported operators, contants, functions
 
