@@ -23,9 +23,14 @@
 */
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using org.matheval;
+using org.matheval.Common;
+using org.matheval.Functions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
+using System.Text;
 
 namespace UnitTest
 {
@@ -1187,6 +1192,151 @@ namespace UnitTest
                 .Bind("a", 1)
                 .Bind("b", 1);
             Assert.AreEqual(true, expr4.Eval<bool>());
+        }
+
+        [TestMethod]
+        [DataRow("JOIN('-', 1,'a','#')", "1-a-#")]
+        [DataRow("JOIN('-', 1,'a')", "1-a")]
+        [DataRow("JOIN('-', 1)", "1")]
+        [DataRow("JOIN('-')", "")]
+        [DataRow("MID('12345',3,1)", "3")]
+        [DataRow("MID('12345',3,2)", "34")]
+        [DataRow("MID('12345',3,3)", "345")]
+        [DataRow("MID('12345',3,4)", "345")]
+        [DataRow("MID('12345',3)", "345")]
+        [DataRow("MID('12345',4)", "45")]
+        [DataRow("MID('12345',5)", "5")]
+        public void Custom_Function_Test(string formula, string expected)
+        {
+            //register new custom functions
+            Parser.RegisterFunction(typeof(joinFunction));
+            Parser.RegisterFunction(typeof(midFunction));
+
+            //call function
+            var expr = new Expression(formula);
+            Assert.AreEqual(expected, expr.Eval<string>());
+
+            ParserUnregisterFunctions();
+        }
+
+        public class joinFunction : IFunction
+        {
+            public List<FunctionDef> GetInfo()
+            {
+                return new List<FunctionDef> {
+                    new FunctionDef("join", new Type[] { typeof(object) }, typeof(string), -1)
+                };
+            }
+
+            public object Execute(Dictionary<string, object> args, ExpressionContext dc)
+            {
+                if (args.Count < 2)
+                    return string.Empty;
+
+                string delimiter = null;
+                var output = new StringBuilder();
+                foreach (var arg in args)
+                {
+                    if (arg.Key == Afe_Common.Const_Key_One)
+                    {
+                        delimiter = arg.Value.ToString();
+                    }
+                    else
+                    {
+                        if (output.Length > 0)
+                        {
+                            output.Append(delimiter);
+                        }
+                        output.Append(arg.Value);
+                    }
+                }
+                return output.ToString();
+            }
+        }
+
+        public class midFunction : IFunction
+        {
+            public List<FunctionDef> GetInfo()
+            {
+                return new List<FunctionDef> { new FunctionDef(Afe_Common.Const_MID, new System.Type[] { typeof(string), typeof(decimal) }, typeof(string), 2) };
+            }
+
+            public object Execute(Dictionary<string, object> args, ExpressionContext dc)
+            {
+                return this.Mid(
+                    Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture),
+                    Decimal.ToInt32(Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture))
+                );
+            }
+
+            private string Mid(string stringValue, int index)
+            {
+                if (!string.IsNullOrEmpty(stringValue) && index > 0 && index <= stringValue.Length)
+                {
+                    int len = stringValue.Length - index + 1;
+                    return stringValue.Substring(index - 1, len);
+                }
+                return string.Empty;
+            }
+        }
+
+        [TestMethod]
+        [DataRow("ISBLANK(null)", true, true)]
+        [DataRow("ISBLANK('')", true, true)]
+        [DataRow("ISBLANK('A')", false, false)]
+        [DataRow("ISBLANK(' ')", false, true)]
+        [DataRow("ISBLANK('\r\n')", false, true)]
+        [DataRow("ISBLANK('\t')", false, true)]
+        public void Custom_Function_Replacement_Test(string formula, bool expectedBefore, bool expectedAfter)
+        {
+            //call function
+            var expr = new Expression(formula);
+            Assert.AreEqual(expectedBefore, expr.Eval<bool>());
+
+            //register new custom functions
+            Parser.RegisterFunction(typeof(isblankFunction));
+
+            //call function
+            expr = new Expression(formula);
+            Assert.AreEqual(expectedAfter, expr.Eval<bool>());
+
+            ParserUnregisterFunctions();
+        }
+
+        /// <summary>
+        /// Alter the ISBLANK function to return true if the value is whitespace
+        /// </summary>
+        public class isblankFunction : IFunction
+        {
+            /// <summary>
+            /// Get Information
+            /// </summary>
+            /// <returns>FunctionDefs</returns>
+            public List<FunctionDef> GetInfo()
+            {
+                return new List<FunctionDef>{
+                       new FunctionDef(Afe_Common.Const_Isblank, new System.Type[]{ typeof(Object) }, typeof(Boolean), 1)};
+            }
+
+            /// <summary>
+            /// Execute
+            /// </summary>
+            /// <param name="args">args</param>
+            /// <param name="dc">dc</param>
+            /// <returns>True or False</returns>
+            public Object Execute(Dictionary<String, Object> args, ExpressionContext dc)
+            {
+                return string.IsNullOrWhiteSpace(Afe_Common.ToString(args[Afe_Common.Const_Key_One], dc.WorkingCulture));
+            }
+        }
+
+        private static void ParserUnregisterFunctions()
+        {
+            var field = typeof(Parser).GetField("Functions", BindingFlags.Static | BindingFlags.NonPublic);
+            field.SetValue(null, new Dictionary<string, List<FunctionExecutor>>());
+
+            field = typeof(Parser).GetField("InternalFunctionsRegistered", BindingFlags.Static | BindingFlags.NonPublic);
+            field.SetValue(null, false);
         }
     }
 }
