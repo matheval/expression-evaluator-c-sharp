@@ -1188,5 +1188,77 @@ namespace UnitTest
                 .Bind("b", 1);
             Assert.AreEqual(true, expr4.Eval<bool>());
         }
+
+        [TestMethod]
+        public void Rand_0Parameters_Test()
+        {
+            var expr1 = new Expression("Rand()");
+            // Shouldn't error
+            var _ = expr1.Eval<decimal>();
+        }
+
+        [DataTestMethod]
+        [DataRow("xxx")]
+        [DataRow(1d)]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Rand_1Parameter_Test(object seed)
+        {
+            string seedString = seed is string ? $"\"{seed.ToString()}\"" : seed.ToString();
+            var expr = new Expression($"Rand({seedString})");
+            var random = new Random(seed.GetHashCode());
+            var expected = Math.Round(random.NextDouble(), 6);
+
+            // Seed should always return same value
+            Assert.AreEqual(expected, expr.Eval<double>());
+        }
+
+        [TestMethod]
+        public void Rand_2Parameters_Test()
+        {
+            var expr = new Expression("Rand(10,12)");
+            bool got10 = false;
+            bool got11 = false;
+            for (int count = 0; count < 1000; count++)
+            {
+                // Either 10 or 11
+                var actual = expr.Eval<int>();
+                if (actual == 10)
+                {
+                    got10 = true;
+                }
+                else if (actual == 11)
+                {
+                    got11 = true;
+                }
+                else
+                {
+                    Assert.Fail("Expected 10 or 11");
+                }
+                if (got10 && got11) // Stop if you found a 10 and 11
+                    break;
+            }
+
+            if (!got10 || !got11)
+            {
+                Assert.Fail("Expected 10 or 11");
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("seed")]
+        [DataRow(1d)]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Rand_3Parameters_Test(object seed)
+        {
+            string seedString = seed is string ? $"\"{seed.ToString()}\"" : seed.ToString();
+            var expr = new Expression($"Rand({seedString},1000,2000)");
+            var random = new Random(seed.GetHashCode());
+            var expected = random.Next(1000, 2000);
+
+            // Seed should always return same value
+            Assert.AreEqual(expected, expr.Eval<int>());
+        }
     }
 }

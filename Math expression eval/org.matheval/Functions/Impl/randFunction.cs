@@ -39,7 +39,15 @@ namespace org.matheval.Functions
         public List<FunctionDef> GetInfo()
         {
             return new List<FunctionDef>{
-                    new FunctionDef(Afe_Common.Const_Random, null, typeof(decimal), 0)};
+                // None
+                new FunctionDef(Afe_Common.Const_Random, null, typeof(decimal), 0),
+                // Seed
+                new FunctionDef(Afe_Common.Const_Random, new[]{ typeof(object) }, typeof(decimal), 1),
+                // Min, Max
+                new FunctionDef(Afe_Common.Const_Random, new[]{ typeof(decimal), typeof(decimal) }, typeof(decimal), 2),
+                // Seed, Min, Max
+                new FunctionDef(Afe_Common.Const_Random, new[]{ typeof(object), typeof(decimal), typeof(decimal) }, typeof(decimal), 3)
+            };
         }
 
         /// <summary>
@@ -50,9 +58,49 @@ namespace org.matheval.Functions
         /// <returns>Value</returns>
         public Object Execute(Dictionary<string, Object> args, ExpressionContext dc)
         {
-            // Random r = new Random();
-            //return Afe_Common.Round(r.Next(), dc);
-            return Convert.ToDecimal(new Random().NextDouble(), dc.WorkingCulture);
+            Random r = args.Count == 1 || args.Count == 3
+                ? new Random(args[Afe_Common.Const_Key_One].GetHashCode())
+                : new Random();
+
+            switch (args.Count)
+            {
+                case 2:
+                    return Convert.ToDecimal
+                    (
+                        r.Next
+                        (
+                            Convert.ToInt32
+                            (
+                                Afe_Common.ToDecimal(args[Afe_Common.Const_Key_One], dc.WorkingCulture)
+                                , dc.WorkingCulture
+                            ),
+                            Convert.ToInt32
+                            (
+                                Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)
+                                , dc.WorkingCulture
+                            )
+                        )
+                    );
+                case 3:
+                    return Convert.ToDecimal
+                    (
+                        r.Next
+                        (
+                            Convert.ToInt32
+                            (
+                                Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Two], dc.WorkingCulture)
+                                , dc.WorkingCulture
+                            ),
+                            Convert.ToInt32
+                            (
+                                Afe_Common.ToDecimal(args[Afe_Common.Const_Key_Three], dc.WorkingCulture)
+                                , dc.WorkingCulture
+                            )
+                        )
+                    );
+                default:
+                    return Convert.ToDecimal(r.NextDouble(), dc.WorkingCulture);
+            }
         }
     }
 }
